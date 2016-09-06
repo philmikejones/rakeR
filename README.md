@@ -1,9 +1,11 @@
+[![Build Status](https://travis-ci.org/philmikejones/rakeR.svg?branch=master)](https://travis-ci.org/philmikejones/rakeR)
+
 Warning
 =======
 
-Do not push to `origin/master`!
+Do not push to **`origin/master`**!
 
-`origin/master` is a protected branch and expects CI tests to have been successfully completed before it will merge code.
+**`origin/master`** is a protected branch and expects CI tests to have been successfully completed before it will merge code.
 
 Develop in a new branch (suggest `origin/develop`), check your changes with `devtools::check()`, and submit a pull request to be checked by Travis CI.
 
