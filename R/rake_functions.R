@@ -7,6 +7,8 @@ ind$age <- cut(ind$age,
 
 # Create a cons object will all con_ vars
 cons <- dplyr::full_join(con_age, con_sex, by = "zone")
+
+stop("function can start here")
 cons <- dplyr::select(cons, -zone)
 cons[] <- lapply(cons, as.numeric)
 cons <- as.matrix(cons)
