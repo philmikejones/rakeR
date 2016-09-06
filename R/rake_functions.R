@@ -1,32 +1,63 @@
+load("data/cons.RData"); load("data/ind.RData")
 
-prepare_sim_results <- function(shapefile, zone_simdf) {
+# Prepare ind$age bands to match cons
+ind$age <- cut(ind$age,
+               breaks = c(0, 49, 120),
+               labels = c("a0_49", "a50+"))
 
-  shapefile@data$code <- as.character(shapefile@data$code)
+# Create a cons object will all con_ vars
+cons <- dplyr::full_join(con_age, con_sex, by = "zone")
+cons <- dplyr::select(cons, -zone)
+cons[] <- lapply(cons, as.numeric)
+cons <- as.matrix(cons)
 
-  shapefile@data <- inner_join(shapefile@data, zone_simdf, by = "code")
-  context("Check shapefile")
-  test_that("shapefile@data has correct number of OAs", {
-    expect_equal(nrow(shapefile@data), nrow(zone_simdf))
+# Create dummy variables of ind vars
+ind_age <- stats::model.matrix( ~ ind$age - 1)
+ind_sex <- stats::model.matrix( ~ ind$sex - 1)
+ind_sex <- ind_sex[, c(2, 1)]
+
+ind_cat <- cbind(ind_age, ind_sex)
+
+
+rake <- function(cons, ind_cat) {
+
+  result <- apply(cons, 1, function(x) {
+
+    ipfp::ipfp(x, t(ind_cat), x0 = rep(1, nrow(ind_cat)),
+             maxit = 100)
+
   })
 
-  ## Calculate percentages
-  shapefile@data$p_hcond_1_plus <- shapefile@data$hcond_1_plus /
-    (shapefile@data$hcond_0 + shapefile@data$hcond_1_plus)
+  if (sum(cons) %% sum(result) == 0) {
 
-  ## Fortify for plotting
-  shapefile_f <- fortify(shapefile, region = "code")
-  shapefile_f <- left_join(shapefile_f, shapefile@data,
-                           by = c("id" = "code"))
+    result
 
-  ## Create bins for plotting
-  shapefile_f[["hcond_cut"]] <- NA
-  shapefile_f[["hcond_cut"]] <- cut(shapefile_f$p_hcond_1_plus, breaks = 5,
-                                    include.lowest = TRUE, dig.lab = 2, ordered_result = TRUE) %>%
-    factor(., levels = rev(levels(.)))
+  } else {
 
-  shapefile_f
+    stop("Sum of weights is not a multiple of sum of constraints.")
+
+  }
 
 }
+
+weights <- rake(cons, ind_cat)
+
+
+check_weights <- function(weights) {
+
+  result <- apply(weights, 2, function(x) {
+
+    colSums(x * ind_cat)
+
+  })
+
+  result
+
+}
+
+colSums(check_weights(weights))
+rowSums(cons)
+
 
 int_validate <- function(constraints, ind_agg) {
 
