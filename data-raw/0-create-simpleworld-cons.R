@@ -14,4 +14,4 @@ con_sex <- data.frame(
 
 )
 
-save(con_age, con_sex, fie = "data/cons.RData", compress = "xz")
+save(con_age, con_sex, file = "data/cons.RData", compress = "xz")
