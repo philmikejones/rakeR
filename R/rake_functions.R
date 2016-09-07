@@ -1,18 +1,23 @@
 load("data/cons.RData"); load("data/ind.RData")
 
+# '+' not saving correctly for some reason?
+colnames(con_age)[3] <- "a_50+"
+
 # Prepare ind$age bands to match cons
 ind$age <- cut(ind$age,
                breaks = c(0, 49, 120),
                labels = c("a0_49", "a50+"))
 
 # Create a cons object will all con_ vars
-cons <- dplyr::full_join(con_age, con_sex, by = "zone")
+cons <- merge(con_age, con_sex, by = "zone")
+
 
 vars <- c("age", "sex")
 dep  <- "income"
 
-
 rake <- function(cons, ind, vars, dep) {
+
+  # Prepare constraints
 
   # Save and drop first column of cons (zone codes)
   zones <- cons[, 1]
