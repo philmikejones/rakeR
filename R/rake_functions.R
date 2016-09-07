@@ -27,6 +27,9 @@ rake <- function(cons, ind, vars, dep) {
   cons[] <- lapply(cons, as.numeric)
   cons   <- as.matrix(cons)
 
+
+  # Prepare individual-level data (survey)
+
   # Create a list of survey based matrices to match cons matrices
   # Easiest way is to create 'dummy variables' (i.e. 0, 1) using model.matrix.
   # The '-1' drops the intercept, and puts the first variable back in
@@ -37,12 +40,11 @@ rake <- function(cons, ind, vars, dep) {
 
   })
 
+  # Fix colnames
+  colnames(inds[[1]]) <- gsub("ind\\[\\[x\\]\\]", "", colnames(inds[[1]]))
 
 
 
-  # Create dummy variables of ind vars
-  ind_age <- stats::model.matrix( ~ ind$age - 1)
-  ind_sex <- stats::model.matrix( ~ ind$sex - 1)
   ind_sex <- ind_sex[, c(2, 1)]
 
   ind_cat <- cbind(ind_age, ind_sex)
