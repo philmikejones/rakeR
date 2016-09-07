@@ -62,6 +62,7 @@
 #' print(weights)
 rake <- function(cons, ind, vars, iterations = 10) {
 
+  stop("What if the zone column is character?!")
   cons <- as.matrix(cons)
 
   if (!is.data.frame(ind)) {
