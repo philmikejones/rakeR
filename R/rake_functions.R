@@ -34,6 +34,8 @@
 #'   constraint.
 #' @param vars A vector of variables that constrain the simulation (i.e.
 #'   independent variables)
+#' @param iterations The number of iterations the algorithm should complete.
+#'   Defaults to 10
 #'
 #' @return A data frame of fractional weights for each individual in each zone.
 #' @export
@@ -58,7 +60,7 @@
 #' vars <- c("age", "sex")
 #' weights <- rake(cons = cons, ind = ind, vars = vars)
 #' print(weights)
-rake <- function(cons, ind, vars) {
+rake <- function(cons, ind, vars, iterations = 10) {
 
   cons <- as.matrix(cons)
 
@@ -120,7 +122,7 @@ rake <- function(cons, ind, vars) {
   result <- apply(cons, 1, function(x) {
 
     ipfp::ipfp(x, t(ind_cat), x0 = rep(1, nrow(ind_cat)),
-               maxit = 100)
+               maxit = iterations)
 
   })
 

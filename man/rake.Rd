@@ -4,7 +4,7 @@
 \alias{rake}
 \title{rake}
 \usage{
-rake(cons, ind, vars)
+rake(cons, ind, vars, iterations = 10)
 }
 \arguments{
 \item{cons}{A data frame or matrix containing all the constraints. This
@@ -17,6 +17,9 @@ constraint.}
 
 \item{vars}{A vector of variables that constrain the simulation (i.e.
 independent variables)}
+
+\item{iterations}{The number of iterations the algorithm should complete.
+Defaults to 10}
 }
 \value{
 A data frame of fractional weights for each individual in each zone.
