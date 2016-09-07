@@ -8,25 +8,48 @@ ind$age <- cut(ind$age,
 # Create a cons object will all con_ vars
 cons <- dplyr::full_join(con_age, con_sex, by = "zone")
 
-stop("function can start here")
-cons <- dplyr::select(cons, -zone)
-cons[] <- lapply(cons, as.numeric)
-cons <- as.matrix(cons)
-
-# Create dummy variables of ind vars
-ind_age <- stats::model.matrix( ~ ind$age - 1)
-ind_sex <- stats::model.matrix( ~ ind$sex - 1)
-ind_sex <- ind_sex[, c(2, 1)]
-
-ind_cat <- cbind(ind_age, ind_sex)
+vars <- c("age", "sex")
+dep  <- "income"
 
 
-rake <- function(cons, ind_cat) {
+rake <- function(cons, ind, vars, dep) {
+
+  # Save and drop first column of cons (zone codes)
+  zones <- cons[, 1]
+  cons  <- cons[, -1]
+
+  # cons must be a numeric (i.e. double, not int) matrix
+  cons[] <- lapply(cons, as.numeric)
+  cons   <- as.matrix(cons)
+
+  # Create a list of survey based matrices to match cons matrices
+  # Easiest way is to create 'dummy variables' (i.e. 0, 1) using model.matrix.
+  # The '-1' drops the intercept, and puts the first variable back in
+  # I hate it because it doesn't seem to be documented anywhere, but it works
+  inds <- lapply(as.list(vars), function(x) {
+
+    stats::model.matrix( ~ ind[[x]] - 1)
+
+  })
+
+
+
+
+  # Create dummy variables of ind vars
+  ind_age <- stats::model.matrix( ~ ind$age - 1)
+  ind_sex <- stats::model.matrix( ~ ind$sex - 1)
+  ind_sex <- ind_sex[, c(2, 1)]
+
+  ind_cat <- cbind(ind_age, ind_sex)
+
+
+
+
 
   result <- apply(cons, 1, function(x) {
 
     ipfp::ipfp(x, t(ind_cat), x0 = rep(1, nrow(ind_cat)),
-             maxit = 100)
+               maxit = 100)
 
   })
 
@@ -41,6 +64,14 @@ rake <- function(cons, ind_cat) {
   }
 
 }
+
+
+
+
+
+
+
+
 
 weights <- rake(cons, ind_cat)
 
