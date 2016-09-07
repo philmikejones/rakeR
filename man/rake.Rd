@@ -7,26 +7,43 @@
 rake(cons, ind, vars)
 }
 \arguments{
-\item{cons}{A data frame or matrix containing all the constraints.}
+\item{cons}{A data frame or matrix containing all the constraints. This
+should be in the format of one row per zone, one column per constraint
+category.}
 
-\item{ind}{A data frame containing individual--level (survey) data.}
+\item{ind}{A data frame containing individual--level (survey) data. This
+should be in the format of one row per individual, one column per
+constraint.}
 
-\item{vars}{A vector or list or variables that constrain the simulation (i.e. independent variables)}
+\item{vars}{A vector or list or variables that constrain the simulation (i.e.
+independent variables)}
 }
 \value{
 A data frame of fractional weights for each individual in each zone.
 }
 \description{
-Produces fractional weights using the iterative proportional fitting ('raking') algorithm.
-It takes two data frames or matrices as arguments, one for the constraints and one for the individual--level survey data.
-The constraints should be one row per zone, one column per constraint category.
-The first column should contain the zone codes.
-The survey data should be one row per individual, one column per constraint.
-The first column should contain the individual unique identifier.
-Both data frames should only contain an ID column (zone ID, individual ID) and constraints or constraint category.
+Produces fractional weights using the iterative proportional fitting
+('raking') algorithm.
+}
+\details{
+The first column of each data frame should be an ID. The first column of
+\code{cons} should contain the zone codes. The first column of \code{ind}
+should contain the individual unique identifier.
+
+Both data frames should only contain:
+\itemize{
+  \item an ID column (zone ID \code{cons} or individual ID \code{ind}).
+  \item constraints \code{ind} or constraint category \code{cons}.
+  \item \code{ind} can optionally contain additional dependent variables
+  that do not influence the weighting process.
+}
+
 No other columns should be present (the user can merge these back in later).
-This is typically the format you will obtain and/or tidy data into, so the function does all the necessary re-structuring.
-The fractional weights can be integerised to create a simulated data frame.
+
+Arguments are provided in this format because this is typically the format
+you will obtain and/or tidy data into, so the function does all the necessary
+re-structuring. The fractional weights can be integerised to create a
+simulated data frame.
 }
 \examples{
 # SimpleWorld
@@ -34,8 +51,8 @@ cons <- data.frame(
 "zone"  = 1:3,
 "a0_49" = c(8, 2, 7),
 "a_50+" = c(4, 8, 4),
-"f"    = c(6, 6, 8)
-"m"    = c(6, 4, 3),
+"f"    = c(6, 6, 8),
+"m"    = c(6, 4, 3)
 )
 ind <- data.frame(
 "id"     = 1:5,
@@ -46,6 +63,7 @@ stringsAsFactors = FALSE
 )
 # Set variables to constrain over
 vars <- c("age", "sex")
-rake(cons = cons, ind = ind, vars = vars)
+weights <- rake(cons = cons, ind = ind, vars = vars)
+print(weights)
 }
 
