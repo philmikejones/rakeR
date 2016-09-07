@@ -40,10 +40,13 @@ Both data frames should only contain:
 
 No other columns should be present (the user can merge these back in later).
 
-Arguments are provided in this format because this is typically the format
-you will obtain and/or tidy data into, so the function does all the necessary
-re-structuring. The fractional weights can be integerised to create a
-simulated data frame.
+It is essential that the levels in each \code{ind} constraint (i.e. column)
+match exactly with the column names in \code{cons}. In the example below see
+how the column names in cons (\code{'a0_49', 'f', ...}) match exactly the
+levels in \code{ind} variables.
+
+The columns in \code{cons} must be in alphabetical order because these are
+created alphabetically when they are 'spread' in the individual--level data.
 }
 \examples{
 # SimpleWorld
