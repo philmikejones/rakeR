@@ -15,7 +15,7 @@ category.}
 should be in the format of one row per individual, one column per
 constraint.}
 
-\item{vars}{A vector or list or variables that constrain the simulation (i.e.
+\item{vars}{A vector of variables that constrain the simulation (i.e.
 independent variables)}
 }
 \value{

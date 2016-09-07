@@ -3,7 +3,7 @@
 #' Produces fractional weights using the iterative proportional fitting
 #' ('raking') algorithm.
 #'
-
+#'
 #' The first column of each data frame should be an ID. The first column of
 #' \code{cons} should contain the zone codes. The first column of \code{ind}
 #' should contain the individual unique identifier.
@@ -32,7 +32,7 @@
 #' @param ind A data frame containing individual--level (survey) data. This
 #'   should be in the format of one row per individual, one column per
 #'   constraint.
-#' @param vars A vector or list or variables that constrain the simulation (i.e.
+#' @param vars A vector of variables that constrain the simulation (i.e.
 #'   independent variables)
 #'
 #' @return A data frame of fractional weights for each individual in each zone.
@@ -60,6 +60,20 @@
 #' print(weights)
 rake <- function(cons, ind, vars) {
 
+  cons <- as.matrix(cons)
+
+  if (!is.data.frame(ind)) {
+
+    stop("ind is not a data frame")
+
+  }
+
+  if (!(is.atomic(vars) || is.list(vars))) {
+
+    stop("vars is not a vector")
+
+  }
+
   # Prepare constraints
 
   # Save and drop first column of cons (zone codes)
@@ -67,8 +81,7 @@ rake <- function(cons, ind, vars) {
   cons  <- cons[, -1]
 
   # cons must be a numeric (i.e. double, not int) matrix
-  cons[] <- lapply(cons, as.numeric)
-  cons   <- as.matrix(cons)
+  cons[] <- as.numeric(cons[])
 
 
   # Prepare individual-level data (survey)
@@ -111,7 +124,7 @@ rake <- function(cons, ind, vars) {
 
   })
 
-  if (!all.equal(sum(result), (sum(cons) / length(vars)))) {
+  if (all.equal(sum(result), (sum(cons) / length(vars)))) {
 
     result
 
