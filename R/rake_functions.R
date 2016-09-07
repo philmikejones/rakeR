@@ -124,17 +124,25 @@ rake <- function(cons, ind, vars) {
 
   })
 
-  if (all.equal(sum(result), (sum(cons) / length(vars)))) {
-
-    result
-
-  } else {
+  if (!all.equal(sum(result), (sum(cons) / length(vars)))) {
 
     stop("Sum of weights does not match sum of constraints.\n
          Check variable names in 'cons' and levels in 'ind'\n
          Is the first column a zone code/unique ID?\n
          Have you removed all columns except the ID, constraints and
          (optionally) dependent variables in ind?")
+
+  } else if (!all.equal(colSums(result), (rowSums(cons) / length(vars)))) {
+
+    stop("Zone populations (cons) do not match simulated populations.\n
+         Check variable names in 'cons' and levels in 'ind'\n
+         Is the first column a zone code/unique ID?\n
+         Have you removed all columns except the ID, constraints and
+         (optionally) dependent variables in ind?")
+
+  } else {
+
+    result
 
   }
 
