@@ -149,24 +149,9 @@ rake <- function(cons, ind, vars) {
 }
 
 
-# #
-# #
-# # check_weights <- function(weights) {
-# #
-# #   result <- apply(weights, 2, function(x) {
-# #
-# #     colSums(x * ind_cat)
-# #
-# #   })
-# #
-# #   result
-# #
-# # }
-# #
-# # colSums(check_weights(weights))
-# # rowSums(cons)
-#
-#
+
+
+
 # # int_validate <- function(constraints, ind_agg) {
 # #
 # #   correlation <- cor(as.numeric(constraints), as.numeric(ind_agg))
