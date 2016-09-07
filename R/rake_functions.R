@@ -91,15 +91,19 @@ rake <- function(cons, ind, vars) {
   }
   rm(i)
 
-  stopifnot(
-    colnames(inds[[1]]) == colnames(cons)
-  )
-
   # Create one ind_ table
   ind_cat <- do.call(cbind, inds)
 
+  if (!all.equal(colnames(ind_cat), colnames(cons))) {
 
-  # Rake
+    stop("Column names don't match.\n
+         Check the unique levels in ind and colnames in cons match EXACTLY.\n
+         Is the first column a zone code/unique ID?\n
+         Have you removed all columns except the ID, constraints and
+         (optionally) dependent variables in ind?")
+
+  }
+
   result <- apply(cons, 1, function(x) {
 
     ipfp::ipfp(x, t(ind_cat), x0 = rep(1, nrow(ind_cat)),
@@ -107,13 +111,17 @@ rake <- function(cons, ind, vars) {
 
   })
 
-  if (sum(cons) %% sum(result) == 0) {
+  if (!all.equal(sum(result), (sum(cons) / length(vars)))) {
 
     result
 
   } else {
 
-    stop("Sum of weights is not a multiple of sum of constraints.")
+    stop("Sum of weights does not match sum of constraints.\n
+         Check variable names in 'cons' and levels in 'ind'\n
+         Is the first column a zone code/unique ID?\n
+         Have you removed all columns except the ID, constraints and
+         (optionally) dependent variables in ind?")
 
   }
 
