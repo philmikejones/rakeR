@@ -1,23 +1,37 @@
 context("Check SimpleWorld simulation")
 
-load("../../data/cons.RData"); load("../../data/ind.RData")
+con_age <- data.frame(
 
-# '+' not saving correctly for some reason?
-colnames(con_age)[3] <- "a_50+"
+  "zone"  = 1:3,
+  "a0_49" = c(8, 2, 7),
+  "a_gt50" = c(4, 8, 4)
+
+)
+
+con_sex <- data.frame(
+
+  "zone" = 1:3,
+  "m"    = c(6, 4, 3),
+  "f"    = c(6, 6, 8)
+
+)
+
+ind <- data.frame(
+
+  "id"     = 1:5,
+  "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
+  "sex"    = c("m", "m", "m", "f", "f"),
+  "income" = c(2868, 2474, 2231, 3152, 2473),
+  stringsAsFactors = FALSE
+
+)
 
 # cons variables MUST be supplied in alphabetical order to the function
-# When turning individual level responses into a matrix it produces
-# the levels in alphabetical order.
 # Currently the function DOES NOT check the order of variables so it's
 # easiest to prepare the constraints up front
 # If necessary add a prefix (e.g. 'a_') if you need to group variables
 con_sex <- con_sex[, c(1, 3, 2)]
 
-
-# Prepare ind$age bands to match cons
-ind$age <- cut(ind$age,
-               breaks = c(0, 49, 120),
-               labels = c("a0_49", "a50+"))
 
 # Create a cons object will all con_ vars
 cons <- merge(con_age, con_sex, by = "zone")
