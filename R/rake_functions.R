@@ -41,7 +41,12 @@ rake <- function(cons, ind, vars, dep) {
   })
 
   # Fix colnames
-  colnames(inds[[1]]) <- gsub("ind\\[\\[x\\]\\]", "", colnames(inds[[1]]))
+  for (i in seq_along(vars)) {
+
+    colnames(inds[[i]]) <- gsub("ind\\[\\[x\\]\\]", "", colnames(inds[[i]]))
+
+  }
+
 
 
 
