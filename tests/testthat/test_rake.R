@@ -1,4 +1,6 @@
-load("data/cons.RData"); load("data/ind.RData")
+context("Check SimpleWorld simulation")
+
+load("../../data/cons.RData"); load("../../data/ind.RData")
 
 # '+' not saving correctly for some reason?
 colnames(con_age)[3] <- "a_50+"
@@ -22,4 +24,11 @@ cons <- merge(con_age, con_sex, by = "zone")
 
 vars <- c("age", "sex")
 
-weights <- rake(cons, ind_cat)
+weights <- rake(cons = cons, ind = ind, vars = vars)
+
+test_that("Ncols should equal number of zones in cons", {
+  expect_equal(ncol(weights), nrow(cons))
+})
+test_that("Nrows should equal number of individuals in ind", {
+  expect_equal(nrow(weights), nrow(ind))
+})
