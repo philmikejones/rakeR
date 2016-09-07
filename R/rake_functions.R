@@ -151,6 +151,90 @@ rake <- function(cons, ind, vars, iterations = 10) {
 }
 
 
+stop("begin work on integerisation")
+
+simulate_df <- function(weights, cases) {
+
+  # Truncate, replicate, sample method of integerisation
+  # By and copyright Robin Lovelace and Dimitris Ballas
+
+  int_trs <- function(x){
+    # For generalisation purpose, x becomes a vector
+    # This allow the function to work with matrix also
+
+    xv <- as.vector(x)
+    xint <- floor(xv)  # integer part of the weight
+    r <- xv - xint # decimal part of the weight
+    def <- round(sum(r)) # the deficit population
+    # the weights be 'topped up' (+ 1 applied)
+    topup <- sample(length(x), size = def, prob = r)
+    xint[topup] <- xint[topup] + 1
+    dim(xint) <- dim(x)
+    dimnames(xint) <- dimnames(x)
+
+    xint
+
+  }
+
+  # Expand function
+  int_expand_vector <- function(x) {
+    index <- 1:length(x)
+    rep(index, round(x))
+  }
+
+  ints <- apply(weights, 2, function(x)
+    int_expand_vector(int_trs(x))
+  )
+
+  simdf <- NULL
+  simdf <- lapply(ints, function(x) cases[x, ])
+  simdf <- dplyr::rbind_all(simdf)
+  zone  <- rep(1:ncol(weights), sapply(ints, length))
+  simdf$zone <- zone
+
+  context("Check simdf")
+  test_that("nrow simdf == census population", {
+    expect_that(nrow(simdf), equals(sum(weights)))
+  })
+  test_that("correct number of zones in simdf", {
+    expect_that(max(simdf[["zone"]]), equals(ncol(weights)))
+  })
+
+  simdf
+
+}
+
+
+stop("what does agg_ind do?")
+agg_ind <- function(weights, constraints) {
+  ind_agg <- apply(weights, 2, function(x)
+    colSums(x * ind_cat)
+  )
+
+  ind_agg <- t(ind_agg)
+
+  context("Check ind_agg")
+  test_that("ind_agg is correct", {
+    expect_that(ncol(ind_agg), equals(ncol(constraints)))
+    expect_that(nrow(ind_agg), equals(ncol(weights)))
+    expect_that(sum(ind_agg[, grep("age_[[:digit:]]", colnames(ind_agg))]),
+                equals(sum(weights)))
+  })
+
+  ind_agg
+
+}
+
+tae <- function(observed, simulated) {
+  obs_vec <- as.numeric(observed)
+  sim_vec <- as.numeric(simulated)
+  return(
+    sum(abs(obs_vec - sim_vec))
+  )
+}
+
+
+
 
 
 
