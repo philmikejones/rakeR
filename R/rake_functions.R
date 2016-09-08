@@ -164,28 +164,57 @@ rake <- function(cons, ind, vars, iterations = 10) {
 }
 
 
+#' trs
+#'
+#' Truncate, replicate, sample: a helper function to generate integer cases
+#' from numeric weights.
+#'
+#' Truncate, replicate, sample is a method of integerisation developed by Robin
+#' Lovelace and Dimitris Ballas (2013) *Truncate, replicate, sample: a method
+#' for creating integer weights for spatial microsimulation*. Computers,
+#' Environment and Urban Systems, vol. 41, pp. 1--11.
+#' \url{http://www.sciencedirect.com/science/article/pii/S0198971513000240}
+#'
+#' @param weights a weights matrix, typically provided by \code{rake()}
+#'
+#' @return A matrix of integer weights
+#' @export
+#'
+#' @examples # not run
+trs <- function(weights) {
+
+  # For generalisation purpose, weights becomes a vector
+  # This allow the function to work with matrices
+  weights_vec <- as.vector(weights)
+
+  # Separate the integer and decimal part of the weight
+  weights_int <- floor(weights_vec)
+  weights_dec <- weights_vec - weights_int
+
+  deficit <- round(sum(weights_dec))
+
+  # the weights be 'topped up' (+ 1 applied)
+  topup <- sample(length(weights), size = deficit, prob = weights_dec)
+
+  weights_int[topup] <- weights_int[topup] + 1
+
+  # Return as a matrix with correct dimnames
+  dim(weights_int)      <- dim(weights)
+  dimnames(weights_int) <- dimnames(weights)
+
+  weights_int
+
+}
+
+
+
+
+
+
+
 # simulate_df <- function(weights, cases) {
 #
-#   # Truncate, replicate, sample method of integerisation
-#   # By and copyright Robin Lovelace and Dimitris Ballas
 #
-#   int_trs <- function(x){
-#     # For generalisation purpose, x becomes a vector
-#     # This allow the function to work with matrix also
-#
-#     xv <- as.vector(x)
-#     xint <- floor(xv)  # integer part of the weight
-#     r <- xv - xint # decimal part of the weight
-#     def <- round(sum(r)) # the deficit population
-#     # the weights be 'topped up' (+ 1 applied)
-#     topup <- sample(length(x), size = def, prob = r)
-#     xint[topup] <- xint[topup] + 1
-#     dim(xint) <- dim(x)
-#     dimnames(xint) <- dimnames(x)
-#
-#     xint
-#
-#   }
 #
 #   # Expand function
 #   int_expand_vector <- function(x) {
