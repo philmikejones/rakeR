@@ -43,8 +43,8 @@ weights <- rake(cons = cons, inds = survey, vars = vars)
 test_that("Ncols should equal number of zones in cons", {
   expect_equal(ncol(weights), nrow(cons))
 })
-test_that("Nrows should equal number of individuals in ind", {
-  expect_equal(nrow(weights), nrow(ind))
+test_that("Nrows should equal number of individuals in survey", {
+  expect_equal(nrow(weights), nrow(survey))
 })
 test_that("Populations match (i.e. sum weights == (sum cons / n vars))", {
   expect_equal(sum(weights), (sum(cons[, -1]) / length(vars)))
