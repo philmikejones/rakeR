@@ -30,7 +30,7 @@
 #'   should be in the format of one row per zone, one column per constraint
 #'   category. The first column should be a zone code; all other columns must be
 #'   numeric counts.
-#' @param ind A data frame containing individual--level (survey) data. This
+#' @param inds A data frame containing individual--level (survey) data. This
 #'   should be in the format of one row per individual, one column per
 #'   constraint. The first column should be an individual ID.
 #' @param vars A character vector of variables that constrain the simulation
@@ -61,7 +61,7 @@
 #' vars <- c("age", "sex")
 #' weights <- rake(cons = cons, ind = ind, vars = vars)
 #' print(weights)
-rake <- function(cons, ind, vars, iterations = 10) {
+rake <- function(cons, inds, vars, iterations = 10) {
 
   # Check arguments are the correct class
   if (!is.data.frame(cons)) {
@@ -88,6 +88,9 @@ rake <- function(cons, ind, vars, iterations = 10) {
   zones <- cons[, 1]
   cons  <- cons[, -1]
   cons <- as.matrix(cons)
+
+  # Save IDs from inds
+  ids <- inds[, 1]
 
   # cons must be a numeric (i.e. double, not int) matrix
   cons[] <- as.numeric(cons[])
