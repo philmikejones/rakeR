@@ -235,31 +235,21 @@ expand <- function(weights) {
 }
 
 
-
-simulate <- function(inds, x) {
-
-  out <- data.frame(inds[x, ])
-
-  out
-
-}
-
-
 simulate_df <- function(weights, cases) {
 
   simdf <- NULL
-  simdf <- lapply(ints, function(x) cases[x, ])
-  simdf <- dplyr::rbind_all(simdf)
-  zone  <- rep(1:ncol(weights), sapply(ints, length))
+  simdf <- lapply(weights, function(x) cases[x, ])
+  simdf <- dplyr::bind_rows(simdf)
+  zone  <- rep(seq_along(weights), sapply(weights, length))
   simdf$zone <- zone
 
-  context("Check simdf")
-  test_that("nrow simdf == census population", {
-    expect_that(nrow(simdf), equals(sum(weights)))
-  })
-  test_that("correct number of zones in simdf", {
-    expect_that(max(simdf[["zone"]]), equals(ncol(weights)))
-  })
+  # context("Check simdf")
+  # test_that("nrow simdf == census population", {
+  #   expect_that(nrow(simdf), equals(sum(weights)))
+  # })
+  # test_that("correct number of zones in simdf", {
+  #   expect_that(max(simdf[["zone"]]), equals(ncol(weights)))
+  # })
 
   simdf
 
