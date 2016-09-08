@@ -190,6 +190,8 @@ rake <- function(cons, inds, vars = NULL, iterations = 10) {
 #' @examples # not run
 trs <- function(weights) {
 
+  set.seed(42)
+
   # For generalisation purpose, weights becomes a vector
   # This allow the function to work with matrices
   weights_vec <- as.vector(weights)
@@ -214,14 +216,24 @@ trs <- function(weights) {
 }
 
 
-expand <- function(x) {
+expand_zone <- function(zone) {
 
-  index <- seq_along(x)
-  out <- rep(index, round(x))
+  index <- seq_along(zone)
+  out   <- rep(index, round(zone))
 
   out
 
 }
+
+
+expand <- function(weights) {
+
+  out <- apply(weights, 2, expand_zone)
+
+  out
+
+}
+
 
 
 simulate <- function(inds, x) {
