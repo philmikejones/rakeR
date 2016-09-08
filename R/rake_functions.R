@@ -63,8 +63,12 @@
 #' print(weights)
 rake <- function(cons, ind, vars, iterations = 10) {
 
-  stop("What if the zone column is character?!")
-  cons <- as.matrix(cons)
+  # Check arguments are the correct class
+  if (!is.data.frame(cons)) {
+
+    stop("cons is not a data frame")
+
+  }
 
   if (!is.data.frame(ind)) {
 
@@ -83,6 +87,7 @@ rake <- function(cons, ind, vars, iterations = 10) {
   # Save and drop first column of cons (zone codes)
   zones <- cons[, 1]
   cons  <- cons[, -1]
+  cons <- as.matrix(cons)
 
   # cons must be a numeric (i.e. double, not int) matrix
   cons[] <- as.numeric(cons[])
