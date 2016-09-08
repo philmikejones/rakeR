@@ -148,7 +148,9 @@ rake <- function(cons, inds, vars, iterations = 10) {
            paste0(colnames(ind_cat)[x], " "), "")
     )
 
-  } else if (!all.equal(colSums(weights), (rowSums(cons) / length(vars)))) {
+  }
+
+  if (!all.equal(colSums(weights), (rowSums(cons) / length(vars)))) {
 
     stop("Zone populations (cons) do not match simulated populations.\n
          Are the first columns in cons and ind a zone code/unique ID?
@@ -158,11 +160,13 @@ rake <- function(cons, inds, vars, iterations = 10) {
            paste0(colnames(ind_cat)[x], " "), "")
     )
 
-  } else {
-
-    weights
-
   }
+
+  # Put column and row names back
+  rownames(weights) <- ids
+  colnames(weights) <- zones
+
+  weights
 
 }
 
