@@ -119,7 +119,7 @@ rake <- function(cons, inds, vars, iterations = 10) {
   # Create one ind_ table
   ind_cat <- do.call(cbind, inds)
 
-  if (!all.equal(colnames(ind_cat), colnames(cons))) {
+  if (!isTRUE(all.equal(colnames(ind_cat), colnames(cons)))) {
 
     stop("Column names don't match.\n
          Are the first columns in cons and inds a zone code/unique ID?
@@ -138,7 +138,7 @@ rake <- function(cons, inds, vars, iterations = 10) {
 
   })
 
-  if (!all.equal(sum(weights), (sum(cons) / length(vars)))) {
+  if (!isTRUE(all.equal(sum(weights), (sum(cons) / length(vars))))) {
 
     stop("Column names don't match.\n
          Are the first columns in cons and inds a zone code/unique ID?
@@ -150,7 +150,7 @@ rake <- function(cons, inds, vars, iterations = 10) {
 
   }
 
-  if (!all.equal(colSums(weights), (rowSums(cons) / length(vars)))) {
+  if (!isTRUE(all.equal(colSums(weights), (rowSums(cons) / length(vars))))) {
 
     stop("Zone populations (cons) do not match simulated populations.\n
          Are the first columns in cons and inds a zone code/unique ID?
