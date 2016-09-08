@@ -30,7 +30,7 @@
 #'   should be in the format of one row per zone, one column per constraint
 #'   category. The first column should be a zone code; all other columns must be
 #'   numeric counts.
-#' @param ind A data frame containing individual--level (survey) data. This
+#' @param inds A data frame containing individual--level (survey) data. This
 #'   should be in the format of one row per individual, one column per
 #'   constraint. The first column should be an individual ID.
 #' @param vars A character vector of variables that constrain the simulation
@@ -44,14 +44,14 @@
 #' @examples
 #' # SimpleWorld
 #' cons <- data.frame(
-#' "zone"   = 1:3,
+#' "zone"   = letters[1:3],
 #' "a0_49"  = c(8, 2, 7),
 #' "a_gt50" = c(4, 8, 4),
 #' "f"      = c(6, 6, 8),
 #' "m"      = c(6, 4, 3)
 #' )
-#' ind <- data.frame(
-#' "id"     = 1:5,
+#' survey <- data.frame(
+#' "id"     = LETTERS[1:5],
 #' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
 #' "sex"    = c("m", "m", "m", "f", "f"),
 #' "income" = c(2868, 2474, 2231, 3152, 2473),
@@ -59,9 +59,9 @@
 #' )
 #' # Set variables to constrain over
 #' vars <- c("age", "sex")
-#' weights <- rake(cons = cons, ind = ind, vars = vars)
+#' weights <- rake(cons = cons, inds = survey, vars = vars)
 #' print(weights)
-rake <- function(cons, ind, vars, iterations = 10) {
+rake <- function(cons, inds, vars, iterations = 10) {
 
   # Check arguments are the correct class
   if (!is.data.frame(cons)) {
@@ -70,9 +70,9 @@ rake <- function(cons, ind, vars, iterations = 10) {
 
   }
 
-  if (!is.data.frame(ind)) {
+  if (!is.data.frame(inds)) {
 
-    stop("ind is not a data frame")
+    stop("inds is not a data frame")
 
   }
 
@@ -89,6 +89,9 @@ rake <- function(cons, ind, vars, iterations = 10) {
   cons  <- cons[, -1]
   cons <- as.matrix(cons)
 
+  # Save IDs from inds
+  ids <- inds[, 1]
+
   # cons must be a numeric (i.e. double, not int) matrix
   cons[] <- as.numeric(cons[])
 
@@ -101,14 +104,14 @@ rake <- function(cons, ind, vars, iterations = 10) {
   # I hate it because it doesn't seem to be documented anywhere, but it works
   inds <- lapply(as.list(vars), function(x) {
 
-    stats::model.matrix( ~ ind[[x]] - 1)
+    stats::model.matrix( ~ inds[[x]] - 1)
 
   })
 
   # Fix colnames
   for (i in seq_along(vars)) {
 
-    colnames(inds[[i]]) <- gsub("ind\\[\\[x\\]\\]", "", colnames(inds[[i]]))
+    colnames(inds[[i]]) <- gsub("inds\\[\\[x\\]\\]", "", colnames(inds[[i]]))
 
   }
   rm(i)
@@ -119,8 +122,8 @@ rake <- function(cons, ind, vars, iterations = 10) {
   if (!all.equal(colnames(ind_cat), colnames(cons))) {
 
     stop("Column names don't match.\n
-         Are the first columns in cons and ind a zone code/unique ID?
-         Check the unique levels in ind and colnames in cons match EXACTLY.
+         Are the first columns in cons and inds a zone code/unique ID?
+         Check the unique levels in inds and colnames in cons match EXACTLY.
          Unique levels identified by rake():\n\n",
          vapply(seq_along(colnames(ind_cat)), function(x)
            paste0(colnames(ind_cat)[x], " "), "")
@@ -138,28 +141,32 @@ rake <- function(cons, ind, vars, iterations = 10) {
   if (!all.equal(sum(weights), (sum(cons) / length(vars)))) {
 
     stop("Column names don't match.\n
-         Are the first columns in cons and ind a zone code/unique ID?
-         Check the unique levels in ind and colnames in cons match EXACTLY.
+         Are the first columns in cons and inds a zone code/unique ID?
+         Check the unique levels in inds and colnames in cons match EXACTLY.
          Unique levels identified by rake():\n\n",
          vapply(seq_along(colnames(ind_cat)), function(x)
            paste0(colnames(ind_cat)[x], " "), "")
     )
-
-  } else if (!all.equal(colSums(weights), (rowSums(cons) / length(vars)))) {
-
-    stop("Zone populations (cons) do not match simulated populations.\n
-         Are the first columns in cons and ind a zone code/unique ID?
-         Check the unique levels in ind and colnames in cons match EXACTLY.
-         Unique levels identified by rake():\n\n",
-         vapply(seq_along(colnames(ind_cat)), function(x)
-           paste0(colnames(ind_cat)[x], " "), "")
-    )
-
-  } else {
-
-    weights
 
   }
+
+  if (!all.equal(colSums(weights), (rowSums(cons) / length(vars)))) {
+
+    stop("Zone populations (cons) do not match simulated populations.\n
+         Are the first columns in cons and inds a zone code/unique ID?
+         Check the unique levels in inds and colnames in cons match EXACTLY.
+         Unique levels identified by rake():\n\n",
+         vapply(seq_along(colnames(ind_cat)), function(x)
+           paste0(colnames(ind_cat)[x], " "), "")
+    )
+
+  }
+
+  # Put column and row names back
+  rownames(weights) <- ids
+  colnames(weights) <- zones
+
+  weights
 
 }
 

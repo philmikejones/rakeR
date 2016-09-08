@@ -4,7 +4,7 @@
 \alias{rake}
 \title{rake}
 \usage{
-rake(cons, ind, vars, iterations = 10)
+rake(cons, inds, vars, iterations = 10)
 }
 \arguments{
 \item{cons}{A data frame containing all the constraints. This
@@ -12,7 +12,7 @@ should be in the format of one row per zone, one column per constraint
 category. The first column should be a zone code; all other columns must be
 numeric counts.}
 
-\item{ind}{A data frame containing individual--level (survey) data. This
+\item{inds}{A data frame containing individual--level (survey) data. This
 should be in the format of one row per individual, one column per
 constraint. The first column should be an individual ID.}
 
@@ -55,14 +55,14 @@ created alphabetically when they are 'spread' in the individual--level data.
 \examples{
 # SimpleWorld
 cons <- data.frame(
-"zone"   = 1:3,
+"zone"   = letters[1:3],
 "a0_49"  = c(8, 2, 7),
 "a_gt50" = c(4, 8, 4),
 "f"      = c(6, 6, 8),
 "m"      = c(6, 4, 3)
 )
-ind <- data.frame(
-"id"     = 1:5,
+survey <- data.frame(
+"id"     = LETTERS[1:5],
 "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
 "sex"    = c("m", "m", "m", "f", "f"),
 "income" = c(2868, 2474, 2231, 3152, 2473),
@@ -70,7 +70,7 @@ stringsAsFactors = FALSE
 )
 # Set variables to constrain over
 vars <- c("age", "sex")
-weights <- rake(cons = cons, ind = ind, vars = vars)
+weights <- rake(cons = cons, inds = survey, vars = vars)
 print(weights)
 }
 
