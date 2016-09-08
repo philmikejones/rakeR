@@ -119,46 +119,50 @@ rake <- function(cons, ind, vars, iterations = 10) {
   if (!all.equal(colnames(ind_cat), colnames(cons))) {
 
     stop("Column names don't match.\n
-         Check the unique levels in ind and colnames in cons match EXACTLY.\n
-         Is the first column a zone code/unique ID?\n
-         Have you removed all columns except the ID, constraints and
-         (optionally) dependent variables in ind?")
+         Are the first columns in cons and ind a zone code/unique ID?
+         Check the unique levels in ind and colnames in cons match EXACTLY.
+         Unique levels identified by rake():\n\n",
+         vapply(seq_along(colnames(ind_cat)), function(x)
+           paste0(colnames(ind_cat)[x], " "), "")
+    )
 
   }
 
-  result <- apply(cons, 1, function(x) {
+  weights <- apply(cons, 1, function(x) {
 
     ipfp::ipfp(x, t(ind_cat), x0 = rep(1, nrow(ind_cat)),
                maxit = iterations)
 
   })
 
-  if (!all.equal(sum(result), (sum(cons) / length(vars)))) {
+  if (!all.equal(sum(weights), (sum(cons) / length(vars)))) {
 
-    stop("Sum of weights does not match sum of constraints.\n
-         Check variable names in 'cons' and levels in 'ind'\n
-         Is the first column a zone code/unique ID?\n
-         Have you removed all columns except the ID, constraints and
-         (optionally) dependent variables in ind?")
+    stop("Column names don't match.\n
+         Are the first columns in cons and ind a zone code/unique ID?
+         Check the unique levels in ind and colnames in cons match EXACTLY.
+         Unique levels identified by rake():\n\n",
+         vapply(seq_along(colnames(ind_cat)), function(x)
+           paste0(colnames(ind_cat)[x], " "), "")
+    )
 
-  } else if (!all.equal(colSums(result), (rowSums(cons) / length(vars)))) {
+  } else if (!all.equal(colSums(weights), (rowSums(cons) / length(vars)))) {
 
     stop("Zone populations (cons) do not match simulated populations.\n
-         Check variable names in 'cons' and levels in 'ind'\n
-         Is the first column a zone code/unique ID?\n
-         Have you removed all columns except the ID, constraints and
-         (optionally) dependent variables in ind?")
+         Are the first columns in cons and ind a zone code/unique ID?
+         Check the unique levels in ind and colnames in cons match EXACTLY.
+         Unique levels identified by rake():\n\n",
+         vapply(seq_along(colnames(ind_cat)), function(x)
+           paste0(colnames(ind_cat)[x], " "), "")
+    )
 
   } else {
 
-    result
+    weights
 
   }
 
 }
 
-
-stop("begin work on integerisation")
 
 simulate_df <- function(weights, cases) {
 
