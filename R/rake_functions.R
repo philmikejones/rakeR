@@ -61,7 +61,7 @@
 #' vars <- c("age", "sex")
 #' weights <- rake(cons = cons, inds = survey, vars = vars)
 #' print(weights)
-rake <- function(cons, inds, vars, iterations = 10) {
+rake <- function(cons, inds, vars = NULL, iterations = 10) {
 
   # Check arguments are the correct class
   if (!is.data.frame(cons)) {
