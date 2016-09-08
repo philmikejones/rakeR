@@ -26,14 +26,15 @@
 #' The columns in \code{cons} must be in alphabetical order because these are
 #' created alphabetically when they are 'spread' in the individual--level data.
 #'
-#' @param cons A data frame or matrix containing all the constraints. This
+#' @param cons A data frame containing all the constraints. This
 #'   should be in the format of one row per zone, one column per constraint
-#'   category.
+#'   category. The first column should be a zone code; all other columns must be
+#'   numeric counts.
 #' @param ind A data frame containing individual--level (survey) data. This
 #'   should be in the format of one row per individual, one column per
-#'   constraint.
-#' @param vars A vector of variables that constrain the simulation (i.e.
-#'   independent variables)
+#'   constraint. The first column should be an individual ID.
+#' @param vars A character vector of variables that constrain the simulation
+#'   (i.e. independent variables)
 #' @param iterations The number of iterations the algorithm should complete.
 #'   Defaults to 10
 #'
