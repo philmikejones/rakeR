@@ -214,44 +214,46 @@ trs <- function(weights) {
 }
 
 
+expand <- function(x) {
+
+  index <- seq_along(x)
+  out <- rep(index, round(x))
+
+  out
+
+}
 
 
+simulate <- function(inds, x) {
+
+  out <- data.frame(inds[x, ])
+
+  out
+
+}
 
 
+simulate_df <- function(weights, cases) {
 
-# simulate_df <- function(weights, cases) {
-#
-#
-#
-#   # Expand function
-#   int_expand_vector <- function(x) {
-#     index <- 1:length(x)
-#     rep(index, round(x))
-#   }
-#
-#   ints <- apply(weights, 2, function(x)
-#     int_expand_vector(int_trs(x))
-#   )
-#
-#   simdf <- NULL
-#   simdf <- lapply(ints, function(x) cases[x, ])
-#   simdf <- dplyr::rbind_all(simdf)
-#   zone  <- rep(1:ncol(weights), sapply(ints, length))
-#   simdf$zone <- zone
-#
-#   context("Check simdf")
-#   test_that("nrow simdf == census population", {
-#     expect_that(nrow(simdf), equals(sum(weights)))
-#   })
-#   test_that("correct number of zones in simdf", {
-#     expect_that(max(simdf[["zone"]]), equals(ncol(weights)))
-#   })
-#
-#   simdf
-#
-# }
-#
-#
+  simdf <- NULL
+  simdf <- lapply(ints, function(x) cases[x, ])
+  simdf <- dplyr::rbind_all(simdf)
+  zone  <- rep(1:ncol(weights), sapply(ints, length))
+  simdf$zone <- zone
+
+  context("Check simdf")
+  test_that("nrow simdf == census population", {
+    expect_that(nrow(simdf), equals(sum(weights)))
+  })
+  test_that("correct number of zones in simdf", {
+    expect_that(max(simdf[["zone"]]), equals(ncol(weights)))
+  })
+
+  simdf
+
+}
+
+
 # # stop("what does agg_ind do?")
 # agg_ind <- function(weights, constraints) {
 #   ind_agg <- apply(weights, 2, function(x)
