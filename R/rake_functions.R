@@ -246,9 +246,6 @@ rake <- function(cons, ind, vars, iterations = 10) {
 #
 #
 #
-#
-#
-#
 # # # int_validate <- function(constraints, ind_agg) {
 # # #
 # # #   correlation <- cor(as.numeric(constraints), as.numeric(ind_agg))
