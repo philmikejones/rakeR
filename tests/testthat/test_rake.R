@@ -2,7 +2,7 @@ context("Check SimpleWorld simulation")
 
 con_age <- data.frame(
 
-  "zone"  = 1:3,
+  "zone"  = letters[1:3],
   "a0_49" = c(8, 2, 7),
   "a_gt50" = c(4, 8, 4)
 
@@ -10,7 +10,7 @@ con_age <- data.frame(
 
 con_sex <- data.frame(
 
-  "zone" = 1:3,
+  "zone" = letters[1:3],
   "m"    = c(6, 4, 3),
   "f"    = c(6, 6, 8)
 
@@ -18,7 +18,7 @@ con_sex <- data.frame(
 
 ind <- data.frame(
 
-  "id"     = 1:5,
+  "id"     = LETTERS[1:5],
   "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
   "sex"    = c("m", "m", "m", "f", "f"),
   "income" = c(2868, 2474, 2231, 3152, 2473),
