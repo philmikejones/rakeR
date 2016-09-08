@@ -50,7 +50,7 @@
 #' "f"      = c(6, 6, 8),
 #' "m"      = c(6, 4, 3)
 #' )
-#' ind <- data.frame(
+#' survey <- data.frame(
 #' "id"     = LETTERS[1:5],
 #' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
 #' "sex"    = c("m", "m", "m", "f", "f"),
@@ -59,7 +59,7 @@
 #' )
 #' # Set variables to constrain over
 #' vars <- c("age", "sex")
-#' weights <- rake(cons = cons, ind = ind, vars = vars)
+#' weights <- rake(cons = cons, inds = survey, vars = vars)
 #' print(weights)
 rake <- function(cons, inds, vars, iterations = 10) {
 

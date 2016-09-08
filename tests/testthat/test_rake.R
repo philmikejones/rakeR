@@ -16,7 +16,7 @@ con_sex <- data.frame(
 
 )
 
-ind <- data.frame(
+survey <- data.frame(
 
   "id"     = LETTERS[1:5],
   "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
@@ -38,7 +38,7 @@ cons <- merge(con_age, con_sex, by = "zone")
 
 vars <- c("age", "sex")
 
-weights <- rake(cons = cons, ind = ind, vars = vars)
+weights <- rake(cons = cons, inds = survey, vars = vars)
 
 test_that("Ncols should equal number of zones in cons", {
   expect_equal(ncol(weights), nrow(cons))
