@@ -2,5 +2,6 @@
 ^\.Rproj\.user$
 
 .travis.yml
+codecov.yml
 
 data-raw/

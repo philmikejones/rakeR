@@ -4,19 +4,23 @@
 \alias{rake}
 \title{rake}
 \usage{
-rake(cons, ind, vars)
+rake(cons, ind, vars, iterations = 10)
 }
 \arguments{
-\item{cons}{A data frame or matrix containing all the constraints. This
+\item{cons}{A data frame containing all the constraints. This
 should be in the format of one row per zone, one column per constraint
-category.}
+category. The first column should be a zone code; all other columns must be
+numeric counts.}
 
 \item{ind}{A data frame containing individual--level (survey) data. This
 should be in the format of one row per individual, one column per
-constraint.}
+constraint. The first column should be an individual ID.}
 
-\item{vars}{A vector of variables that constrain the simulation (i.e.
-independent variables)}
+\item{vars}{A character vector of variables that constrain the simulation
+(i.e. independent variables)}
+
+\item{iterations}{The number of iterations the algorithm should complete.
+Defaults to 10}
 }
 \value{
 A data frame of fractional weights for each individual in each zone.
