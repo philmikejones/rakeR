@@ -2,14 +2,18 @@
 % Please edit documentation in R/rake_functions.R
 \name{expand}
 \alias{expand}
-\title{Title}
+\title{expand}
 \usage{
 expand(weights)
 }
-\arguments{
-\item{weights}{}
+\value{
+A matrix of integers with one column per zone.
+These serve as indices to create the final simulated data frame.
 }
 \description{
-Title
+expand
+}
+\examples{
+# not run
 }
 
