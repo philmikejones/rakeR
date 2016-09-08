@@ -177,9 +177,7 @@ rake <- function(cons, inds, vars = NULL, iterations = 10) {
 #' from numeric weights.
 #'
 #' Truncate, replicate, sample is a method of integerisation developed by Robin
-#' Lovelace and Dimitris Ballas (2013) *Truncate, replicate, sample: a method
-#' for creating integer weights for spatial microsimulation*. Computers,
-#' Environment and Urban Systems, vol. 41, pp. 1--11.
+#' Lovelace and Dimitris Ballas
 #' \url{http://www.sciencedirect.com/science/article/pii/S0198971513000240}
 #'
 #' @param weights a weights matrix, typically provided by \code{rake()}
@@ -216,6 +214,19 @@ trs <- function(weights) {
 }
 
 
+#' expand_zone
+#'
+#' expand_zone is a helper function that is run over each zone in the constraint
+#' dataset and used in the \code{expand} function.
+#' Typically you do not need to call expand_zone directly.
+#'
+#' @param zone zone to iterate the expansion over
+#'
+#' @return A vector of integers per zone
+#' @export
+#'
+#' @examples
+#' # not run
 expand_zone <- function(zone) {
 
   index <- seq_along(zone)
@@ -226,15 +237,37 @@ expand_zone <- function(zone) {
 }
 
 
+#' expand
+#'
+#' @param weights
+#'
+#' @return
+#' @export
+#'
+#' @examples
 expand <- function(weights) {
 
-  out <- apply(weights, 2, expand_zone)
+  out <- apply(weights, 2, function(zone) {
+
+    index <- seq_along(zone)
+    out   <- rep(index, round(zone))
+
+  })
 
   out
 
 }
 
 
+#' Title
+#'
+#' @param weights
+#' @param cases
+#'
+#' @return
+#' @export
+#'
+#' @examples
 simulate_df <- function(weights, cases) {
 
   simdf <- NULL

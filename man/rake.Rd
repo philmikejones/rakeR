@@ -4,7 +4,7 @@
 \alias{rake}
 \title{rake}
 \usage{
-rake(cons, inds, vars, iterations = 10)
+rake(cons, inds, vars = NULL, iterations = 10)
 }
 \arguments{
 \item{cons}{A data frame containing all the constraints. This

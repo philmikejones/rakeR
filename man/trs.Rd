@@ -18,9 +18,7 @@ from numeric weights.
 }
 \details{
 Truncate, replicate, sample is a method of integerisation developed by Robin
-Lovelace and Dimitris Ballas (2013) *Truncate, replicate, sample: a method
-for creating integer weights for spatial microsimulation*. Computers,
-Environment and Urban Systems, vol. 41, pp. 1--11.
+Lovelace and Dimitris Ballas
 \url{http://www.sciencedirect.com/science/article/pii/S0198971513000240}
 }
 \examples{
