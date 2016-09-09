@@ -30,3 +30,7 @@ test_that("integerised weights should add up to cons population", {
   expect_equal(sum(weights_int), sum(weights))
   expect_equal(sum(weights_int), (sum(cons[, -1] / length(vars))))
 })
+
+test_that("integerised weights should have one column per zone", {
+  expect_equal(ncol(weights_int), nrow(cons))
+})
