@@ -259,37 +259,26 @@ simulate <- function(weights, survey) {
 }
 
 
-# # stop("what does agg_ind do?")
-# agg_ind <- function(weights, constraints) {
-#   ind_agg <- apply(weights, 2, function(x)
-#     colSums(x * ind_cat)
-#   )
+# int_validate <- function(weights, constraints) {
 #
-#   ind_agg <- t(ind_agg)
+#   agg_ind <- function(weights, constraints) {
+#     ind_agg <- apply(weights, 2, function(x)
+#       colSums(x * ind_cat)
+#     )
 #
-#   context("Check ind_agg")
-#   test_that("ind_agg is correct", {
-#     expect_that(ncol(ind_agg), equals(ncol(constraints)))
-#     expect_that(nrow(ind_agg), equals(ncol(weights)))
-#     expect_that(sum(ind_agg[, grep("age_[[:digit:]]", colnames(ind_agg))]),
-#                 equals(sum(weights)))
-#   })
+#     ind_agg <- t(ind_agg)
 #
-#   ind_agg
+#     context("Check ind_agg")
+#     test_that("ind_agg is correct", {
+#       expect_that(ncol(ind_agg), equals(ncol(constraints)))
+#       expect_that(nrow(ind_agg), equals(ncol(weights)))
+#       expect_that(sum(ind_agg[, grep("age_[[:digit:]]", colnames(ind_agg))]),
+#                   equals(sum(weights)))
+#     })
 #
-# }
+#     ind_agg
 #
-# tae <- function(observed, simulated) {
-#   obs_vec <- as.numeric(observed)
-#   sim_vec <- as.numeric(simulated)
-#   return(
-#     sum(abs(obs_vec - sim_vec))
-#   )
-# }
-#
-#
-#
-# int_validate <- function(constraints, ind_agg) {
+#   }
 #
 #   correlation <- cor(as.numeric(constraints), as.numeric(ind_agg))
 #
@@ -329,7 +318,8 @@ simulate <- function(weights, survey) {
 #   out
 #
 # }
-#
+
+
 # int_val_vars <- function(constraint, simdf) {
 #
 #   constraint <- tbl_df(as.data.frame(constraint))
@@ -495,6 +485,16 @@ simulate <- function(weights, survey) {
 #
 # }
 #
+#
+# # tae <- function(observed, simulated) {
+#   obs_vec <- as.numeric(observed)
+#   sim_vec <- as.numeric(simulated)
+#   return(
+#     sum(abs(obs_vec - sim_vec))
+#   )
+# }
+#
+#
 # calc_perr <- function(llid_val) {
 #
 #   total <- rowSums(llid_val[, c("llid_no_census", "llid_census")])
@@ -520,6 +520,7 @@ simulate <- function(weights, survey) {
 #   })
 # }
 #
+#
 # test_ind <- function(ind_var) {
 #   context("Check ind_ objects")
 #   test_that("Only 0 or 1", {
@@ -533,12 +534,14 @@ simulate <- function(weights, survey) {
 #   })
 # }
 #
+#
 # test_colnames <- function(ind_var, census_var) {
 #   context("Check colnames match")
 #   test_that("colnames ind_ match census_", {
 #     expect_equal(colnames(ind_var), colnames(census_var[2:ncol(census_var)]))
 #   })
 # }
+#
 #
 # test_zone_simdf <- function(zone_simdf, constraint) {
 #   testthat::context("Check zone_simdf")
@@ -562,4 +565,3 @@ simulate <- function(weights, survey) {
 #     expect_equal(zone_simdf_oa$code, codes[["oa"]])
 #   })
 # }
-#
