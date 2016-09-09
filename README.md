@@ -42,9 +42,8 @@ information with counts per category for each zone (e.g. census counts) and one
 with individual--level data (i.e. one row per individual).
 In addition supply a character vector with constraint variable names.
 
-Basic raking is done with `weight()` and integerisation is done with 
-`integerise()` using the truncate, replicate, sample method.
-Expansion is performed with `expand()`.
+Basic raking is done with `weight()`. Integerisation is performed with
+`integerise()`, for now using the truncate, replicate, sample method.
 Finally, `simulate()` takes care of creating the final microsimulated data set.
 They can be combined with pipes:
 
@@ -53,9 +52,8 @@ They can be combined with pipes:
 install.packages("magrittr")
 
 library("magrittr")
-weights <- weight(cons, inds, vars) %>% integerise() %>% expand() %>% 
-  simulate(cases = inds)
-weights
+sim_df <- weight(cons, inds, vars) %>% integerise() %>% simulate(cases = inds)
+sim_df
 ```
 
 
@@ -77,15 +75,11 @@ Contact
 
 philmikejones at gmail dot com
 
+
 Licenses
 --------
 
 Copyright 2016 Phil Mike Jones.
-
-This package includes source code available under open source licenses:
-
-Copyright (C) 2014 Robin Lovelace:
-[spatial-microsim-book](https://github.com/Robinlovelace/spatial-microsim-book)
 
 rakeR is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -101,3 +95,8 @@ You should have received a copy of the GNU General Public License
 along with rakeR. If not, see <http://www.gnu.org/licenses/>.
 
 See [LICENSE](https://github.com/philmikejones/rakeR/blob/master/LICENSE)
+
+This package includes source code available under open source licenses:
+
+Copyright (C) 2014 Robin Lovelace:
+[spatial-microsim-book](https://github.com/Robinlovelace/spatial-microsim-book)
