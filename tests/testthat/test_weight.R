@@ -38,7 +38,7 @@ cons <- merge(con_age, con_sex, by = "zone")
 
 vars <- c("age", "sex")
 
-weights <- rake(cons = cons, inds = survey, vars = vars)
+weights <- weight(cons = cons, inds = survey, vars = vars)
 
 test_that("Ncols should equal number of zones in cons", {
   expect_equal(ncol(weights), nrow(cons))
