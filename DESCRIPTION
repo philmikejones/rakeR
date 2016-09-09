@@ -1,6 +1,6 @@
 Package: rakeR
 Title: Spatial Microsimulation (Raking) Helper Functions
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: person("Phil Mike", "Jones", email = "philmikejones@gmail.com", role = c("aut", "cre"))
 Description: Helper functions for performing spatial microsimulation ('raking')
     in R.

@@ -25,7 +25,6 @@ vars <- c("age", "sex")
 weights     <- weight(cons = cons, inds = inds, vars = vars)
 weights_int <- integerise(weights)
 
-
 test_that("integerised weights should add up to cons population", {
   expect_equal(sum(weights_int), sum(weights))
   expect_equal(sum(weights_int), (sum(cons[, -1] / length(vars))))
