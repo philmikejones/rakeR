@@ -65,22 +65,17 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
   # Check arguments are the correct class
   if (!is.data.frame(cons)) {
-
     stop("cons is not a data frame")
-
   }
 
   if (!is.data.frame(inds)) {
-
     stop("inds is not a data frame")
-
   }
 
   if (!(is.atomic(vars) || is.list(vars))) {
-
     stop("vars is not a vector")
-
   }
+
 
   # Prepare constraints
 
@@ -89,14 +84,14 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   cons  <- cons[, -1]
   cons <- as.matrix(cons)
 
-  # Save IDs from inds
-  ids <- inds[, 1]
-
   # cons must be a numeric (i.e. double, not int) matrix
   cons[] <- as.numeric(cons[])
 
 
   # Prepare individual-level data (survey)
+
+  # Save IDs from inds
+  ids <- inds[, 1]
 
   # Create a list of survey based matrices to match cons matrices
   # Easiest way is to create 'dummy variables' (i.e. 0, 1) using model.matrix.
@@ -109,18 +104,19 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   })
 
   # Fix colnames
-  for (i in seq_along(vars)) {
+  for (i in seq_along(vars)) {  # for loop ok; typically only <= 12 columns
 
     colnames(inds[[i]]) <- gsub("inds\\[\\[x\\]\\]", "", colnames(inds[[i]]))
 
   }
   rm(i)
 
-  # Create one ind_ table
+  # one ind table based on unique levels in inds is easier to check and use
   ind_cat <- do.call(cbind, inds)
 
+  # check colnames match exactly at this point
+  # this is crucial to ensure the simulation doesn't provide incorrect results
   if (!isTRUE(all.equal(colnames(ind_cat), colnames(cons)))) {
-
     stop("Column names don't match.\n
          Are the first columns in cons and inds a zone code/unique ID?
          Check the unique levels in inds and colnames in cons match EXACTLY.
@@ -128,8 +124,8 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
          vapply(seq_along(colnames(ind_cat)), function(x)
            paste0(colnames(ind_cat)[x], " "), "")
     )
-
   }
+
 
   weights <- apply(cons, 1, function(x) {
 
@@ -138,8 +134,10 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
   })
 
-  if (!isTRUE(all.equal(sum(weights), (sum(cons) / length(vars))))) {
 
+  # The sum of weights will form the simulated population so this must match
+  # the population from cons
+  if (!isTRUE(all.equal(sum(weights), (sum(cons) / length(vars))))) {
     stop("Column names don't match.\n
          Are the first columns in cons and inds a zone code/unique ID?
          Check the unique levels in inds and colnames in cons match EXACTLY.
@@ -147,11 +145,11 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
          vapply(seq_along(colnames(ind_cat)), function(x)
            paste0(colnames(ind_cat)[x], " "), "")
     )
-
   }
 
+  # The colSums of weights will form the simulated population in each zone so
+  # these should match the actual populations in each zone from cons
   if (!isTRUE(all.equal(colSums(weights), (rowSums(cons) / length(vars))))) {
-
     stop("Zone populations (cons) do not match simulated populations.\n
          Are the first columns in cons and inds a zone code/unique ID?
          Check the unique levels in inds and colnames in cons match EXACTLY.
@@ -159,12 +157,12 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
          vapply(seq_along(colnames(ind_cat)), function(x)
            paste0(colnames(ind_cat)[x], " "), "")
     )
-
   }
 
-  # Put column and row names back
+
   rownames(weights) <- ids
   colnames(weights) <- zones
+  weights <- as.data.frame(weights)
 
   weights
 
