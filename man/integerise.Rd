@@ -4,7 +4,7 @@
 \alias{integerise}
 \title{Integerise}
 \usage{
-integerise(weights)
+integerise(weights, method = "trs")
 }
 \arguments{
 \item{weights}{a weights matrix, typically provided by \code{weight()}}
