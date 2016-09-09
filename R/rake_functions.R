@@ -190,26 +190,26 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #' @examples # not run
 integerise <- function(weights, method = "trs") {
 
+  # Ensures the output of the function is reproducible (uses sample())
   set.seed(42)
 
-  if (!method == "trs") {
 
+  if (!method == "trs") {
     stop("Currently this function only supports the truncate, replicate,
          sample method.
-         Proportional probabilities may be added at a later
-         date.
+         Proportional probabilities may be added at a later date.
          For now use the default method (trs).")
-
   }
 
-  # For generalisation purpose, weights becomes a vector
-  # This allow the function to work with matrices
+
+  # Weights must be a numeric matrix to reduce to a vector
+  weights <- as.matrix(weights)
+
   weights_vec <- as.vector(weights)
 
   # Separate the integer and decimal part of the weight
   weights_int <- floor(weights_vec)
   weights_dec <- weights_vec - weights_int
-
   deficit <- round(sum(weights_dec))
 
   # the weights be 'topped up' (+ 1 applied)
@@ -220,6 +220,7 @@ integerise <- function(weights, method = "trs") {
   # Return as a matrix with correct dimnames
   dim(weights_int)      <- dim(weights)
   dimnames(weights_int) <- dimnames(weights)
+  weights_int           <- as.data.frame(weights_int)
 
   weights_int
 
