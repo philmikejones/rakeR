@@ -188,9 +188,19 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #' @export
 #'
 #' @examples # not run
-integerise <- function(weights) {
+integerise <- function(weights, method = "trs") {
 
   set.seed(42)
+
+  if (!method == "trs") {
+
+    stop("Currently this function only supports the truncate, replicate,
+         sample method.
+         Proportional probabilities may be added at a later
+         date.
+         For now use the default method (trs).")
+
+  }
 
   # For generalisation purpose, weights becomes a vector
   # This allow the function to work with matrices
