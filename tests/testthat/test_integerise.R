@@ -2,11 +2,11 @@ context("Test integerise function")
 
 cons <- data.frame(
 
-  "zone"  = letters[1:3],
-  "a0_49" = c(8, 2, 7),
+  "zone"   = letters[1:3],
+  "a0_49"  = c(8, 2, 7),
   "a_gt50" = c(4, 8, 4),
-  "f"    = c(6, 6, 8),
-  "m"    = c(6, 4, 3)
+  "f"      = c(6, 6, 8),
+  "m"      = c(6, 4, 3)
 
 )
 
@@ -22,7 +22,7 @@ inds <- data.frame(
 
 vars <- c("age", "sex")
 
-weights <- weight(cons = cons, inds = inds, vars = vars)
+weights     <- weight(cons = cons, inds = inds, vars = vars)
 weights_int <- integerise(weights)
 
 
@@ -33,4 +33,8 @@ test_that("integerised weights should add up to cons population", {
 
 test_that("integerised weights should have one column per zone", {
   expect_equal(ncol(weights_int), nrow(cons))
+})
+
+test_that("integerised weights are integers", {
+  expect_true(all(apply(weights_int, 2, is.integer)))
 })
