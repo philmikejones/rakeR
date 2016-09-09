@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/philmikejones/rakeR.svg?branch=master)](https://travis-ci.org/philmikejones/rakeR)
 
-Developer warning
-=================
+Developer note
+==============
 
 Do not push to **`origin/master`**!
 
@@ -42,15 +42,19 @@ information with counts per category for each zone (e.g. census counts) and one
 with individual--level data (i.e. one row per individual).
 In addition supply a character vector with constraint variable names.
 
-Basic raking is done with `rake()` and integerisation is done with `trs()`
-(truncate, replicate, sample). They can be combined with pipes:
+Basic raking is done with `weight()` and integerisation is done with 
+`integerise()` using the truncate, replicate, sample method.
+Expansion is performed with `expand()`.
+Finally, `simulate()` takes care of creating the final microsimulated data set.
+They can be combined with pipes:
 
 ```r
 # obtain magrittr if not already installed
 install.packages("magrittr")
 
 library("magrittr")
-weights <- rake(cons, inds, vars) %>% trs()
+weights <- weight(cons, inds, vars) %>% integerise() %>% expand() %>% 
+  simulate(cases = inds)
 weights
 ```
 
@@ -73,7 +77,27 @@ Contact
 
 philmikejones at gmail dot com
 
-License
--------
+Licenses
+--------
 
-GPLv3. see LICENSE
+Copyright 2016 Phil Mike Jones.
+
+This package includes source code available under open source licenses:
+
+Copyright (C) 2014 Robin Lovelace:
+[spatial-microsim-book](https://github.com/Robinlovelace/spatial-microsim-book)
+
+rakeR is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+rakeR is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with rakeR. If not, see <http://www.gnu.org/licenses/>.
+
+See [LICENSE](https://github.com/philmikejones/rakeR/blob/master/LICENSE)
