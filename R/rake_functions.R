@@ -171,22 +171,24 @@ rake <- function(cons, inds, vars = NULL, iterations = 10) {
 }
 
 
-#' trs
+#' Integerise
 #'
-#' Truncate, replicate, sample: a helper function to generate integer cases
-#' from numeric weights.
+#' Generate integer cases from numeric weights matrix.
 #'
-#' Truncate, replicate, sample is a method of integerisation developed by Robin
-#' Lovelace and Dimitris Ballas
+#' The default integerisation method uses the 'truncate, replicate, sample'
+#' method developed by Robin Lovelace and Dimitris Ballas
 #' \url{http://www.sciencedirect.com/science/article/pii/S0198971513000240}
 #'
-#' @param weights a weights matrix, typically provided by \code{rake()}
+#' Other methods (for example proportional probabilities) may be implemented
+#' at a later date.
 #'
-#' @return A matrix of integer weights
+#' @param weights a weights matrix, typically provided by \code{weight()}
+#'
+#' @return A matrix of integerised weights to be used by \code{expand()}
 #' @export
 #'
 #' @examples # not run
-trs <- function(weights) {
+integerise <- function(weights) {
 
   set.seed(42)
 
