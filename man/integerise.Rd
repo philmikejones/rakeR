@@ -2,18 +2,19 @@
 % Please edit documentation in R/rake_functions.R
 \name{integerise}
 \alias{integerise}
-\title{Integerise}
+\title{integerise}
 \usage{
 integerise(weights, method = "trs")
 }
 \arguments{
-\item{weights}{A weights matrix, typically provided by \code{weight()}}
+\item{weights}{A matrix or data frame of fractional weights, typically
+provided by \code{weight()}}
 
-\item{method}{The integerisation method specified as a character.
+\item{method}{The integerisation method specified as a character string.
 Defaults to \code{"trs"}.}
 }
 \value{
-A matrix of integerised weights to be used by \code{expand()}
+A data frame of integerised weights to be used by \code{simulate()}
 }
 \description{
 Generate integer cases from numeric weights matrix.

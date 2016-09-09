@@ -16,7 +16,7 @@ con_sex <- data.frame(
 
 )
 
-survey <- data.frame(
+inds <- data.frame(
 
   "id"     = LETTERS[1:5],
   "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
@@ -38,13 +38,13 @@ cons <- merge(con_age, con_sex, by = "zone")
 
 vars <- c("age", "sex")
 
-weights <- weight(cons = cons, inds = survey, vars = vars)
+weights <- weight(cons = cons, inds = inds, vars = vars)
 
 test_that("Ncols should equal number of zones in cons", {
   expect_equal(ncol(weights), nrow(cons))
 })
 test_that("Nrows should equal number of individuals in survey", {
-  expect_equal(nrow(weights), nrow(survey))
+  expect_equal(nrow(weights), nrow(inds))
 })
 test_that("Populations match (i.e. sum weights == (sum cons / n vars))", {
   expect_equal(sum(weights), (sum(cons[, -1]) / length(vars)))
