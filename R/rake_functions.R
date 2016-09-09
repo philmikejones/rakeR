@@ -182,7 +182,9 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #' Other methods (for example proportional probabilities) may be implemented
 #' at a later date.
 #'
-#' @param weights a weights matrix, typically provided by \code{weight()}
+#' @param weights A weights matrix, typically provided by \code{weight()}
+#' @param method The integerisation method specified as a character.
+#' Defaults to \code{"trs"}.
 #'
 #' @return A matrix of integerised weights to be used by \code{expand()}
 #' @export

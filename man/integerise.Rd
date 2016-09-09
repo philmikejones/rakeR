@@ -7,7 +7,10 @@
 integerise(weights, method = "trs")
 }
 \arguments{
-\item{weights}{a weights matrix, typically provided by \code{weight()}}
+\item{weights}{A weights matrix, typically provided by \code{weight()}}
+
+\item{method}{The integerisation method specified as a character.
+Defaults to \code{"trs"}.}
 }
 \value{
 A matrix of integerised weights to be used by \code{expand()}
