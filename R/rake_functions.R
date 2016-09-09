@@ -50,7 +50,7 @@
 #' "f"      = c(6, 6, 8),
 #' "m"      = c(6, 4, 3)
 #' )
-#' survey <- data.frame(
+#' inds <- data.frame(
 #' "id"     = LETTERS[1:5],
 #' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
 #' "sex"    = c("m", "m", "m", "f", "f"),
@@ -59,7 +59,7 @@
 #' )
 #' # Set variables to constrain over
 #' vars <- c("age", "sex")
-#' weights <- rake(cons = cons, inds = survey, vars = vars)
+#' weights <- weight(cons = cons, inds = inds, vars = vars)
 #' print(weights)
 weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
@@ -228,15 +228,21 @@ integerise <- function(weights, method = "trs") {
 
 #' simulate
 #'
-#' @param weights
-#' @param survey
+#' @param weights A matrix of integerised weights provided by
+#' \code{weight() \%>\% integerise()}.
+#' One column per zone and one row per individual from \code{inds}
 #'
-#' @return
+#' @param inds The individual--level data (i.e. one row per individual).
+#' Ideally I would be able to pass this along the chain for you, but I don't
+#' know how to do that yet so you must manually specify this again, sorry!
+#'
+#' @return A data frame with spatial microsimulated data, with one row per
+#' (simulated) individual with an associated zone.
 #' @export
 #'
 #' @examples
 #' # not run
-simulate <- function(weights, survey) {
+simulate <- function(weights, inds) {
 
   # Create indices to subset (many subsets are multiples) against the survey
   indices <- apply(weights, 2, function(x) {
@@ -251,7 +257,7 @@ simulate <- function(weights, survey) {
   # Create zones
   zone <- rep(colnames(weights), times = colSums(weights))
 
-  sim_df <- survey[indices,]
+  sim_df <- inds[indices,]
   sim_df$zone <- zone
 
   sim_df
