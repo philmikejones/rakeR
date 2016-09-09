@@ -12,8 +12,9 @@ simulate(weights, inds)
 One column per zone and one row per individual from \code{inds}}
 
 \item{inds}{The individual--level data (i.e. one row per individual).
-Ideally I would be able to pass this along the chain for you, but I don't
-know how to do that yet so you must manually specify this again, sorry!}
+Ideally I would be able to pass this along the chain for you from the
+\code{weight()} step, but I don't know how so you must manually specify
+this again, sorry!}
 }
 \value{
 A data frame with spatial microsimulated data, with one row per

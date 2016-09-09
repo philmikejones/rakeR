@@ -38,7 +38,9 @@
 #' @param iterations The number of iterations the algorithm should complete.
 #'   Defaults to 10
 #'
-#' @return A data frame of fractional weights for each individual in each zone.
+#' @return A data frame of fractional weights for each individual in each zone
+#' with zone codes recorded in column names and individual id recorded in row
+#' names.
 #' @export
 #'
 #' @examples
@@ -169,7 +171,7 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 }
 
 
-#' Integerise
+#' integerise
 #'
 #' Generate integer cases from numeric weights matrix.
 #'
@@ -180,11 +182,12 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #' Other methods (for example proportional probabilities) may be implemented
 #' at a later date.
 #'
-#' @param weights A weights matrix, typically provided by \code{weight()}
-#' @param method The integerisation method specified as a character.
+#' @param weights A matrix or data frame of fractional weights, typically
+#' provided by \code{weight()}
+#' @param method The integerisation method specified as a character string.
 #' Defaults to \code{"trs"}.
 #'
-#' @return A matrix of integerised weights to be used by \code{expand()}
+#' @return A data frame of integerised weights to be used by \code{simulate()}
 #' @export
 #'
 #' @examples # not run
@@ -217,9 +220,10 @@ integerise <- function(weights, method = "trs") {
 
   weights_int[topup] <- weights_int[topup] + 1
 
-  # Return as a matrix with correct dimnames
+  # Return as a data frame with correct dimnames
   dim(weights_int)      <- dim(weights)
   dimnames(weights_int) <- dimnames(weights)
+  weights_int           <- apply(weights_int, 2, as.integer)
   weights_int           <- as.data.frame(weights_int)
 
   weights_int
@@ -232,10 +236,10 @@ integerise <- function(weights, method = "trs") {
 #' @param weights A matrix of integerised weights provided by
 #' \code{weight() \%>\% integerise()}.
 #' One column per zone and one row per individual from \code{inds}
-#'
 #' @param inds The individual--level data (i.e. one row per individual).
-#' Ideally I would be able to pass this along the chain for you, but I don't
-#' know how to do that yet so you must manually specify this again, sorry!
+#' Ideally I would be able to pass this along the chain for you from the
+#' \code{weight()} step, but I don't know how so you must manually specify
+#' this again, sorry!
 #'
 #' @return A data frame with spatial microsimulated data, with one row per
 #' (simulated) individual with an associated zone.
@@ -245,7 +249,17 @@ integerise <- function(weights, method = "trs") {
 #' # not run
 simulate <- function(weights, inds) {
 
-  # Create indices to subset (many subsets are multiples) against the survey
+  weights <- as.matrix(weights)
+
+  if (!all(apply(weights, 2, is.integer))) {
+    stop("All weights must be integers")
+  }
+
+  if (!is.data.frame(inds)) {
+    stop("inds is not a data frame")
+  }
+
+  # Create indices to subset/replicate against the survey
   indices <- apply(weights, 2, function(x) {
 
     rep.int(seq_along(x), x)

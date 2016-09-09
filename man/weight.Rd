@@ -23,7 +23,9 @@ constraint. The first column should be an individual ID.}
 Defaults to 10}
 }
 \value{
-A data frame of fractional weights for each individual in each zone.
+A data frame of fractional weights for each individual in each zone
+with zone codes recorded in column names and individual id recorded in row
+names.
 }
 \description{
 Produces fractional weights using the iterative proportional fitting
