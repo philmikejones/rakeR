@@ -1,4 +1,4 @@
-context("Test simulate()")
+context("Test integerise function")
 
 cons <- data.frame(
 
@@ -24,12 +24,17 @@ vars <- c("age", "sex")
 
 weights     <- weight(cons = cons, inds = inds, vars = vars)
 weights_int <- integerise(weights)
-sim_df      <- simulate(weights_int, inds = inds)
 
 
-test_that("nrow sim_df == census population", {
-  expect_equal(nrow(sim_df), sum(weights))
+test_that("integerised weights should add up to cons population", {
+  expect_equal(sum(weights_int), sum(weights))
+  expect_equal(sum(weights_int), (sum(cons[, -1] / length(vars))))
 })
-test_that("correct number of zones in sim_df", {
-  expect_equal(length(unique(sim_df[["zone"]])), nrow(cons))
+
+test_that("integerised weights should have one column per zone", {
+  expect_equal(ncol(weights_int), nrow(cons))
+})
+
+test_that("integerised weights are integers", {
+  expect_true(all(apply(weights_int, 2, is.integer)))
 })
