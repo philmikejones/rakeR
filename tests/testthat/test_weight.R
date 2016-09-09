@@ -1,4 +1,4 @@
-context("Check SimpleWorld simulation")
+context("Test weight function")
 
 cons <- data.frame(
 
@@ -33,4 +33,7 @@ test_that("Nrows should equal number of individuals in survey", {
 test_that("Populations match (i.e. sum weights == (sum cons / n vars))", {
   expect_equal(sum(weights), (sum(cons[, -1]) / length(vars)))
   # Drop first column because it contains zone numbers
+})
+test_that("individual IDs stored in dimnames", {
+  expect_equal(rownames(weights), inds[, 1])
 })
