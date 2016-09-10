@@ -1,14 +1,23 @@
 Package: rakeR
-Title: Spatial Microsimulation (Raking) Helper Functions
-Version: 0.0.1
-Authors@R: person("Phil Mike", "Jones", email = "philmikejones@gmail.com", role = c("aut", "cre"))
-Description: Helper functions for performing spatial microsimulation ('raking')
+Title: Easy Spatial Microsimulation (Raking) in R
+Version: 0.0.2
+Authors@R: c(
+    person("Phil Mike", "Jones", 
+      email = "philmikejones@gmail.com",
+      role = c("aut", "cre")),
+    person("Robin", "Lovelace", role = "aut",
+      comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"),
+    person("Morgane", "Dumont", role = "aut",
+      comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"))  
+Description: Functions for performing spatial microsimulation ('raking')
     in R.
 Depends:
     R (>= 3.3.1)
-License: file LICENSE
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
 Imports: ipfp
 Suggests: testthat
+Url: https://github.com/philmikejones/rakeR
+BugReports: https://github.com/philmikejones/rakeR/issues
