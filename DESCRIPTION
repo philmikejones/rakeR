@@ -2,12 +2,12 @@ Package: rakeR
 Title: Easy Spatial Microsimulation (Raking) in R
 Version: 0.0.1.900
 Authors@R: c(
-    person(given = "Phil", middle = "Mike", family = "Jones", 
+    person("Phil Mike", "Jones", 
       email = "philmikejones@gmail.com",
       role = c("aut", "cre")),
-    person("Robin Lovelace", role = "aut",
+    person("Robin", "Lovelace", role = "aut",
       comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"),
-    person("Morgane Dumont", role = "aut",
+    person("Morgane", "Dumont", role = "aut",
       comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"))  
 Description: Functions for performing spatial microsimulation ('raking')
     in R.
