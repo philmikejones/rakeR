@@ -320,6 +320,36 @@ simulate <- function(weights, inds) {
 }
 
 
+#' rake
+#'
+#' A convenience function wrapping \code{weight()}, \code{integerise} and
+#' \code{simulate}
+#'
+#' @param cons A data frame of constraint variables
+#' @param inds A data frame of individual--level (survey) data
+#' @param vars A character string of variables to iterate over
+#' @param iterations The number of iterations to perform. Defaults to 10.
+#' @param method Integerisation method to apply. Defaults to \code{trs}.
+#' @param ... Additional arguments to pass to additional methods
+#'
+#' @return A data frame of simulated individuals in zones.
+#' @export
+#'
+#' @examples
+#' # not run
+rake <- function(cons, inds, vars, iterations = 10, method = "trs", ...) {
+
+  out <- weight(cons, inds, vars, iterations)
+  out <- integerise(out, method)
+  out <- simulate(out, inds)
+
+  out
+
+}
+
+
+
+
 # int_validate <- function(weights, constraints) {
 #
 #   agg_ind <- function(weights, constraints) {
