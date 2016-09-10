@@ -1,8 +1,13 @@
 Package: rakeR
 Title: Spatial Microsimulation (Raking) Helper Functions
-Version: 0.0.1
-Authors@R: person("Phil Mike", "Jones", email = "philmikejones@gmail.com", role = c("aut", "cre"))
-Description: Helper functions for performing spatial microsimulation ('raking')
+Version: 0.0.1.900
+Authors@R: c(
+    person("Phil Mike", "Jones", "philmikejones@gmail.com", role = c("aut", "cre")),
+    person("Robin Lovelace", role = "ctb",
+      comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"),
+    person("Morgane Dumont", role = "ctb",
+      comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"))  
+Description: Functions for performing spatial microsimulation ('raking')
     in R.
 Depends:
     R (>= 3.3.1)
