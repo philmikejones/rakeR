@@ -14,17 +14,6 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://travis-ci.org/philmikejones/rakeR.svg?branch=master)](https://travis-ci.org/philmikejones/rakeR)
 
-Developer note
-==============
-
-Do not push to **`origin/master`**!
-
-**`origin/master`** is a protected branch and expects CI tests to have been
-successfully completed before it will merge code.
-
-Develop in a new branch (suggest `origin/develop`), check your changes with
-`devtools::check()`, and submit a pull request to be checked by Travis CI.
-
 
 rakeR
 =====
@@ -38,12 +27,17 @@ Install
 
 Install the development version with `devtools`:
 
-```{r install-rakeR}
+```{r install-rakeR, eval=FALSE, include=TRUE}
 # Obtain devtools if you don't already have it installed
 # install.packages("devtools")
 
 # Install rakeR development version from GitHub
 devtools::install_github("philmikejones/rakeR")
+```
+
+Load the package with:
+
+```{r attach-rakeR}
 library("rakeR")
 ```
 
@@ -80,10 +74,14 @@ inds <- data.frame(
 vars <- c("age", "sex")
 ```
 
-Basic raking is done with `weight()`. Integerisation is performed with
-`integerise()`, for now using the truncate, replicate, sample method.
-Finally, `simulate()` takes care of creating the final microsimulated data set.
-They can be combined with pipes:
+* (Re-)weighting is done with `weight()` which returns a data frame of 
+fractional weights.
+* Integerisation is performed with `integerise()` which returns a data frame of
+integerised weights.
+* `simulate()` takes care of creating the final microsimulated data and returns
+a data frame of simulated cases in zones.
+
+These functions can be combined with pipes:
 
 ```{r chain-example}
 # obtain magrittr if not already installed
