@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -89,7 +87,7 @@ These functions can be combined with pipes:
 library("magrittr")
 
 sim_df <- weight(cons, inds, vars) %>% integerise() %>% simulate(inds = inds)
-sim_df
+head(sim_df)
 ```
 
 Alternatively use the `rake()` function, which is a wrapper for
@@ -97,12 +95,12 @@ Alternatively use the `rake()` function, which is a wrapper for
 
 ```{r rake-exaple}
 sim_df <- rake(cons, inds, vars)
-sim_df
+head(sim_df)
 ```
 
 
 Contributions
-=============
+-------------
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
@@ -129,6 +127,9 @@ of this package.
 The rewighting (ipfp) algorithm itself is 
 [written by Andrew Blocker](https://github.com/awblocker/ipfp) 
 and is written in `C` for maximum speed and efficiency.
+
+Thanks to [Tom Broomhead](http://mhs.group.shef.ac.uk/members/tom-broomhead/)
+for feedback on the function naming.
 
 
 Contact
