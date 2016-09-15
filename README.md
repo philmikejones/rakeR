@@ -1,5 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 [![Build Status](https://travis-ci.org/philmikejones/rakeR.svg?branch=master)](https://travis-ci.org/philmikejones/rakeR)
 
 rakeR
@@ -72,86 +71,32 @@ These functions can be combined with pipes:
 library("magrittr")
 
 sim_df <- weight(cons, inds, vars) %>% integerise() %>% simulate(inds = inds)
-sim_df
-#>      id    age sex income zone
-#> 1     A a_gt50   m   2868    a
-#> 2     B a_gt50   m   2474    a
-#> 3     C  a0_49   m   2231    a
-#> 3.1   C  a0_49   m   2231    a
-#> 3.2   C  a0_49   m   2231    a
-#> 3.3   C  a0_49   m   2231    a
-#> 4     D a_gt50   f   3152    a
-#> 4.1   D a_gt50   f   3152    a
-#> 5     E  a0_49   f   2473    a
-#> 5.1   E  a0_49   f   2473    a
-#> 5.2   E  a0_49   f   2473    a
-#> 5.3   E  a0_49   f   2473    a
-#> 1.1   A a_gt50   m   2868    b
-#> 1.2   A a_gt50   m   2868    b
-#> 2.1   B a_gt50   m   2474    b
-#> 3.4   C  a0_49   m   2231    b
-#> 4.2   D a_gt50   f   3152    b
-#> 4.3   D a_gt50   f   3152    b
-#> 4.4   D a_gt50   f   3152    b
-#> 4.5   D a_gt50   f   3152    b
-#> 4.6   D a_gt50   f   3152    b
-#> 5.4   E  a0_49   f   2473    b
-#> 5.5   E  a0_49   f   2473    b
-#> 2.2   B a_gt50   m   2474    c
-#> 3.5   C  a0_49   m   2231    c
-#> 4.7   D a_gt50   f   3152    c
-#> 4.8   D a_gt50   f   3152    c
-#> 5.6   E  a0_49   f   2473    c
-#> 5.7   E  a0_49   f   2473    c
-#> 5.8   E  a0_49   f   2473    c
-#> 5.9   E  a0_49   f   2473    c
-#> 5.10  E  a0_49   f   2473    c
-#> 5.11  E  a0_49   f   2473    c
+head(sim_df)
+#>     id    age sex income zone
+#> 1    A a_gt50   m   2868    a
+#> 2    B a_gt50   m   2474    a
+#> 3    C  a0_49   m   2231    a
+#> 3.1  C  a0_49   m   2231    a
+#> 3.2  C  a0_49   m   2231    a
+#> 3.3  C  a0_49   m   2231    a
 ```
 
 Alternatively use the `rake()` function, which is a wrapper for `weight() %>% integerise() %>% simulate()`:
 
 ``` r
 sim_df <- rake(cons, inds, vars)
-sim_df
-#>      id    age sex income zone
-#> 1     A a_gt50   m   2868    a
-#> 2     B a_gt50   m   2474    a
-#> 3     C  a0_49   m   2231    a
-#> 3.1   C  a0_49   m   2231    a
-#> 3.2   C  a0_49   m   2231    a
-#> 3.3   C  a0_49   m   2231    a
-#> 4     D a_gt50   f   3152    a
-#> 4.1   D a_gt50   f   3152    a
-#> 5     E  a0_49   f   2473    a
-#> 5.1   E  a0_49   f   2473    a
-#> 5.2   E  a0_49   f   2473    a
-#> 5.3   E  a0_49   f   2473    a
-#> 1.1   A a_gt50   m   2868    b
-#> 1.2   A a_gt50   m   2868    b
-#> 2.1   B a_gt50   m   2474    b
-#> 3.4   C  a0_49   m   2231    b
-#> 4.2   D a_gt50   f   3152    b
-#> 4.3   D a_gt50   f   3152    b
-#> 4.4   D a_gt50   f   3152    b
-#> 4.5   D a_gt50   f   3152    b
-#> 4.6   D a_gt50   f   3152    b
-#> 5.4   E  a0_49   f   2473    b
-#> 5.5   E  a0_49   f   2473    b
-#> 2.2   B a_gt50   m   2474    c
-#> 3.5   C  a0_49   m   2231    c
-#> 4.7   D a_gt50   f   3152    c
-#> 4.8   D a_gt50   f   3152    c
-#> 5.6   E  a0_49   f   2473    c
-#> 5.7   E  a0_49   f   2473    c
-#> 5.8   E  a0_49   f   2473    c
-#> 5.9   E  a0_49   f   2473    c
-#> 5.10  E  a0_49   f   2473    c
-#> 5.11  E  a0_49   f   2473    c
+head(sim_df)
+#>     id    age sex income zone
+#> 1    A a_gt50   m   2868    a
+#> 2    B a_gt50   m   2474    a
+#> 3    C  a0_49   m   2231    a
+#> 3.1  C  a0_49   m   2231    a
+#> 3.2  C  a0_49   m   2231    a
+#> 3.3  C  a0_49   m   2231    a
 ```
 
 Contributions
-=============
+-------------
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
@@ -167,6 +112,8 @@ Acknowledgements
 Many of the functions in this package are based on code written by [Robin Lovelace](https://github.com/Robinlovelace) and [Morgane Dumont](https://github.com/modumont) for their book [*Spatial Microsimulation with R* (2016), Chapman and Hall/CRC Press](https://www.crcpress.com/Spatial-Microsimulation-with-R/Lovelace-Dumont/p/book/9781498711548). Their book is also an excellent resource for learning about spatial microsimulation and understanding what's going on under the hood of this package.
 
 The rewighting (ipfp) algorithm itself is [written by Andrew Blocker](https://github.com/awblocker/ipfp) and is written in `C` for maximum speed and efficiency.
+
+Thanks to [Tom Broomhead](http://mhs.group.shef.ac.uk/members/tom-broomhead/) for feedback on the function naming.
 
 Contact
 -------
