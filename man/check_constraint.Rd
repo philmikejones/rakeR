@@ -16,9 +16,10 @@ If no errors are detected the function returns silently. Any errors
 will stop the function or script to be investigated.
 }
 \description{
-Checks a contraint table for common errors, specifically:
+Checks a contraint table for common errors.
 }
 \details{
+Checks a constraint table for the following common errors:
 \itemize{
   \item Ensures all zone codes are unique
   \item Ensures there are the expected number of zones
