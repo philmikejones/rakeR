@@ -8,8 +8,6 @@
 #'   \item Ensures all but the zone column are numeric (integer or double)
 #' }
 #'
-#'
-#'
 #' @param constraint_var The constraint table to check, usually a data frame
 #' @param num_zones The number of zones that should be present in the table
 #'
