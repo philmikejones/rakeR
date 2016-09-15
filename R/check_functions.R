@@ -10,15 +10,18 @@
 #' # not run
 check_constraint <- function(constraint_var, num_zones) {
 
-  context("Check constraint_var")
+  testthat::context("Check constraint_var")
 
-  test_that("Each zone code is unique", {
-    expect_equal(constraint_var[["code"]], unique(constraint_var[["code"]]))
+  testthat::test_that("Each zone code is unique", {
+    testthat::expect_equal(
+      constraint_var[["code"]],
+      unique(constraint_var[["code"]]))
   })
-  test_that("Number of zones is correct", {
-    expect_equal(nrow(constraint_var), num_zones)
+  testthat::test_that("Number of zones is correct", {
+    testthat::expect_equal(nrow(constraint_var), num_zones)
   })
-  test_that("All columns numeric", {
-    expect_true(all(apply(census_age[, 2:ncol(census_age)], 2, is.numeric)))
+  testthat::test_that("All columns numeric", {
+    testthat::expect_true(
+      all(apply(constraint_var[, 2:ncol(constraint_var)], 2, is.numeric)))
   })
 }
