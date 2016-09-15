@@ -7,21 +7,20 @@
 #' @export
 #'
 #' @examples
-#' # not run
+#' cons <- data.frame(
+#' "zone"  = letters[1:3],
+#' "a0_49" = c(8, 2, 7),
+#' "a_gt50" = c(4, 8, 4),
+#' "f"    = c(6, 6, 8),
+#' "m"    = c(6, 4, 3)
+#' )
+#' check_constraint(cons, 3)
 check_constraint <- function(constraint_var, num_zones) {
 
-  testthat::context("Check constraint_var")
+  stopifnot(
+    all.equal(constraint_var[[1]], unique(constraint_var[[1]])),
+    all.equal(nrow(constraint_var), num_zones),
+    all(apply(constraint_var[, 2:ncol(constraint_var)], 2, is.numeric))
+  )
 
-  testthat::test_that("Each zone code is unique", {
-    testthat::expect_equal(
-      constraint_var[["code"]],
-      unique(constraint_var[["code"]]))
-  })
-  testthat::test_that("Number of zones is correct", {
-    testthat::expect_equal(nrow(constraint_var), num_zones)
-  })
-  testthat::test_that("All columns numeric", {
-    testthat::expect_true(
-      all(apply(constraint_var[, 2:ncol(constraint_var)], 2, is.numeric)))
-  })
 }

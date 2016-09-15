@@ -18,6 +18,13 @@ An error status. 0 (silent) if no errors; 1 if errors detected
 check_constraint
 }
 \examples{
-# not run
+cons <- data.frame(
+"zone"  = letters[1:3],
+"a0_49" = c(8, 2, 7),
+"a_gt50" = c(4, 8, 4),
+"f"    = c(6, 6, 8),
+"m"    = c(6, 4, 3)
+)
+check_constraint(cons, 3)
 }
 
