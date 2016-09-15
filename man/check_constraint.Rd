@@ -12,10 +12,18 @@ check_constraint(constraint_var, num_zones)
 \item{num_zones}{The number of zones that should be present in the table}
 }
 \value{
-An error status. 0 (silent) if no errors; 1 if errors detected
+If no errors are detected the function returns silently. Any errors
+will stop the function or script to be investigated.
 }
 \description{
-check_constraint
+Checks a contraint table for common errors, specifically:
+}
+\details{
+\itemize{
+  \item Ensures all zone codes are unique
+  \item Ensures there are the expected number of zones
+  \item Ensures all but the zone column are numeric (integer or double)
+}
 }
 \examples{
 cons <- data.frame(
@@ -25,6 +33,6 @@ cons <- data.frame(
 "f"    = c(6, 6, 8),
 "m"    = c(6, 4, 3)
 )
-check_constraint(cons, 3)
+check_constraint(cons, 3)  # no errors
 }
 

@@ -1,9 +1,20 @@
 #' check_constraint
 #'
+#' Checks a contraint table for common errors, specifically:
+#'
+#' \itemize{
+#'   \item Ensures all zone codes are unique
+#'   \item Ensures there are the expected number of zones
+#'   \item Ensures all but the zone column are numeric (integer or double)
+#' }
+#'
+#'
+#'
 #' @param constraint_var The constraint table to check, usually a data frame
 #' @param num_zones The number of zones that should be present in the table
 #'
-#' @return An error status. 0 (silent) if no errors; 1 if errors detected
+#' @return If no errors are detected the function returns silently. Any errors
+#' will stop the function or script to be investigated.
 #' @export
 #'
 #' @examples
@@ -14,7 +25,7 @@
 #' "f"    = c(6, 6, 8),
 #' "m"    = c(6, 4, 3)
 #' )
-#' check_constraint(cons, 3)
+#' check_constraint(cons, 3)  # no errors
 check_constraint <- function(constraint_var, num_zones) {
 
   stopifnot(
