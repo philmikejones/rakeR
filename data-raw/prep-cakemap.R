@@ -13,7 +13,7 @@ cons <- cons[, c(ncol(cons), 13:14, 15:24, 7:12, 1:6)]
 # population of nssec is 3 out compared to age/sex and car
 cons[1, 6] <- 2775
 
-save(cons, file = "data/cakemap_cons.RData", compress = "xz")
+save(cons, file = "tests/cakemap_cons.RData", compress = "xz")
 
 
 # inds
@@ -35,4 +35,4 @@ inds$ageband4[inds$Sex == "female"] <-
   paste0("f", inds$ageband4[inds$Sex == "female"])
 inds <- inds[, -3]
 
-save(inds, file = "data/cakemap_inds.RData", compress = "xz")
+save(inds, file = "tests/cakemap_inds.RData", compress = "xz")
