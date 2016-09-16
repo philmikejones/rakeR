@@ -37,23 +37,19 @@ To perform the raking you should supply two data frames, one with the constraint
 
 ``` r
 cons <- data.frame(
-
   "zone"   = letters[1:3],
   "a0_49"  = c(8, 2, 7),
   "a_gt50" = c(4, 8, 4),
   "f"      = c(6, 6, 8),
   "m"      = c(6, 4, 3)
-
 )
 
 inds <- data.frame(
-
   "id"     = LETTERS[1:5],
   "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
   "sex"    = c("m", "m", "m", "f", "f"),
   "income" = c(2868, 2474, 2231, 3152, 2473),
   stringsAsFactors = FALSE
-
 )
 
 vars <- c("age", "sex")
@@ -102,7 +98,7 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 Feedback on the API, bug reports/issues, and pull requests are very welcome.
 
-If making a pull request **do not** push to `origin/master`! `origin/master` is a protected branch and expects CI tests to have been successfully completed before it will merge code.
+**Do not** push to `origin/master`! `origin/master` is a protected branch and expects CI tests to have been successfully completed before it will merge code.
 
 Develop in a new branch, check your changes with `devtools::check()`, and submit a pull request which will be checked by Travis CI.
 
@@ -113,7 +109,7 @@ Many of the functions in this package are based on code written by [Robin Lovela
 
 The rewighting (ipfp) algorithm itself is [written by Andrew Blocker](https://github.com/awblocker/ipfp) and is written in `C` for maximum speed and efficiency.
 
-Thanks to [Tom Broomhead](http://mhs.group.shef.ac.uk/members/tom-broomhead/) for feedback on the function naming.
+Thanks to [Tom Broomhead](http://mhs.group.shef.ac.uk/members/tom-broomhead/) for his feedback on error handling and suggestions on function naming.
 
 Contact
 -------
