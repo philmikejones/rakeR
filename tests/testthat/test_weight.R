@@ -56,8 +56,8 @@ test_that("Weights match weights given in Robin's book (p. 26)", {
 
 
 # CakeMap example
-load("cakemap_book_weights.RData")
-load("cakemap.RData")
+load("../book_wt.RData")
+load("../cakemap.RData")
 vars <- c("Car", "NSSEC8", "ageband4")
 
 weights <- weight(cons, inds, vars)
