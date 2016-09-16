@@ -55,10 +55,9 @@ test_that("Weights match weights given in Robin's book (p. 26)", {
 })
 
 
-
-
-vars <- c("Car", "Sex", "NSSEC8", "ageband4")
-
-
+# CakeMap example
+load("data/cakemap_cons.RData")
+load("data/cakemap_inds.RData")
+vars <- c("Car", "NSSEC8", "ageband4")
 
 rakeR::weight(cons, inds, vars)
