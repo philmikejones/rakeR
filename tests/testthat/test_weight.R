@@ -56,14 +56,15 @@ test_that("Weights match weights given in Robin's book (p. 26)", {
 
 
 # CakeMap example
-load("../book_wt.RData")
-book_wt <- round(book_wt, digits = 2)
-
-load("../cakemap.RData")
+cons <- readr::read_csv("../cakemap_cons.csv")
+inds <- readr::read_csv("../cakemap_inds.csv")
 vars <- c("Car", "NSSEC8", "ageband4")
 
 weights <- weight(cons, inds, vars)
 weights <- round(weights, digits = 2)
+rm(cakemap_cons, cakemap_inds)
+
+book_wt <- readr::read_csv("../book_wt.csv")
 
 test_that("weight() gives similar results to Robin's weights", {
   testthat::expect_lt(
