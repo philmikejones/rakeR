@@ -57,14 +57,17 @@ test_that("Weights match weights given in Robin's book (p. 26)", {
 
 # CakeMap example
 load("../book_wt.RData")
+book_wt <- round(book_wt, digits = 2)
+
 load("../cakemap.RData")
 vars <- c("Car", "NSSEC8", "ageband4")
 
 weights <- weight(cons, inds, vars)
+weights <- round(weights, digits = 2)
 
 test_that("weight() gives similar results to Robin's weights", {
   testthat::expect_lt(
-    sum(as.vector(cakemap_book_weights)) - sum(as.vector(weights)),
-    sum(as.vector(cakemap_book_weights)) / 10000
+    sum(as.vector(book_wt)) - sum(as.vector(weights)),
+    sum(as.vector(book_wt)) / 10000
   )
 })
