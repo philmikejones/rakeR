@@ -37,3 +37,23 @@ test_that("Populations match (i.e. sum weights == (sum cons / n vars))", {
 test_that("individual IDs stored in dimnames", {
   expect_equal(rownames(weights), inds[, 1])
 })
+
+# Compare my calculated weights with those given by Robin in his book (p. 26)
+# First, convert weights to matrix and drop attributes
+# Create book_wt matrix
+weights <- round(weights, digits = 2)
+weights <- as.vector(as.matrix(weights))
+
+# I've rounded these by hand because round() goes to the nearest even integer
+# see man page
+book_wt <- as.vector(matrix(
+  c(1.23, 1.73, 0.73,
+    1.23, 1.73, 0.73,
+    3.54, 0.55, 1.55,
+    1.54, 4.55, 2.55,
+    4.46, 1.45, 5.45),
+  nrow = 5, ncol = 3, byrow = TRUE))
+
+test_that("Weights match weights given in Robin's book (p. 26)", {
+  expect_equal(weights, book_wt)
+})
