@@ -82,7 +82,8 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   # Prepare constraints
 
   # Save and drop first column of cons (zone codes)
-  zones <- cons[, 1]
+  # unlist() is needed in case the data is provided as a tibble
+  zones <- as.vector(unlist(cons[, 1]))
   cons  <- cons[, -1]
   cons <- as.matrix(cons)
 
@@ -93,7 +94,8 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   # Prepare individual-level data (survey)
 
   # Save IDs from inds
-  ids <- inds[, 1]
+  # unlist() is needed in case the data is provided as a tibble
+  ids <- as.vector(unlist(inds[, 1]))
 
   # Create a list of survey based matrices to match cons matrices
   # Easiest way is to create 'dummy variables' (i.e. 0, 1) using model.matrix.
@@ -164,7 +166,6 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
          sum(colSums(weights) - (rowSums(cons) / length(vars)))
     )
   }
-
 
   rownames(weights) <- ids
   colnames(weights) <- zones
