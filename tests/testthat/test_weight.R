@@ -56,8 +56,16 @@ test_that("Weights match weights given in Robin's book (p. 26)", {
 
 
 # CakeMap example
-load("data/cakemap_cons.RData")
-load("data/cakemap_inds.RData")
+load("../../data/cakemap_cons.RData")
+load("../../data/cakemap_inds.RData")
 vars <- c("Car", "NSSEC8", "ageband4")
 
-rakeR::weight(cons, inds, vars)
+weights <- weight(cons, inds, vars)
+load("../../data/cakemap_book_weights.RData")
+
+test_that("weight() gives similar results to Robin's weights", {
+  testthat::expect_lt(
+    sum(as.vector(cakemap_book_weights)) - sum(as.vector(weights)),
+    sum(as.vector(cakemap_book_weights)) / 10000
+  )
+})
