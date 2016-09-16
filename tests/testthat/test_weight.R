@@ -62,7 +62,7 @@ vars <- c("Car", "NSSEC8", "ageband4")
 
 weights <- weight(cons, inds, vars)
 weights <- round(weights, digits = 2)
-rm(cakemap_cons, cakemap_inds)
+rm(cons, inds)
 
 book_wt <- readr::read_csv("../book_wt.csv")
 
