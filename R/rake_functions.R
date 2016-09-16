@@ -149,13 +149,11 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   # The sum of weights will form the simulated population so this must match
   # the population from cons
   if (!isTRUE(all.equal(sum(weights), (sum(cons) / length(vars))))) {
-    stop("Weight populations don't match constraint populations.\n
-         Are the first columns in cons and inds a zone code/unique ID?
-         Check the unique levels in inds and colnames in cons match EXACTLY.
-         Unique levels identified by weight():\n\n",
-         vapply(seq_along(colnames(ind_cat)), function(x)
-           paste0(colnames(ind_cat)[x], " "), "")
-    )
+    stop("Weight populations don't match constraint populations.
+          Usually this means the populations for each of your constraints
+          are slightly different\n",
+         "Sum of simulated population:  ", sum(weights), "\n",
+         "Sum of constraint population: ", (sum(cons) / length(vars)))
   }
 
   # The colSums of weights will form the simulated population in each zone so
