@@ -20,5 +20,5 @@ RoxygenNote: 5.0.1
 Imports: ipfp
 Suggests: testthat,
     readr
-Url: https://github.com/philmikejones/rakeR
+URL: https://github.com/philmikejones/rakeR
 BugReports: https://github.com/philmikejones/rakeR/issues
