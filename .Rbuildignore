@@ -9,4 +9,3 @@ data-raw/
 ^README-.*\.png$
 ^CONDUCT\.md$
 inst/
-^NEWS\.md$
