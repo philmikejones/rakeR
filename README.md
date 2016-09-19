@@ -105,7 +105,17 @@ Develop in a new branch, check your changes with `devtools::check()`, and submit
 Acknowledgements
 ----------------
 
-Many of the functions in this package are based on code written by [Robin Lovelace](https://github.com/Robinlovelace) and [Morgane Dumont](https://github.com/modumont) for their book [*Spatial Microsimulation with R* (2016), Chapman and Hall/CRC Press](https://www.crcpress.com/Spatial-Microsimulation-with-R/Lovelace-Dumont/p/book/9781498711548). Their book is also an excellent resource for learning about spatial microsimulation and understanding what's going on under the hood of this package.
+Many of the functions in this package are based on code written by [Robin Lovelace](https://github.com/Robinlovelace) and [Morgane Dumont](https://github.com/modumont) for their book [*Spatial Microsimulation with R* (2016), Chapman and Hall/CRC Press](https://www.crcpress.com/Spatial-Microsimulation-with-R/Lovelace-Dumont/p/book/9781498711548), licensed under the terms below:
+
+Copyright (c) 2014 Robin Lovelace
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Their book is also an excellent resource for learning about spatial microsimulation and understanding what's going on under the hood of this package.
 
 The rewighting (ipfp) algorithm itself is [written by Andrew Blocker](https://github.com/awblocker/ipfp) and is written in `C` for maximum speed and efficiency.
 
@@ -116,8 +126,8 @@ Contact
 
 philmikejones at gmail dot com
 
-Licenses
---------
+License
+-------
 
 Copyright 2016 Phil Mike Jones.
 
@@ -126,5 +136,3 @@ rakeR is free software: you can redistribute it and/or modify it under the terms
 rakeR is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with rakeR. If not, see <http://www.gnu.org/licenses/>.
-
-See [LICENSE](https://github.com/philmikejones/rakeR/blob/master/LICENSE)
