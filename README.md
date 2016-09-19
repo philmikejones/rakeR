@@ -9,7 +9,13 @@ Create a spatial microsimulated data set in R using iterative proportional fitti
 Install
 -------
 
-Install the development version with `devtools`:
+Install the stable version from CRAN:
+
+``` r
+install.packages("rakeR")
+```
+
+Or install the development version with `devtools`:
 
 ``` r
 # Obtain devtools if you don't already have it installed
@@ -96,7 +102,7 @@ Contributions
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
-Feedback on the API, bug reports/issues, and pull requests are very welcome.
+Feedback on the API, [bug reports/issues](https://github.com/philmikejones/rakeR/issues), and pull requests are very welcome.
 
 **Do not** push to `origin/master`! `origin/master` is a protected branch and expects CI tests to have been successfully completed before it will merge code.
 
