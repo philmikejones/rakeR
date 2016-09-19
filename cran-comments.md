@@ -1,3 +1,13 @@
+## Resubmission
+Thank you for your comments. As suggested, I have:
+
+* Removed LICENSE as there are no additional clauses
+* Changed License: in DESCIPTION to GPL-3
+* Moved necessary licenses from additional software to README
+* Incremented version number (patch number)
+* No other changes have been made to this resubmission
+
+
 ## First submission
 This is my first submission to CRAN
 
