@@ -1,6 +1,6 @@
 Package: rakeR
 Title: Easy Spatial Microsimulation (Raking) in R
-Version: 0.1.1
+Version: 0.1.1.9000
 Authors@R: c(
     person("Phil Mike", "Jones", 
       email = "philmikejones@gmail.com",
@@ -20,5 +20,5 @@ RoxygenNote: 5.0.1
 Imports: ipfp
 Suggests: testthat,
     readr
-URL: https://github.com/philmikejones/rakeR
+URL: https://philmikejones.github.io/rakeR/
 BugReports: https://github.com/philmikejones/rakeR/issues
