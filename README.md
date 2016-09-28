@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/philmikejones/rakeR.svg?branch=master)](https://travis-ci.org/philmikejones/rakeR) [![codecov](https://codecov.io/gh/philmikejones/rakeR/branch/master/graph/badge.svg)](https://codecov.io/gh/philmikejones/rakeR)
+[![Build Status](https://travis-ci.org/philmikejones/rakeR.svg?branch=master)](https://travis-ci.org/philmikejones/rakeR) [![codecov](https://codecov.io/gh/philmikejones/rakeR/branch/master/graph/badge.svg)](https://codecov.io/gh/philmikejones/rakeR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/rakeR)](https://cran.r-project.org/package=rakeR)
 
 rakeR
 =====
