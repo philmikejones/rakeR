@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://travis-ci.org/philmikejones/rakeR.svg?branch=master)](https://travis-ci.org/philmikejones/rakeR)
 [![codecov](https://codecov.io/gh/philmikejones/rakeR/branch/master/graph/badge.svg)](https://codecov.io/gh/philmikejones/rakeR)
-
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rakeR)](https://cran.r-project.org/package=rakeR)
 
 rakeR
 =====
@@ -24,7 +24,13 @@ fitting ('raking').
 Install
 -------
 
-Install the development version with `devtools`:
+Install the stable version from CRAN:
+
+```{r install-cran, eval=FALSE, include=TRUE}
+install.packages("rakeR")
+```
+
+Or install the development version with `devtools`:
 
 ```{r install-rakeR, eval=FALSE, include=TRUE}
 # Obtain devtools if you don't already have it installed
@@ -101,7 +107,9 @@ Contributions
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
-Feedback on the API, bug reports/issues, and pull requests are very welcome.
+Feedback on the API,
+[bug reports/issues](https://github.com/philmikejones/rakeR/issues),
+and pull requests are very welcome.
 
 **Do not** push to `origin/master`!
 `origin/master` is a protected branch and expects CI tests to have been
