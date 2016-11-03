@@ -56,7 +56,7 @@ check_constraint <- function(constraint_var, num_zones) {
 #' ## check_ind(ind_var)
 check_ind <- function(ind_var) {
 
-  if (!(all(rowSums(ind_var)) == 1)) {
+  if (!(all(rowSums(ind_var) == 1))) {
     stop("Each row must sum to 1. Have you converted your individual data into
          dummy variables (using model.matrix())?")
   }
