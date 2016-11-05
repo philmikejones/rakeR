@@ -95,7 +95,8 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
   # Save IDs from inds
   # unlist() is needed in case the data is provided as a tibble
-  ids <- as.vector(unlist(inds[, 1]))
+  ids  <- as.vector(unlist(inds[, 1]))
+  inds <- inds[, 2:ncol(inds)]  # issue 33
 
   # Create a list of survey based matrices to match cons matrices
   # Easiest way is to create 'dummy variables' (i.e. 0, 1) using model.matrix.
