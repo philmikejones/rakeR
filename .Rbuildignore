@@ -9,3 +9,4 @@ data-raw/
 ^README-.*\.png$
 ^CONDUCT\.md$
 inst/
+revdep/
