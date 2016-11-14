@@ -1,3 +1,22 @@
+v 0.1.2
+=======
+
+Patch release
+
+New functions
+-------------
+
+* check_ind() checks individual level data for common errors
+
+
+Fixes:
+------
+
+* Fix weight() #33: https://github.com/philmikejones/rakeR/issues/33
+* check functions now named prep functions to prevent conflicts with validation
+* Add date to DESCRIPTION for bibliography building
+
+
 v 0.1.1
 =======
 
