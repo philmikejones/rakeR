@@ -1,6 +1,5 @@
 ## R CMD check results
-* There were no ERRORs, WARNINGs or NOTES on Linux builds
-* There were no ERRORs or WARNINGs on the win-builder build
+* There were no ERRORs or WARNINGs
     + One NOTE referred to 'checking CRAN incoming feasibility', I believe
       because of the spelling of 'microsimulation' (which is correct)
 
