@@ -177,6 +177,76 @@ weights
 }
 
 
+#' extract_weights
+#'
+#' Extract aggregate weights from individual weight table
+#'
+#' Extract aggregate weights from individual weight table, typically produced
+#' by rakeR::weight()
+#'
+#' @param weights A weight table, typically produced by rakeR::weight()
+#' @param inds The individual level data
+#' @param id The unique id variable in the individual level data, usually the
+#' first column
+#'
+#' @return A data frame with zones and aggregated simulated values for each
+#' variable
+#' @export
+#'
+#' @examples
+#' ## not run
+extract_weights <- function(weights, inds, id) {
+
+  # variables to loop over (dropping id/code)
+  variables <- colnames(inds)
+  variables <- variables[-grep(id, variables)]
+
+  levels <- lapply(as.list(variables), function(x) {
+    sort(unique(as.character(inds[[x]])))
+  })
+
+  result <- lapply(variables, function(y) {
+
+    lapply(as.list(sort(unique(as.character(inds[[y]])))), function(x) {
+
+      match_id <- inds[[id]][inds[[y]] == x]
+
+      matched_weights <- weights[row.names(weights) %in% match_id, ]
+      matched_weights <- colSums(matched_weights)
+
+      matched_weights
+
+    })
+
+  })
+
+  result           <- as.data.frame(result)
+  colnames(result) <- unlist(levels)
+
+  df <- data.frame(
+    code  = colnames(weights),
+    total = colSums(weights),
+    row.names = NULL, stringsAsFactors = FALSE
+  )
+
+  stopifnot(
+    all.equal(df[["code"]], row.names(result))
+  )
+
+  df            <- cbind(df, result)
+  row.names(df) <- NULL
+
+  stopifnot(
+    all.equal(
+      sum(df[["total"]]),
+      (sum(df[, 3:ncol(df)]) / length(variables)))
+  )
+
+  df
+
+}
+
+
 #' integerise
 #'
 #' Generate integer cases from numeric weights matrix.
