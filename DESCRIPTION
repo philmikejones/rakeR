@@ -1,6 +1,6 @@
 Package: rakeR
 Title: Easy Spatial Microsimulation (Raking) in R
-Version: 0.1.2
+Version: 0.1.2.9000
 Date: 2016-11-14
 Authors@R: c(
     person("Phil Mike", "Jones", 
