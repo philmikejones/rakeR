@@ -4,7 +4,7 @@
 \alias{integerise}
 \title{integerise}
 \usage{
-integerise(weights, method = "trs")
+integerise(weights, method = "trs", seed = 42)
 }
 \arguments{
 \item{weights}{A matrix or data frame of fractional weights, typically
@@ -12,6 +12,8 @@ provided by \code{weight()}}
 
 \item{method}{The integerisation method specified as a character string.
 Defaults to \code{"trs"}.}
+
+\item{seed}{The seed to use, defaults to 42.}
 }
 \value{
 A data frame of integerised weights to be used by \code{simulate()}

@@ -262,6 +262,7 @@ extract_weights <- function(weights, inds, id) {
 #' provided by \code{weight()}
 #' @param method The integerisation method specified as a character string.
 #' Defaults to \code{"trs"}.
+#' @param seed The seed to use, defaults to 42.
 #'
 #' @return A data frame of integerised weights to be used by \code{simulate()}
 #' @export
