@@ -313,12 +313,13 @@ integerise <- function(weights, method = "trs", seed = 42) {
   deficit <- round(sum(weights_dec))
 
   # do nothing if weights are already integers (sample will throw)
-  if (sum(weights_dec != 0.0) > 0) {
+  if (sum(weights_dec %% 1) > 0) {
     # the weights be 'topped up' (+ 1 applied)
     topup <- sample(length(weights), size = deficit, prob = weights_dec)
 
     weights_int[topup] <- weights_int[topup] + 1
   }
+
   # Return as a data frame with correct dimnames
   dim(weights_int)      <- dim(weights)
   dimnames(weights_int) <- dimnames(weights)
