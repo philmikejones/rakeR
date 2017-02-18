@@ -9,7 +9,8 @@ Authors@R: c(
     person("Robin", "Lovelace", role = "aut",
       comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"),
     person("Morgane", "Dumont", role = "aut",
-      comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"))  
+      comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"),
+    person("Andrew", "Smith", role = "ctb"))
 Description: Functions for performing spatial microsimulation ('raking')
     in R.
 Depends:
