@@ -262,6 +262,7 @@ extract_weights <- function(weights, inds, id) {
 #' provided by \code{weight()}
 #' @param method The integerisation method specified as a character string.
 #' Defaults to \code{"trs"}.
+#' @param seed The seed to use, defaults to 42.
 #'
 #' @return A data frame of integerised weights to be used by \code{simulate()}
 #' @export
@@ -287,10 +288,10 @@ extract_weights <- function(weights, inds, id) {
 #' weights     <- weight(cons = cons, inds = inds, vars = vars)
 #' weights_int <- integerise(weights)
 #' weights_int
-integerise <- function(weights, method = "trs") {
+integerise <- function(weights, method = "trs", seed = 42) {
 
   # Ensures the output of the function is reproducible (uses sample())
-  set.seed(42)
+  set.seed(seed)
 
 
   if (!method == "trs") {
@@ -311,10 +312,13 @@ integerise <- function(weights, method = "trs") {
   weights_dec <- weights_vec - weights_int
   deficit <- round(sum(weights_dec))
 
-  # the weights be 'topped up' (+ 1 applied)
-  topup <- sample(length(weights), size = deficit, prob = weights_dec)
+  # do nothing if weights are already integers (sample will throw)
+  if (sum(weights_dec %% 1) > 0) {
+    # the weights be 'topped up' (+ 1 applied)
+    topup <- sample(length(weights), size = deficit, prob = weights_dec)
 
-  weights_int[topup] <- weights_int[topup] + 1
+    weights_int[topup] <- weights_int[topup] + 1
+  }
 
   # Return as a data frame with correct dimnames
   dim(weights_int)      <- dim(weights)
