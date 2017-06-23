@@ -318,6 +318,9 @@ integerise <- function(weights, method = "trs", seed = 42) {
     topup <- sample(length(weights), size = deficit, prob = weights_dec)
 
     weights_int[topup] <- weights_int[topup] + 1
+  } else {
+    message("weights already integers. Returning unmodified")
+    weights
   }
 
   # Return as a data frame with correct dimnames
