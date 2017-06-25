@@ -1,6 +1,7 @@
 v 0.1.2.90000
 =============
 
+* extract() now stops if it encounters a numeric variable. See [issue #49](https://github.com/philmikejones/rakeR/issues/49)
 * integerise() now returns weights unmodified with a note if weights are
 already integers (issues [#42](https://github.com/philmikejones/rakeR/issues/42) and [#46](https://github.com/philmikejones/rakeR/issues/46))
 * set.seed() is no longer hard-coded in the integerise() function and can be 
