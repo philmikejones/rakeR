@@ -184,6 +184,10 @@ weights
 #' Extract aggregate weights from individual weight table, typically produced
 #' by rakeR::weight()
 #'
+#' Extract cannot operate with numeric variables because it creates a new
+#' variable for each unique factor of each variable
+#' If you want numeric information, like income, use integerise() instead.
+#'
 #' @param weights A weight table, typically produced by rakeR::weight()
 #' @param inds The individual level data
 #' @param id The unique id variable in the individual level data, usually the
