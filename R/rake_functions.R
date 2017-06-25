@@ -334,7 +334,9 @@ integerise <- function(weights, method = "trs", seed = 42) {
   # do nothing if weights are already integers (sample will throw)
   if (sum(weights_dec %% 1) > 0) {
     # the weights be 'topped up' (+ 1 applied)
-    topup <- sample(length(weights), size = deficit, prob = weights_dec)
+    topup <- wrswoR::sample_int_rej(n = length(weights),
+                                    size = deficit,
+                                    prob = weights_dec)
 
     weights_int[topup] <- weights_int[topup] + 1
   } else {
