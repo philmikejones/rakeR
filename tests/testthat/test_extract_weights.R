@@ -9,16 +9,24 @@ cons <- data.frame(
 )
 
 inds <- data.frame(
-  "id"     = LETTERS[1:5],
-  "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-  "sex"    = c("m", "m", "m", "f", "f"),
-  "income" = c(2868, 2474, 2231, 3152, 2473),
+  "id"         = LETTERS[1:5],
+  "age"        = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
+  "sex"        = c("m", "m", "m", "f", "f"),
+  "income"     = c(868, 2474, 2231, 3152, 473),
   stringsAsFactors = FALSE
 )
 
 vars <- c("age", "sex")
-
 weights <- weight(cons = cons, inds = inds, vars = vars, iterations = 10)
+
+test_that("extract() errors with a numeric variable", {
+  expect_error(extract(weights = weights, inds = inds, id = "id"))
+})
+
+inds[["income"]] <- cut(inds[["income"]],
+                        breaks = 2,
+                        labels = c("low", "high"),
+                        include.lowest = TRUE)
 
 extd_weights <- extract_weights(weights, inds, "id")
 
@@ -31,5 +39,5 @@ test_that("Simulated population total matched real population total", {
 })
 
 test_that("Simulated income weights match zone total", {
-  expect_equal(rowSums(extd_weights[, 7:11]), extd_weights$total)
+  expect_equal(rowSums(extd_weights[, c("f", "m")]), extd_weights$total)
 })

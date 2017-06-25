@@ -24,6 +24,10 @@ Extract aggregate weights from individual weight table
 \details{
 Extract aggregate weights from individual weight table, typically produced
 by rakeR::weight()
+
+Extract cannot operate with numeric variables because it creates a new
+variable for each unique factor of each variable
+If you want numeric information, like income, use integerise() instead.
 }
 \examples{
 ## not run
