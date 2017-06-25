@@ -205,6 +205,21 @@ extract_weights <- function(weights, inds, id) {
   variables <- colnames(inds)
   variables <- variables[-grep(id, variables)]
 
+  # check if any columns are class numeric or integer
+  # have to use loop as class() returns class of the overall d.f.
+  # have to use class() because typeof() for factor returns integer (as
+  # it uses integers with attributes under the hood)
+  # same for is()
+  lapply(inds[, variables], function(x) {
+    if (class(x) == "numeric" | class(x) == "integer") {
+      stop("rakeR::extract() cannot work with numeric (i.e. integer or double)
+           variables because by design it creates a new variable for each
+           unique level in each variable\n
+           Consider cut()ing your numeric data, extract() without your
+           numeric data, or integerise() instead.")
+    }
+  })
+
   levels <- lapply(as.list(variables), function(x) {
     sort(unique(as.character(inds[[x]])))
   })
