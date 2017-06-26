@@ -8,7 +8,7 @@ test_that("Correct data passes", {
   expect_silent(check_ind(ind))
 })
 
-test_that("Incorrect data failes", {
+test_that("Incorrect data fails", {
   ind <- data.frame(
     "var" = c("a", "b", "c", "a", "b", "c", "a")
   )
