@@ -177,7 +177,7 @@ weights
 }
 
 
-#' extract_weights
+#' extract
 #'
 #' Extract aggregate weights from individual weight table
 #'
@@ -190,8 +190,8 @@ weights
 #'
 #' @param weights A weight table, typically produced by rakeR::weight()
 #' @param inds The individual level data
-#' @param id The unique id variable in the individual level data, usually the
-#' first column
+#' @param id The unique id variable in the individual level data (inds),
+#' usually the first column
 #'
 #' @return A data frame with zones and aggregated simulated values for each
 #' variable
@@ -199,7 +199,7 @@ weights
 #'
 #' @examples
 #' ## not run
-extract_weights <- function(weights, inds, id) {
+extract <- function(weights, inds, id) {
 
   # variables to loop over (dropping id/code)
   variables <- colnames(inds)
