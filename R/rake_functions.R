@@ -480,27 +480,55 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 
 #' rake
 #'
-#' A convenience function wrapping \code{weight()}, \code{integerise} and
-#' \code{simulate}
+#' A convenience function wrapping \code{weight()} and \code{extract} or
+#' \code{weight()} and \code{integerise}
 #'
 #' @param cons A data frame of constraint variables
 #' @param inds A data frame of individual--level (survey) data
 #' @param vars A character string of variables to iterate over
+#' @param output A string specifying the desired output, either "fraction"
+#' (extract()) or "integer" (integerise())
 #' @param iterations The number of iterations to perform. Defaults to 10.
-#' @param method Integerisation method to apply. Defaults to \code{trs}.
-#' @param ... Additional arguments to pass to additional methods
+#' @param ... Additional arguments to pass to depending on desired output:
+#'   - if "fraction" specify 'id' (see extract() documentation)
+#'   - if "integer" specify 'method' and 'seed' (see integerise() documentation)
 #'
-#' @return A data frame of simulated individuals in zones.
+#' @return A data frame with extracted weights (if output == "fraction", the
+#' default) or integerised cases (if output == "integer")
 #' @export
 #'
 #' @examples
 #' # not run
-rake <- function(cons, inds, vars, iterations = 10, method = "trs", ...) {
+rake <- function(cons, inds, vars,
+                 output = "fraction",
+                 iterations = 10, ...) {
 
   out <- weight(cons, inds, vars, iterations)
-  out <- integerise(out, method)
-  out <- simulate(out, inds)
+
+  if (output == "fraction") {
+    out <- extract(out, inds, id)
+  }
+
+  if (output == "integer") {
+    out <- integerise(out, inds, method = method, seed = seed)
+  }
 
   out
+
+}
+
+
+#' simulate
+#'
+#' Deprecated: integerise() \%>\% simulate() has been replaced by simply
+#' integerise() to be consistent with extract().
+#'
+#' @return Returns an error if used. Just use integerise()
+#' @export
+simulate <- function(...) {
+
+  stop("rakeR::simulate() is deprecated. The ouptut of rakeR::integerise()
+       is the same as rakeR::integerise() %>% rakeR::simulate() in previous
+       versions or rakeR")
 
 }
