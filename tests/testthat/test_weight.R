@@ -1,4 +1,4 @@
-context("Test weight function")
+context("Test weight() function produces correct output")
 
 cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
