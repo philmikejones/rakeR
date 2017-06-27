@@ -3,6 +3,7 @@
 export(check_constraint)
 export(check_ind)
 export(extract)
+export(extract_weights)
 export(integerise)
 export(rake)
 export(simulate)
