@@ -376,7 +376,7 @@ extract_weights <- function(weights, inds, id) {
 #' Defaults to \code{"trs"}; currently other methods aren't implemented.
 #' @param seed The seed to use, defaults to 42.
 #'
-#' @return A data frame of integerised cases}
+#' @return A data frame of integerised cases
 #' @export
 #'
 #' @examples
@@ -527,6 +527,8 @@ rake <- function(cons, inds, vars,
 #'
 #' Deprecated: integerise() \%>\% simulate() has been replaced by simply
 #' integerise() to be consistent with extract().
+#'
+#' @param ... arguments previously passed to simulate()
 #'
 #' @return Returns an error if used. Just use integerise()
 #' @export
