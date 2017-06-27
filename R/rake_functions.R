@@ -172,7 +172,7 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   colnames(weights) <- zones
   weights <- as.data.frame(weights)
 
-weights
+  weights
 
 }
 
