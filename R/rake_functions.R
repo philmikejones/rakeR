@@ -352,6 +352,16 @@ extract_weights <- function(weights, inds, id) {
 #'
 #' Generate integer cases from numeric weights matrix.
 #'
+#' Extracted weights (using rakeR::extract()) are more 'precise' than
+#' integerised weights (although the user should be careful this isn't
+#' spurious precision based on context) as they return fractions.
+#' Nevertheless, integerised weights are useful in cases when:
+#'   - Numeric information (such as income) is required, as this needs to be
+#'   cut() to work with rakeR::extract()
+#'   - Simulated 'individuals' are required for case studies of key areas.
+#'   - Input individual-level data for agent-based or dynamic models are
+#'   required
+#'
 #' The default integerisation method uses the 'truncate, replicate, sample'
 #' method developed by Robin Lovelace and Dimitris Ballas
 #' \url{http://www.sciencedirect.com/science/article/pii/S0198971513000240}
@@ -360,12 +370,13 @@ extract_weights <- function(weights, inds, id) {
 #' at a later date.
 #'
 #' @param weights A matrix or data frame of fractional weights, typically
-#' provided by \code{weight()}
+#' provided by \code{rakeR::weight()}
+#' @param inds The individual--level data (i.e. one row per individual)
 #' @param method The integerisation method specified as a character string.
-#' Defaults to \code{"trs"}.
+#' Defaults to \code{"trs"}; currently other methods aren't implemented.
 #' @param seed The seed to use, defaults to 42.
 #'
-#' @return A data frame of integerised weights to be used by \code{simulate()}
+#' @return A data frame of integerised cases}
 #' @export
 #'
 #' @examples
@@ -389,11 +400,20 @@ extract_weights <- function(weights, inds, id) {
 #' weights     <- weight(cons = cons, inds = inds, vars = vars)
 #' weights_int <- integerise(weights)
 #' weights_int
-integerise <- function(weights, method = "trs", seed = 42) {
+integerise <- function(weights, inds, method = "trs", seed = 42) {
 
   # Ensures the output of the function is reproducible (uses sample())
   set.seed(seed)
 
+  # Check structure of inputs
+  # Number of observations should be the same in weights and inds
+  if (!all.equal(nrow(weights), nrow(inds))) {
+    stop("Number of observations in weights does not match inds")
+  }
+
+  if (!is.data.frame(inds)) {
+    stop("inds is not a data frame")
+  }
 
   if (!method == "trs") {
     stop("Currently this function only supports the truncate, replicate,
@@ -401,7 +421,6 @@ integerise <- function(weights, method = "trs", seed = 42) {
          Proportional probabilities may be added at a later date.
          For now use the default method (trs).")
   }
-
 
   # Weights must be a numeric matrix to reduce to a vector
   weights <- as.matrix(weights)
@@ -413,18 +432,19 @@ integerise <- function(weights, method = "trs", seed = 42) {
   weights_dec <- weights_vec - weights_int
   deficit <- round(sum(weights_dec))
 
-  # do nothing if weights are already integers (sample will throw)
-  if (sum(weights_dec %% 1) > 0) {
-    # the weights be 'topped up' (+ 1 applied)
-    topup <- wrswoR::sample_int_rej(n = length(weights),
+  # if weights are already integers return them unchanged
+  if (!sum(weights_dec %% 1) > 0) {
+    message("weights already integers. Returning unmodified")
+    return(weights)
+  }
+
+  # the weights be 'topped up' (+ 1 applied)
+  topup <- wrswoR::sample_int_crank(n = length(weights),
                                     size = deficit,
                                     prob = weights_dec)
 
-    weights_int[topup] <- weights_int[topup] + 1
-  } else {
-    message("weights already integers. Returning unmodified")
-    weights
-  }
+  weights_int[topup] <- weights_int[topup] + 1
+
 
   # Return as a data frame with correct dimnames
   dim(weights_int)      <- dim(weights)
@@ -432,74 +452,26 @@ integerise <- function(weights, method = "trs", seed = 42) {
   weights_int           <- apply(weights_int, 2, as.integer)
   weights_int           <- as.data.frame(weights_int)
 
-  weights_int
-
-}
-
-
-#' simulate
-#'
-#' @param weights A matrix of integerised weights provided by
-#' \code{weight() \%>\% integerise()}.
-#' One column per zone and one row per individual from \code{inds}
-#' @param inds The individual--level data (i.e. one row per individual).
-#' Ideally I would be able to pass this along the chain for you from the
-#' \code{weight()} step, but I don't know how so you must manually specify
-#' this again, sorry!
-#'
-#' @return A data frame with spatial microsimulated data, with one row per
-#' (simulated) individual with an associated zone.
-#' @export
-#'
-#' @examples
-#' cons <- data.frame(
-#'   "zone"   = letters[1:3],
-#'   "a0_49"  = c(8, 2, 7),
-#'   "a_gt50" = c(4, 8, 4),
-#'   "f"      = c(6, 6, 8),
-#'   "m"      = c(6, 4, 3)
-#' )
-#'
-#' inds <- data.frame(
-#'   "id"     = LETTERS[1:5],
-#'   "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-#'   "sex"    = c("m", "m", "m", "f", "f"),
-#'   "income" = c(2868, 2474, 2231, 3152, 2473),
-#'   stringsAsFactors = FALSE
-#' )
-#' vars <- c("age", "sex")
-#'
-#' weights     <- weight(cons = cons, inds = inds, vars = vars)
-#' weights_int <- integerise(weights)
-#' sim_df      <- simulate(weights_int, inds)
-#' sim_df
-simulate <- function(weights, inds) {
-
-  weights <- as.matrix(weights)
-
-  if (!all(apply(weights, 2, is.integer))) {
-    stop("All weights must be integers")
-  }
-
-  if (!is.data.frame(inds)) {
-    stop("inds is not a data frame")
-  }
+  weights_int <- as.matrix(weights_int)
 
   # Create indices to subset/replicate against the survey
-  indices <- apply(weights, 2, function(x) {
-
+  indices <- apply(weights_int, 2, function(x) {
     rep.int(seq_along(x), x)
-
   })
 
   indices <- as.numeric(unlist(indices))
 
-
   # Create zones
-  zone <- rep(colnames(weights), times = colSums(weights))
+  zone <- rep(colnames(weights), times = colSums(weights_int))
 
-  sim_df <- inds[indices,]
+  sim_df <- inds[indices, ]
   sim_df$zone <- zone
+
+  # check sim_df before returning
+  # Sum of weights should match number of observations in sim_df
+  if (!all.equal(sum(weights), nrow(sim_df))) {
+    stop("Number of simulated observations does not match sum of weights.")
+  }
 
   sim_df
 
