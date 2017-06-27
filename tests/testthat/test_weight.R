@@ -16,6 +16,6 @@ test_that("Populations match (i.e. sum weights == (sum cons / n vars))", {
   expect_equal(sum(weights), (sum(cons[, -1]) / length(vars)))
   # Drop first column because it contains zone numbers
 })
-test_that("individual IDs stored in dimnames", {
-  expect_equal(rownames(weights), inds[, 1])
+test_that("individual IDs stored in rownames of weights", {
+  expect_equal(rownames(weights), inds[[1]])
 })
