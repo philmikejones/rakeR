@@ -25,10 +25,20 @@ test_that("Number of zones is correct", {
   expect_equal(length(extd_weights$code), length(cons$code))
 })
 
-test_that("Simulated population total matched real population total", {
+test_that("Zone codes of extd_weights matches cons", {
+  expect_equal(extd_weights$code, cons$code)
+})
+
+test_that("Simulated population total matches real population total", {
   expect_equal(sum(cons[, 2:3]), sum(extd_weights$total))
 })
 
+test_that("Simulated extd_weights population matches simulated weights
+          population", {
+            expect_equal(sum(extd_weights$total), sum(weights))
+          })
+
 test_that("Simulated income weights match zone total", {
-  expect_equal(rowSums(extd_weights[, c("f", "m")]), extd_weights$total)
+  expect_equal(rowSums(extd_weights[, c("car_no", "car_yes")]),
+               extd_weights$total)
 })
