@@ -1,4 +1,4 @@
-context("Test weight function")
+context("Test extract() function")
 
 cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
@@ -8,7 +8,8 @@ inds$income <- sample(2000:4000, size = nrow(inds), replace = TRUE)
 weights <- weight(cons = cons, inds = inds, vars = vars, iterations = 10)
 
 test_that("extract() errors with a numeric variable", {
-  expect_error(extract(weights = weights, inds = inds, id = "id"))
+  expect_error(rakeR::extract(weights = weights, inds = inds, id = "code"),
+               regexp = "cannot work with numeric")
 })
 
 inds[["income"]] <- cut(inds[["income"]],
