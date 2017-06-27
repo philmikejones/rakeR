@@ -5,23 +5,23 @@
 #'
 #'
 #' The first column of each data frame should be an ID. The first column of
-#' \code{cons} should contain the zone codes. The first column of \code{ind}
+#' \code{cons} should contain the zone codes. The first column of \code{inds}
 #' should contain the individual unique identifier.
 #'
 #' Both data frames should only contain:
 #' \itemize{
-#'   \item an ID column (zone ID \code{cons} or individual ID \code{ind}).
-#'   \item constraints \code{ind} or constraint category \code{cons}.
-#'   \item \code{ind} can optionally contain additional dependent variables
+#'   \item an ID column (zone ID \code{cons} or individual ID \code{inds}).
+#'   \item constraints \code{inds} or constraint category \code{cons}.
+#'   \item \code{inds} can optionally contain additional dependent variables
 #'   that do not influence the weighting process.
 #' }
 #'
 #' No other columns should be present (the user can merge these back in later).
 #'
-#' It is essential that the levels in each \code{ind} constraint (i.e. column)
+#' It is essential that the levels in each \code{inds} constraint (i.e. column)
 #' match exactly with the column names in \code{cons}. In the example below see
 #' how the column names in cons (\code{'a0_49', 'f', ...}) match exactly the
-#' levels in \code{ind} variables.
+#' levels in \code{inds} variables.
 #'
 #' The columns in \code{cons} must be in alphabetical order because these are
 #' created alphabetically when they are 'spread' in the individual--level data.
