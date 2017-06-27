@@ -480,8 +480,8 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 
 #' rake
 #'
-#' A convenience function wrapping \code{weight()} and \code{extract} or
-#' \code{weight()} and \code{integerise}
+#' A convenience function wrapping \code{weight()} and \code{extract()} or
+#' \code{weight()} and \code{integerise()}
 #'
 #' @param cons A data frame of constraint variables
 #' @param inds A data frame of individual--level (survey) data
@@ -503,17 +503,22 @@ rake <- function(cons, inds, vars,
                  output = "fraction",
                  iterations = 10, ...) {
 
+  arguments <- list(...)
+
   out <- weight(cons, inds, vars, iterations)
 
   if (output == "fraction") {
-    out <- extract(out, inds, id)
-  }
+    frac_out <- extract(weights = out, inds = inds,
+                        id = arguments[["id"]])
 
-  if (output == "integer") {
-    out <- integerise(out, inds, method = method, seed = seed)
-  }
+    return(frac_out)
+  } else if (output == "integer") {
+    int_out <- integerise(out, inds,
+                          method = arguments[["method"]],
+                          seed   = arguments[["seed"]])
 
-  out
+    return(int_out)
+  }
 
 }
 
