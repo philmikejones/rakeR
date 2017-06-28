@@ -30,33 +30,7 @@ variable for each unique factor of each variable
 If you want numeric information, like income, use integerise() instead.
 }
 \examples{
-# SimpleWorld
-cons <- data.frame(
-"zone"   = letters[1:3],
-"a0_49"  = c(8, 2, 7),
-"a_gt50" = c(4, 8, 4),
-"f"      = c(6, 6, 8),
-"m"      = c(6, 4, 3),
-stringsAsFactors = FALSE
-)
-inds <- data.frame(
-"id"     = LETTERS[1:5],
-"age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-"sex"    = c("m", "m", "m", "f", "f"),
-"income" = c(2868, 2474, 2231, 3152, 2473),
-stringsAsFactors = FALSE
-)
-
-# Set variables to constrain over
-vars <- c("age", "sex")
-
-# cut() numerical data (income)
-inds$income <- cut(inds$income,
-                   breaks = 2, include.lowest = TRUE,
-                   labels = c("low", "high"))
-
-weights <- weight(cons = cons, inds = inds, vars = vars)
-
-ext_weights <- extract(weights = weights, inds = inds, id = "id")
-print(ext_weights)
+## Not run
+## Use weights object from weights()
+## ext_weights <- extract(weights = weights, inds = inds, id = "id")
 }
