@@ -1,14 +1,21 @@
 v 0.1.2.90000
 =============
 
-* extract() (previously extract_weights()) now stops if it encounters a numeric
-variable. See [issue #49](https://github.com/philmikejones/rakeR/issues/49)
+* integerise() now uses the wrswoR package for sampling without replacement.
+This is in the order of 100s of times faster, reducing the time taken for the function to return from hours to minutes.
+See https://stackoverflow.com/questions/15113650/faster-weighted-sampling-without-replacement or https://cran.r-project.org/package=wrswoR for details of the
+implementation.
+* simulate() is deprecated. Instead of weight() %>% integerise() %>% simulate(),
+just use weight() %>% integerise(). This is to improve consistency with the 
+steps to produce fractional weights (weight() %>% extract()).
 * extract_weights() has been deprecated. Use extract() instead.
-* integerise() now returns weights unmodified with a note if weights are
-already integers (issues [#42](https://github.com/philmikejones/rakeR/issues/42) and [#46](https://github.com/philmikejones/rakeR/issues/46))
+* extract() (previously extract_weights()) now stops if it encounters a numeric
+variable. See https://github.com/philmikejones/rakeR/issues/49
+* integerise() now returns weights unmodified with a note if they are
+already integers. See https://github.com/philmikejones/rakeR/issues/42 and https://github.com/philmikejones/rakeR/issues/46
 * set.seed() is no longer hard-coded in the integerise() function and can be 
-specified as a function argument
-([#41](https://github.com/philmikejones/rakeR/issues/41))
+specified as a function argument. See:
+https://github.com/philmikejones/rakeR/issues/41
 
 v 0.1.2
 =======
