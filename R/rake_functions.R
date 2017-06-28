@@ -5,23 +5,23 @@
 #'
 #'
 #' The first column of each data frame should be an ID. The first column of
-#' \code{cons} should contain the zone codes. The first column of \code{ind}
+#' \code{cons} should contain the zone codes. The first column of \code{inds}
 #' should contain the individual unique identifier.
 #'
 #' Both data frames should only contain:
 #' \itemize{
-#'   \item an ID column (zone ID \code{cons} or individual ID \code{ind}).
-#'   \item constraints \code{ind} or constraint category \code{cons}.
-#'   \item \code{ind} can optionally contain additional dependent variables
+#'   \item an ID column (zone ID \code{cons} or individual ID \code{inds}).
+#'   \item constraints \code{inds} or constraint category \code{cons}.
+#'   \item \code{inds} can optionally contain additional dependent variables
 #'   that do not influence the weighting process.
 #' }
 #'
 #' No other columns should be present (the user can merge these back in later).
 #'
-#' It is essential that the levels in each \code{ind} constraint (i.e. column)
+#' It is essential that the levels in each \code{inds} constraint (i.e. column)
 #' match exactly with the column names in \code{cons}. In the example below see
 #' how the column names in cons (\code{'a0_49', 'f', ...}) match exactly the
-#' levels in \code{ind} variables.
+#' levels in \code{inds} variables.
 #'
 #' The columns in \code{cons} must be in alphabetical order because these are
 #' created alphabetically when they are 'spread' in the individual--level data.
@@ -50,7 +50,8 @@
 #' "a0_49"  = c(8, 2, 7),
 #' "a_gt50" = c(4, 8, 4),
 #' "f"      = c(6, 6, 8),
-#' "m"      = c(6, 4, 3)
+#' "m"      = c(6, 4, 3),
+#' stringsAsFactors = FALSE
 #' )
 #' inds <- data.frame(
 #' "id"     = LETTERS[1:5],
@@ -172,12 +173,12 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   colnames(weights) <- zones
   weights <- as.data.frame(weights)
 
-weights
+  weights
 
 }
 
 
-#' extract_weights
+#' extract
 #'
 #' Extract aggregate weights from individual weight table
 #'
@@ -190,16 +191,37 @@ weights
 #'
 #' @param weights A weight table, typically produced by rakeR::weight()
 #' @param inds The individual level data
-#' @param id The unique id variable in the individual level data, usually the
-#' first column
+#' @param id The unique id variable in the individual level data (inds),
+#' usually the first column
 #'
 #' @return A data frame with zones and aggregated simulated values for each
 #' variable
 #' @export
 #'
 #' @examples
-#' ## not run
-extract_weights <- function(weights, inds, id) {
+#' # SimpleWorld
+#' cons <- data.frame(
+#' "zone"   = letters[1:3],
+#' "a0_49"  = c(8, 2, 7),
+#' "a_gt50" = c(4, 8, 4),
+#' "f"      = c(6, 6, 8),
+#' "m"      = c(6, 4, 3),
+#' stringsAsFactors = FALSE
+#' )
+#' inds <- data.frame(
+#' "id"     = LETTERS[1:5],
+#' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
+#' "sex"    = c("m", "m", "m", "f", "f"),
+#' "income" = c("high", "low", "low", "high", "low"),
+#' stringsAsFactors = FALSE
+#' )
+#'
+#' vars <- c("age", "sex")
+#' weights <- weight(cons = cons, inds = inds, vars = vars)
+#'
+#' ext_weights <- extract(weights, inds = inds, id = "id")
+#' print(ext_weights)
+extract <- function(weights, inds, id) {
 
   # variables to loop over (dropping id/code)
   variables <- colnames(inds)
@@ -266,9 +288,105 @@ extract_weights <- function(weights, inds, id) {
 }
 
 
+#' extract_weights
+#'
+#' Deprecated: use rakeR::extract()
+#'
+#' @param weights A weight table, typically produced by rakeR::weight()
+#' @param inds The individual level data
+#' @param id The unique id variable in the individual level data (inds),
+#' usually the first column
+#'
+#' @return A data frame with zones and aggregated simulated values for each
+#' variable
+#' @export
+#'
+#' @examples
+#' ## Not run
+#' ## extract_weights() is deprecated, use extract() instead
+extract_weights <- function(weights, inds, id) {
+
+  .Deprecated("extract")
+
+  # variables to loop over (dropping id/code)
+  variables <- colnames(inds)
+  variables <- variables[-grep(id, variables)]
+
+  # check if any columns are class numeric or integer
+  # have to use loop as class() returns class of the overall d.f.
+  # have to use class() because typeof() for factor returns integer (as
+  # it uses integers with attributes under the hood)
+  # same for is()
+  lapply(inds[, variables], function(x) {
+    if (class(x) == "numeric" | class(x) == "integer") {
+      stop("rakeR::extract() cannot work with numeric (i.e. integer or double)
+           variables because by design it creates a new variable for each
+           unique level in each variable\n
+           Consider cut()ing your numeric data, extract() without your
+           numeric data, or integerise() instead.")
+    }
+  })
+
+  levels <- lapply(as.list(variables), function(x) {
+    sort(unique(as.character(inds[[x]])))
+  })
+
+  result <- lapply(variables, function(y) {
+
+    lapply(as.list(sort(unique(as.character(inds[[y]])))), function(x) {
+
+      match_id <- inds[[id]][inds[[y]] == x]
+
+      matched_weights <- weights[row.names(weights) %in% match_id, ]
+      matched_weights <- colSums(matched_weights)
+
+      matched_weights
+
+    })
+
+  })
+
+  result           <- as.data.frame(result)
+  colnames(result) <- unlist(levels)
+
+  df <- data.frame(
+    code  = colnames(weights),
+    total = colSums(weights),
+    row.names = NULL, stringsAsFactors = FALSE
+  )
+
+  stopifnot(
+    all.equal(df[["code"]], row.names(result))
+  )
+
+  df            <- cbind(df, result)
+  row.names(df) <- NULL
+
+  stopifnot(
+    all.equal(
+      sum(df[["total"]]),
+      (sum(df[, 3:ncol(df)]) / length(variables)))
+  )
+
+  message("extract_weights() is deprecated. Please use extract()")
+  df
+
+}
+
+
 #' integerise
 #'
 #' Generate integer cases from numeric weights matrix.
+#'
+#' Extracted weights (using rakeR::extract()) are more 'precise' than
+#' integerised weights (although the user should be careful this isn't
+#' spurious precision based on context) as they return fractions.
+#' Nevertheless, integerised weights are useful in cases when:
+#'   - Numeric information (such as income) is required, as this needs to be
+#'   cut() to work with rakeR::extract()
+#'   - Simulated 'individuals' are required for case studies of key areas.
+#'   - Input individual-level data for agent-based or dynamic models are
+#'   required
 #'
 #' The default integerisation method uses the 'truncate, replicate, sample'
 #' method developed by Robin Lovelace and Dimitris Ballas
@@ -278,12 +396,13 @@ extract_weights <- function(weights, inds, id) {
 #' at a later date.
 #'
 #' @param weights A matrix or data frame of fractional weights, typically
-#' provided by \code{weight()}
+#' provided by \code{rakeR::weight()}
+#' @param inds The individual--level data (i.e. one row per individual)
 #' @param method The integerisation method specified as a character string.
-#' Defaults to \code{"trs"}.
+#' Defaults to \code{"trs"}; currently other methods aren't implemented.
 #' @param seed The seed to use, defaults to 42.
 #'
-#' @return A data frame of integerised weights to be used by \code{simulate()}
+#' @return A data frame of integerised cases
 #' @export
 #'
 #' @examples
@@ -292,7 +411,8 @@ extract_weights <- function(weights, inds, id) {
 #'   "a0_49"  = c(8, 2, 7),
 #'   "a_gt50" = c(4, 8, 4),
 #'   "f"      = c(6, 6, 8),
-#'   "m"      = c(6, 4, 3)
+#'   "m"      = c(6, 4, 3),
+#'   stringsAsFactors = FALSE
 #' )
 #'
 #' inds <- data.frame(
@@ -305,13 +425,22 @@ extract_weights <- function(weights, inds, id) {
 #' vars <- c("age", "sex")
 #'
 #' weights     <- weight(cons = cons, inds = inds, vars = vars)
-#' weights_int <- integerise(weights)
-#' weights_int
-integerise <- function(weights, method = "trs", seed = 42) {
+#' weights_int <- integerise(weights, inds = inds)
+#' print(weights_int)
+integerise <- function(weights, inds, method = "trs", seed = 42) {
 
   # Ensures the output of the function is reproducible (uses sample())
   set.seed(seed)
 
+  # Check structure of inputs
+  # Number of observations should be the same in weights and inds
+  if (!all.equal(nrow(weights), nrow(inds))) {
+    stop("Number of observations in weights does not match inds")
+  }
+
+  if (!is.data.frame(inds)) {
+    stop("inds is not a data frame")
+  }
 
   if (!method == "trs") {
     stop("Currently this function only supports the truncate, replicate,
@@ -319,7 +448,6 @@ integerise <- function(weights, method = "trs", seed = 42) {
          Proportional probabilities may be added at a later date.
          For now use the default method (trs).")
   }
-
 
   # Weights must be a numeric matrix to reduce to a vector
   weights <- as.matrix(weights)
@@ -331,16 +459,19 @@ integerise <- function(weights, method = "trs", seed = 42) {
   weights_dec <- weights_vec - weights_int
   deficit <- round(sum(weights_dec))
 
-  # do nothing if weights are already integers (sample will throw)
-  if (sum(weights_dec %% 1) > 0) {
-    # the weights be 'topped up' (+ 1 applied)
-    topup <- sample(length(weights), size = deficit, prob = weights_dec)
-
-    weights_int[topup] <- weights_int[topup] + 1
-  } else {
+  # if weights are already integers return them unchanged
+  if (!sum(weights_dec %% 1) > 0) {
     message("weights already integers. Returning unmodified")
-    weights
+    return(weights)
   }
+
+  # the weights be 'topped up' (+ 1 applied)
+  topup <- wrswoR::sample_int_crank(n = length(weights),
+                                    size = deficit,
+                                    prob = weights_dec)
+
+  weights_int[topup] <- weights_int[topup] + 1
+
 
   # Return as a data frame with correct dimnames
   dim(weights_int)      <- dim(weights)
@@ -348,74 +479,26 @@ integerise <- function(weights, method = "trs", seed = 42) {
   weights_int           <- apply(weights_int, 2, as.integer)
   weights_int           <- as.data.frame(weights_int)
 
-  weights_int
-
-}
-
-
-#' simulate
-#'
-#' @param weights A matrix of integerised weights provided by
-#' \code{weight() \%>\% integerise()}.
-#' One column per zone and one row per individual from \code{inds}
-#' @param inds The individual--level data (i.e. one row per individual).
-#' Ideally I would be able to pass this along the chain for you from the
-#' \code{weight()} step, but I don't know how so you must manually specify
-#' this again, sorry!
-#'
-#' @return A data frame with spatial microsimulated data, with one row per
-#' (simulated) individual with an associated zone.
-#' @export
-#'
-#' @examples
-#' cons <- data.frame(
-#'   "zone"   = letters[1:3],
-#'   "a0_49"  = c(8, 2, 7),
-#'   "a_gt50" = c(4, 8, 4),
-#'   "f"      = c(6, 6, 8),
-#'   "m"      = c(6, 4, 3)
-#' )
-#'
-#' inds <- data.frame(
-#'   "id"     = LETTERS[1:5],
-#'   "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-#'   "sex"    = c("m", "m", "m", "f", "f"),
-#'   "income" = c(2868, 2474, 2231, 3152, 2473),
-#'   stringsAsFactors = FALSE
-#' )
-#' vars <- c("age", "sex")
-#'
-#' weights     <- weight(cons = cons, inds = inds, vars = vars)
-#' weights_int <- integerise(weights)
-#' sim_df      <- simulate(weights_int, inds)
-#' sim_df
-simulate <- function(weights, inds) {
-
-  weights <- as.matrix(weights)
-
-  if (!all(apply(weights, 2, is.integer))) {
-    stop("All weights must be integers")
-  }
-
-  if (!is.data.frame(inds)) {
-    stop("inds is not a data frame")
-  }
+  weights_int <- as.matrix(weights_int)
 
   # Create indices to subset/replicate against the survey
-  indices <- apply(weights, 2, function(x) {
-
+  indices <- apply(weights_int, 2, function(x) {
     rep.int(seq_along(x), x)
-
   })
 
   indices <- as.numeric(unlist(indices))
 
-
   # Create zones
-  zone <- rep(colnames(weights), times = colSums(weights))
+  zone <- rep(colnames(weights), times = colSums(weights_int))
 
-  sim_df <- inds[indices,]
+  sim_df <- inds[indices, ]
   sim_df$zone <- zone
+
+  # check sim_df before returning
+  # Sum of weights should match number of observations in sim_df
+  if (!all.equal(sum(weights), nrow(sim_df))) {
+    stop("Number of simulated observations does not match sum of weights.")
+  }
 
   sim_df
 
@@ -424,27 +507,66 @@ simulate <- function(weights, inds) {
 
 #' rake
 #'
-#' A convenience function wrapping \code{weight()}, \code{integerise} and
-#' \code{simulate}
+#' A convenience function wrapping \code{weight()} and \code{extract()} or
+#' \code{weight()} and \code{integerise()}
 #'
 #' @param cons A data frame of constraint variables
 #' @param inds A data frame of individual--level (survey) data
 #' @param vars A character string of variables to iterate over
+#' @param output A string specifying the desired output, either "fraction"
+#' (extract()) or "integer" (integerise())
 #' @param iterations The number of iterations to perform. Defaults to 10.
-#' @param method Integerisation method to apply. Defaults to \code{trs}.
-#' @param ... Additional arguments to pass to additional methods
+#' @param ... Additional arguments to pass to depending on desired output:
+#'   - if "fraction" specify 'id' (see extract() documentation)
+#'   - if "integer" specify 'method' and 'seed' (see integerise() documentation)
 #'
-#' @return A data frame of simulated individuals in zones.
+#' @return A data frame with extracted weights (if output == "fraction", the
+#' default) or integerised cases (if output == "integer")
 #' @export
 #'
 #' @examples
-#' # not run
-rake <- function(cons, inds, vars, iterations = 10, method = "trs", ...) {
+#' ## not run
+#' ## frac_weights <- rake(cons, inds, vars, output = "fraction",
+#' ##                      id = "id")
+#'
+#' ## int_weight <- rake(cons, inds, vars, output = "integer",
+#' ##                    method = "trs", seed = "42")
+rake <- function(cons, inds, vars,
+                 output = "fraction",
+                 iterations = 10, ...) {
+
+  arguments <- list(...)
 
   out <- weight(cons, inds, vars, iterations)
-  out <- integerise(out, method)
-  out <- simulate(out, inds)
 
-  out
+  if (output == "fraction") {
+    frac_out <- extract(weights = out, inds = inds,
+                        id = arguments[["id"]])
+
+    return(frac_out)
+  } else if (output == "integer") {
+    int_out <- integerise(out, inds,
+                          method = arguments[["method"]],
+                          seed   = arguments[["seed"]])
+
+    return(int_out)
+  }
+
+}
+
+
+#' simulate
+#'
+#' Deprecated: integerise() \%>\% simulate() has been replaced by simply
+#' integerise() to be consistent with extract().
+#'
+#' @param ... arguments previously passed to simulate()
+#'
+#' @return Returns an error if used. Just use integerise()
+#' @export
+simulate <- function(...) {
+
+  .Deprecated(msg = "rakeR::simulate() is deprecated. Just use
+              weight() %>% integerise() (or rake(output = \"integer\"))")
 
 }

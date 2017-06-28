@@ -1,39 +1,20 @@
 context("Test integerise function")
 
-cons <- data.frame(
+cons <- readr::read_csv("../cakemap_cons.csv")
+inds <- readr::read_csv("../cakemap_inds.csv")
+vars <- c("Car", "NSSEC8", "ageband4")
 
-  "zone"   = letters[1:3],
-  "a0_49"  = c(8, 2, 7),
-  "a_gt50" = c(4, 8, 4),
-  "f"      = c(6, 6, 8),
-  "m"      = c(6, 4, 3)
+weights <- weight(cons = cons, inds = inds, vars = vars)
+weights_int <- integerise(weights, inds)
 
-)
+test_that("Sum of input weights should equal number of integerised cases", {
+  expect_equal(sum(weights), nrow(weights_int))
+})
 
-inds <- data.frame(
-
-  "id"     = LETTERS[1:5],
-  "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-  "sex"    = c("m", "m", "m", "f", "f"),
-  "income" = c(2868, 2474, 2231, 3152, 2473),
-  stringsAsFactors = FALSE
-
-)
-
-vars <- c("age", "sex")
-
-weights     <- weight(cons = cons, inds = inds, vars = vars)
-weights_int <- integerise(weights)
+test_that("correct number of zones in integerised data", {
+  expect_equal(length(unique(weights_int[["zone"]])), nrow(cons))
+})
 
 test_that("integerised weights should add up to cons population", {
-  expect_equal(sum(weights_int), sum(weights))
-  expect_equal(sum(weights_int), (sum(cons[, -1] / length(vars))))
-})
-
-test_that("integerised weights should have one column per zone", {
-  expect_equal(ncol(weights_int), nrow(cons))
-})
-
-test_that("integerised weights are integers", {
-  expect_true(all(apply(weights_int, 2, is.integer)))
+  expect_equal(nrow(weights_int), (sum(cons[, -1] / length(vars))))
 })

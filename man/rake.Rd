@@ -4,7 +4,7 @@
 \alias{rake}
 \title{rake}
 \usage{
-rake(cons, inds, vars, iterations = 10, method = "trs", ...)
+rake(cons, inds, vars, output = "fraction", iterations = 10, ...)
 }
 \arguments{
 \item{cons}{A data frame of constraint variables}
@@ -13,20 +13,28 @@ rake(cons, inds, vars, iterations = 10, method = "trs", ...)
 
 \item{vars}{A character string of variables to iterate over}
 
+\item{output}{A string specifying the desired output, either "fraction"
+(extract()) or "integer" (integerise())}
+
 \item{iterations}{The number of iterations to perform. Defaults to 10.}
 
-\item{method}{Integerisation method to apply. Defaults to \code{trs}.}
-
-\item{...}{Additional arguments to pass to additional methods}
+\item{...}{Additional arguments to pass to depending on desired output:
+- if "fraction" specify 'id' (see extract() documentation)
+- if "integer" specify 'method' and 'seed' (see integerise() documentation)}
 }
 \value{
-A data frame of simulated individuals in zones.
+A data frame with extracted weights (if output == "fraction", the
+default) or integerised cases (if output == "integer")
 }
 \description{
-A convenience function wrapping \code{weight()}, \code{integerise} and
-\code{simulate}
+A convenience function wrapping \code{weight()} and \code{extract()} or
+\code{weight()} and \code{integerise()}
 }
 \examples{
-# not run
-}
+## not run
+## frac_weights <- rake(cons, inds, vars, output = "fraction",
+##                      id = "id")
 
+## int_weight <- rake(cons, inds, vars, output = "integer",
+##                    method = "trs", seed = "42")
+}

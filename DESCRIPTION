@@ -19,7 +19,8 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Imports: ipfp
+Imports: ipfp,
+    wrswoR
 Suggests: testthat,
     readr
 URL: https://philmikejones.github.io/rakeR/

@@ -4,46 +4,15 @@
 \alias{simulate}
 \title{simulate}
 \usage{
-simulate(weights, inds)
+simulate(...)
 }
 \arguments{
-\item{weights}{A matrix of integerised weights provided by
-\code{weight() \%>\% integerise()}.
-One column per zone and one row per individual from \code{inds}}
-
-\item{inds}{The individual--level data (i.e. one row per individual).
-Ideally I would be able to pass this along the chain for you from the
-\code{weight()} step, but I don't know how so you must manually specify
-this again, sorry!}
+\item{...}{arguments previously passed to simulate()}
 }
 \value{
-A data frame with spatial microsimulated data, with one row per
-(simulated) individual with an associated zone.
+Returns an error if used. Just use integerise()
 }
 \description{
-simulate
+Deprecated: integerise() \%>\% simulate() has been replaced by simply
+integerise() to be consistent with extract().
 }
-\examples{
-cons <- data.frame(
-  "zone"   = letters[1:3],
-  "a0_49"  = c(8, 2, 7),
-  "a_gt50" = c(4, 8, 4),
-  "f"      = c(6, 6, 8),
-  "m"      = c(6, 4, 3)
-)
-
-inds <- data.frame(
-  "id"     = LETTERS[1:5],
-  "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-  "sex"    = c("m", "m", "m", "f", "f"),
-  "income" = c(2868, 2474, 2231, 3152, 2473),
-  stringsAsFactors = FALSE
-)
-vars <- c("age", "sex")
-
-weights     <- weight(cons = cons, inds = inds, vars = vars)
-weights_int <- integerise(weights)
-sim_df      <- simulate(weights_int, inds)
-sim_df
-}
-

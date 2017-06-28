@@ -11,25 +11,17 @@ extract_weights(weights, inds, id)
 
 \item{inds}{The individual level data}
 
-\item{id}{The unique id variable in the individual level data, usually the
-first column}
+\item{id}{The unique id variable in the individual level data (inds),
+usually the first column}
 }
 \value{
 A data frame with zones and aggregated simulated values for each
 variable
 }
 \description{
-Extract aggregate weights from individual weight table
-}
-\details{
-Extract aggregate weights from individual weight table, typically produced
-by rakeR::weight()
-
-Extract cannot operate with numeric variables because it creates a new
-variable for each unique factor of each variable
-If you want numeric information, like income, use integerise() instead.
+Deprecated: use rakeR::extract()
 }
 \examples{
-## not run
+## Not run
+## extract_weights() is deprecated, use extract() instead
 }
-
