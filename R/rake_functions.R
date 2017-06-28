@@ -212,8 +212,7 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #' "id"     = LETTERS[1:5],
 #' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
 #' "sex"    = c("m", "m", "m", "f", "f"),
-#' "income" = c("high", "low", "low", "high", "low"),
-#' stringsAsFactors = FALSE
+#' "income" = c("high", "low", "low", "high", "low")
 #' )
 #'
 #' vars <- c("age", "sex")
