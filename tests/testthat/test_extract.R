@@ -1,12 +1,18 @@
-context("Test extract() function rejects numeric variables")
-
 cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
 vars <- c("Car", "NSSEC8", "ageband4")
 
-inds$income <- sample(2000:4000, size = nrow(inds), replace = TRUE)
 weights <- weight(cons = cons, inds = inds, vars = vars, iterations = 10)
 
+context("Test extract_weights() returns a warning (deprecated)")
+test_that("extract_weights() should return a warning", {
+  expect_warning(extract_weights(weights, inds, id = "code"))
+})
+
+
+context("Test extract() function rejects numeric variables")
+
+inds$income <- sample(2000:4000, size = nrow(inds), replace = TRUE)
 test_that("extract() errors with a numeric variable", {
   expect_error(extract(weights = weights, inds = inds, id = "code"),
                regexp = "cannot work with numeric")
