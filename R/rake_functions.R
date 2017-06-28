@@ -326,6 +326,8 @@ extract <- function(weights, inds, id) {
 #' print(ext_weights)
 extract_weights <- function(weights, inds, id) {
 
+  .Deprecated("extract")
+
   # variables to loop over (dropping id/code)
   variables <- colnames(inds)
   variables <- variables[-grep(id, variables)]
@@ -584,8 +586,7 @@ rake <- function(cons, inds, vars,
 #' @export
 simulate <- function(...) {
 
-  stop("rakeR::simulate() is deprecated. The ouptut of rakeR::integerise()
-       is the same as rakeR::integerise() %>% rakeR::simulate() in previous
-       versions or rakeR")
+  .Deprecated(msg = "rakeR::simulate() is deprecated. Just use
+              weight() %>% integerise() (or rake(output = \"integer\"))")
 
 }
