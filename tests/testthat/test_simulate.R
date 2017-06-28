@@ -1,4 +1,4 @@
-context("Check use of simulate() throws and error")
+context("Check use of simulate() shows a warning (deprecated)")
 test_that("simulate() returns an error", {
-  expect_error(simulate())
+  expect_warning(simulate())
 })
