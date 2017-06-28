@@ -302,28 +302,8 @@ extract <- function(weights, inds, id) {
 #' @export
 #'
 #' @examples
-#' # SimpleWorld
-#' cons <- data.frame(
-#' "zone"   = letters[1:3],
-#' "a0_49"  = c(8, 2, 7),
-#' "a_gt50" = c(4, 8, 4),
-#' "f"      = c(6, 6, 8),
-#' "m"      = c(6, 4, 3),
-#' stringsAsFactors = FALSE
-#' )
-#' inds <- data.frame(
-#' "id"     = LETTERS[1:5],
-#' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-#' "sex"    = c("m", "m", "m", "f", "f"),
-#' "income" = c("high", "low", "low", "high", "low"),
-#' stringsAsFactors = FALSE
-#' )
-#'
-#' vars <- c("age", "sex")
-#' weights <- weight(cons = cons, inds = inds, vars = vars)
-#'
-#' ext_weights <- extract_weights(weights, inds = inds, id = "id")
-#' print(ext_weights)
+#' ## Not run
+#' ## extract_weights() is deprecated, use extract() instead
 extract_weights <- function(weights, inds, id) {
 
   .Deprecated("extract")
