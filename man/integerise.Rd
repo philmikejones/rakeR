@@ -47,7 +47,8 @@ cons <- data.frame(
   "a0_49"  = c(8, 2, 7),
   "a_gt50" = c(4, 8, 4),
   "f"      = c(6, 6, 8),
-  "m"      = c(6, 4, 3)
+  "m"      = c(6, 4, 3),
+  stringsAsFactors = FALSE
 )
 
 inds <- data.frame(

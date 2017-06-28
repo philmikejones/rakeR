@@ -31,5 +31,10 @@ A convenience function wrapping \code{weight()} and \code{extract()} or
 \code{weight()} and \code{integerise()}
 }
 \examples{
-# not run
+## not run
+## frac_weights <- rake(cons, inds, vars, output = "fraction",
+##                      id = "id")
+
+## int_weight <- rake(cons, inds, vars, output = "integer",
+##                    method = "trs", seed = "42")
 }

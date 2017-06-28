@@ -199,7 +199,28 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #' @export
 #'
 #' @examples
-#' ## not run
+#' # SimpleWorld
+#' cons <- data.frame(
+#' "zone"   = letters[1:3],
+#' "a0_49"  = c(8, 2, 7),
+#' "a_gt50" = c(4, 8, 4),
+#' "f"      = c(6, 6, 8),
+#' "m"      = c(6, 4, 3),
+#' stringsAsFactors = FALSE
+#' )
+#' inds <- data.frame(
+#' "id"     = LETTERS[1:5],
+#' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
+#' "sex"    = c("m", "m", "m", "f", "f"),
+#' "income" = c("high", "low", "low", "high", "low"),
+#' stringsAsFactors = FALSE
+#' )
+#'
+#' vars <- c("age", "sex")
+#' weights <- weight(cons = cons, inds = inds, vars = vars)
+#'
+#' ext_weights <- extract(weights, inds = inds, id = "id")
+#' print(ext_weights)
 extract <- function(weights, inds, id) {
 
   # variables to loop over (dropping id/code)
@@ -281,7 +302,28 @@ extract <- function(weights, inds, id) {
 #' @export
 #'
 #' @examples
-#' ## not run
+#' # SimpleWorld
+#' cons <- data.frame(
+#' "zone"   = letters[1:3],
+#' "a0_49"  = c(8, 2, 7),
+#' "a_gt50" = c(4, 8, 4),
+#' "f"      = c(6, 6, 8),
+#' "m"      = c(6, 4, 3),
+#' stringsAsFactors = FALSE
+#' )
+#' inds <- data.frame(
+#' "id"     = LETTERS[1:5],
+#' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
+#' "sex"    = c("m", "m", "m", "f", "f"),
+#' "income" = c("high", "low", "low", "high", "low"),
+#' stringsAsFactors = FALSE
+#' )
+#'
+#' vars <- c("age", "sex")
+#' weights <- weight(cons = cons, inds = inds, vars = vars)
+#'
+#' ext_weights <- extract_weights(weights, inds = inds, id = "id")
+#' print(ext_weights)
 extract_weights <- function(weights, inds, id) {
 
   # variables to loop over (dropping id/code)
@@ -344,6 +386,7 @@ extract_weights <- function(weights, inds, id) {
       (sum(df[, 3:ncol(df)]) / length(variables)))
   )
 
+  message("extract_weights() is deprecated. Please use extract()")
   df
 
 }
@@ -386,7 +429,8 @@ extract_weights <- function(weights, inds, id) {
 #'   "a0_49"  = c(8, 2, 7),
 #'   "a_gt50" = c(4, 8, 4),
 #'   "f"      = c(6, 6, 8),
-#'   "m"      = c(6, 4, 3)
+#'   "m"      = c(6, 4, 3),
+#'   stringsAsFactors = FALSE
 #' )
 #'
 #' inds <- data.frame(
@@ -499,7 +543,12 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 #' @export
 #'
 #' @examples
-#' # not run
+#' ## not run
+#' ## frac_weights <- rake(cons, inds, vars, output = "fraction",
+#' ##                      id = "id")
+#'
+#' ## int_weight <- rake(cons, inds, vars, output = "integer",
+#' ##                    method = "trs", seed = "42")
 rake <- function(cons, inds, vars,
                  output = "fraction",
                  iterations = 10, ...) {
