@@ -61,6 +61,6 @@ inds <- data.frame(
 vars <- c("age", "sex")
 
 weights     <- weight(cons = cons, inds = inds, vars = vars)
-weights_int <- integerise(weights)
-weights_int
+weights_int <- integerise(weights, inds = inds)
+print(weights_int)
 }
