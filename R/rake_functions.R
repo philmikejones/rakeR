@@ -387,6 +387,7 @@ extract_weights <- function(weights, inds, id) {
 #' @param seed The seed to use, defaults to 42.
 #'
 #' @return A data frame of integerised cases
+#' @aliases integerize
 #' @export
 #'
 #' @examples

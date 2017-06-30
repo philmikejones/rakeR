@@ -2,6 +2,7 @@
 % Please edit documentation in R/rake_functions.R
 \name{integerise}
 \alias{integerise}
+\alias{integerize}
 \title{integerise}
 \usage{
 integerise(weights, inds, method = "trs", seed = 42)
