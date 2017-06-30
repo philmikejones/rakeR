@@ -199,28 +199,9 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #' @export
 #'
 #' @examples
-#' # SimpleWorld
-#' cons <- data.frame(
-#' "zone"   = letters[1:3],
-#' "a0_49"  = c(8, 2, 7),
-#' "a_gt50" = c(4, 8, 4),
-#' "f"      = c(6, 6, 8),
-#' "m"      = c(6, 4, 3),
-#' stringsAsFactors = FALSE
-#' )
-#' inds <- data.frame(
-#' "id"     = LETTERS[1:5],
-#' "age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-#' "sex"    = c("m", "m", "m", "f", "f"),
-#' "income" = c("high", "low", "low", "high", "low"),
-#' stringsAsFactors = FALSE
-#' )
-#'
-#' vars <- c("age", "sex")
-#' weights <- weight(cons = cons, inds = inds, vars = vars)
-#'
-#' ext_weights <- extract(weights, inds = inds, id = "id")
-#' print(ext_weights)
+#' ## Not run
+#' ## Use weights object from weights()
+#' ## ext_weights <- extract(weights = weights, inds = inds, id = "id")
 extract <- function(weights, inds, id) {
 
   # variables to loop over (dropping id/code)
@@ -382,11 +363,14 @@ extract_weights <- function(weights, inds, id) {
 #' integerised weights (although the user should be careful this isn't
 #' spurious precision based on context) as they return fractions.
 #' Nevertheless, integerised weights are useful in cases when:
-#'   - Numeric information (such as income) is required, as this needs to be
-#'   cut() to work with rakeR::extract()
-#'   - Simulated 'individuals' are required for case studies of key areas.
-#'   - Input individual-level data for agent-based or dynamic models are
-#'   required
+#'   \itemize{
+#'     \item{Numeric information (such as income) is required, as this needs
+#'     to be cut() to work with rakeR::extract()}
+#'     \item{Simulated 'individuals' are required for case studies of key
+#'     areas.}
+#'     \item{Input individual-level data for agent-based or dynamic models are
+#'     required}
+#'   }
 #'
 #' The default integerisation method uses the 'truncate, replicate, sample'
 #' method developed by Robin Lovelace and Dimitris Ballas
@@ -403,6 +387,7 @@ extract_weights <- function(weights, inds, id) {
 #' @param seed The seed to use, defaults to 42.
 #'
 #' @return A data frame of integerised cases
+#' @aliases integerize
 #' @export
 #'
 #' @examples
@@ -517,8 +502,11 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 #' (extract()) or "integer" (integerise())
 #' @param iterations The number of iterations to perform. Defaults to 10.
 #' @param ... Additional arguments to pass to depending on desired output:
-#'   - if "fraction" specify 'id' (see extract() documentation)
-#'   - if "integer" specify 'method' and 'seed' (see integerise() documentation)
+#'   \itemize{
+#'     \item{if "fraction" specify 'id' (see extract() documentation)}
+#'     \item{if "integer" specify 'method' and 'seed' (see integerise()
+#'   documentation)}
+#'   }
 #'
 #' @return A data frame with extracted weights (if output == "fraction", the
 #' default) or integerised cases (if output == "integer")

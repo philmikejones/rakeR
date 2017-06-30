@@ -19,8 +19,11 @@ rake(cons, inds, vars, output = "fraction", iterations = 10, ...)
 \item{iterations}{The number of iterations to perform. Defaults to 10.}
 
 \item{...}{Additional arguments to pass to depending on desired output:
-- if "fraction" specify 'id' (see extract() documentation)
-- if "integer" specify 'method' and 'seed' (see integerise() documentation)}
+\itemize{
+  \item{if "fraction" specify 'id' (see extract() documentation)}
+  \item{if "integer" specify 'method' and 'seed' (see integerise()
+documentation)}
+}}
 }
 \value{
 A data frame with extracted weights (if output == "fraction", the
