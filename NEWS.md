@@ -3,6 +3,9 @@ v 0.1.2.90000
 
 * integerise() now uses the wrswoR package for sampling without replacement.
 This is in the order of 100s of times faster, reducing the time taken for the function to return from hours to minutes.
+I have implemented the sample_int_crank() function as this has given results
+similar to that of base R's sample() in testing, so this should minimise changes
+between the two.
 See https://stackoverflow.com/questions/15113650/faster-weighted-sampling-without-replacement or https://cran.r-project.org/package=wrswoR for details of the
 implementation.
 * simulate() is deprecated. Instead of weight() %>% integerise() %>% simulate(),
