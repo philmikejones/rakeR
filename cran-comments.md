@@ -1,8 +1,6 @@
 ## R CMD check results
-* There were no ERRORs, WARNINGs, or NOTEs[1]
-
-[1] One NOTE with win-builder refering to the spelling of 'microsimulation' 
-(which is correct).
+* There were no ERRORs or WARNINGs
+* One NOTE refers to the spelling of 'microsimulation' (which is correct).
 
 
 ## Test environments
