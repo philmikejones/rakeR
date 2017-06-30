@@ -14,7 +14,7 @@ Authors@R: c(
 Description: Functions for performing spatial microsimulation ('raking')
     in R.
 Depends:
-    R (>= 3.3.1)
+    R (>= 3.4.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
