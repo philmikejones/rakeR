@@ -28,11 +28,14 @@ Extracted weights (using rakeR::extract()) are more 'precise' than
 integerised weights (although the user should be careful this isn't
 spurious precision based on context) as they return fractions.
 Nevertheless, integerised weights are useful in cases when:
-  - Numeric information (such as income) is required, as this needs to be
-  cut() to work with rakeR::extract()
-  - Simulated 'individuals' are required for case studies of key areas.
-  - Input individual-level data for agent-based or dynamic models are
-  required
+  \itemize{
+    \item{Numeric information (such as income) is required, as this needs
+    to be cut() to work with rakeR::extract()}
+    \item{Simulated 'individuals' are required for case studies of key
+    areas.}
+    \item{Input individual-level data for agent-based or dynamic models are
+    required}
+  }
 
 The default integerisation method uses the 'truncate, replicate, sample'
 method developed by Robin Lovelace and Dimitris Ballas
