@@ -14,7 +14,7 @@ provided by \code{rakeR::weight()}}
 \item{inds}{The individual--level data (i.e. one row per individual)}
 
 \item{method}{The integerisation method specified as a character string.
-Defaults to \code{"trs"}; currently other methods aren't implemented.}
+Defaults to \code{"trs"}; currently other methods are not implemented.}
 
 \item{seed}{The seed to use, defaults to 42.}
 }
@@ -26,7 +26,7 @@ Generate integer cases from numeric weights matrix.
 }
 \details{
 Extracted weights (using rakeR::extract()) are more 'precise' than
-integerised weights (although the user should be careful this isn't
+integerised weights (although the user should be careful this is not
 spurious precision based on context) as they return fractions.
 Nevertheless, integerised weights are useful in cases when:
   \itemize{

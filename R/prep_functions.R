@@ -1,6 +1,6 @@
 #' check_constraint
 #'
-#' Checks a contraint table for common errors.
+#' Checks a constraint table for common errors.
 #'
 #' Checks a constraint table for the following common errors:
 #' \itemize{
