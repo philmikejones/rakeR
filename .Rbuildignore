@@ -10,3 +10,5 @@ data-raw/
 ^CONDUCT\.md$
 inst/
 revdep/
+
+docs/
