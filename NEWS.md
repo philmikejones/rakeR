@@ -1,5 +1,10 @@
-v 0.2.0.9000
-============
+v 0.2.1
+=======
+
+Patch release:
+
+* Fixes to examples and tests to use correct variable labels and names (thanks Derrick Atherton for pointing this out).
+* Fix version number in NEWS
 
 v 0.2.0
 =======
