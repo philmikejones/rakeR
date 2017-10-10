@@ -110,13 +110,13 @@ The raw weights tell you how frequently each individual (`A`-`E`) should appear 
 ``` r
 int_weights <- integerise(weights, inds = inds)
 int_weights[1:6, ]
-#>     id    age sex income zone
-#> 1    A age_gt_50   m   2868    a
-#> 1.1  A age_gt_50   m   2868    a
-#> 2    B age_gt_50   m   2474    a
-#> 3    C  age_0_49   m   2231    a
-#> 3.1  C  age_0_49   m   2231    a
-#> 3.2  C  age_0_49   m   2231    a
+#>     id       age   sex income zone
+#> 1    A age_gt_50 sex_m   2868    a
+#> 1.1  A age_gt_50 sex_m   2868    a
+#> 2    B age_gt_50 sex_m   2474    a
+#> 3    C  age_0_49 sex_m   2231    a
+#> 3.1  C  age_0_49 sex_m   2231    a
+#> 3.2  C  age_0_49 sex_m   2231    a
 ```
 
 `integerise()` returns one row per case, and the number of rows will match the known population (taken from `cons`).
