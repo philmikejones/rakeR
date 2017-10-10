@@ -31,9 +31,9 @@ inds$Car <- factor(inds$Car, levels = 1:2,
                    labels = c("car_yes", "car_no"))
 
 inds$ageband4[inds$Sex == "male"] <-
-  paste0("m", inds$ageband4[inds$Sex == "male"])
+  paste0("sex_m", inds$ageband4[inds$Sex == "male"])
 inds$ageband4[inds$Sex == "female"] <-
-  paste0("f", inds$ageband4[inds$Sex == "female"])
+  paste0("sex_f", inds$ageband4[inds$Sex == "female"])
 inds <- inds[, -3]
 
 readr::write_csv(inds, path = "tests/cakemap_inds.csv")
