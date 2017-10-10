@@ -1,11 +1,12 @@
 Package: rakeR
 Title: Easy Spatial Microsimulation (Raking) in R
-Version: 0.2.0.9000
-Date: 2017-06-30
+Version: 0.2.1
+Date: 2017-10-10
 Authors@R: c(
     person("Phil Mike", "Jones", 
       email = "philmikejones@gmail.com",
-      role = c("aut", "cre")),
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0001-5173-3245")),
     person("Robin", "Lovelace", role = "aut",
       comment = "Many functions are based on code by Robin Lovelace and Morgane Dumont"),
     person("Morgane", "Dumont", role = "aut",

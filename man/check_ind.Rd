@@ -26,4 +26,3 @@ Checks an individual (survey) variable for the following common errors:
 \examples{
 ## check_ind(ind_var)
 }
-
