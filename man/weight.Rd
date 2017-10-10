@@ -48,8 +48,8 @@ No other columns should be present (the user can merge these back in later).
 
 It is essential that the levels in each \code{inds} constraint (i.e. column)
 match exactly with the column names in \code{cons}. In the example below see
-how the column names in cons (\code{'a0_49', 'f', ...}) match exactly the
-levels in \code{inds} variables.
+how the column names in cons (\code{'age_0_49', 'sex_f', ...}) match exactly
+the levels in \code{inds} variables.
 
 The columns in \code{cons} must be in alphabetical order because these are
 created alphabetically when they are 'spread' in the individual--level data.
@@ -57,17 +57,17 @@ created alphabetically when they are 'spread' in the individual--level data.
 \examples{
 # SimpleWorld
 cons <- data.frame(
-"zone"   = letters[1:3],
-"a0_49"  = c(8, 2, 7),
-"a_gt50" = c(4, 8, 4),
-"f"      = c(6, 6, 8),
-"m"      = c(6, 4, 3),
+"zone"      = letters[1:3],
+"age_0_49"  = c(8, 2, 7),
+"age_gt_50" = c(4, 8, 4),
+"sex_f"     = c(6, 6, 8),
+"sex_m"     = c(6, 4, 3),
 stringsAsFactors = FALSE
 )
 inds <- data.frame(
 "id"     = LETTERS[1:5],
-"age"    = c("a_gt50", "a_gt50", "a0_49", "a_gt50", "a0_49"),
-"sex"    = c("m", "m", "m", "f", "f"),
+"age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
+"sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
 "income" = c(2868, 2474, 2231, 3152, 2473),
 stringsAsFactors = FALSE
 )
