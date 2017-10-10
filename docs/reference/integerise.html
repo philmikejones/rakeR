@@ -136,59 +136,25 @@ at a later date.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cons</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
-  <span class='st'>"zone"</span>   <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>],
-  <span class='st'>"a0_49"</span>  <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>, <span class='fl'>2</span>, <span class='fl'>7</span>),
-  <span class='st'>"a_gt50"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>4</span>),
-  <span class='st'>"f"</span>      <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>8</span>),
-  <span class='st'>"m"</span>      <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>4</span>, <span class='fl'>3</span>),
+  <span class='st'>"zone"</span>      <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>],
+  <span class='st'>"age_0_49"</span>  <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>, <span class='fl'>2</span>, <span class='fl'>7</span>),
+  <span class='st'>"age_gt_50"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>4</span>),
+  <span class='st'>"sex_f"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>8</span>),
+  <span class='st'>"sex_m"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>4</span>, <span class='fl'>3</span>),
   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
 <span class='no'>inds</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
   <span class='st'>"id"</span>     <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>],
-  <span class='st'>"age"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a_gt50"</span>, <span class='st'>"a_gt50"</span>, <span class='st'>"a0_49"</span>, <span class='st'>"a_gt50"</span>, <span class='st'>"a0_49"</span>),
-  <span class='st'>"sex"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"m"</span>, <span class='st'>"m"</span>, <span class='st'>"m"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>),
+  <span class='st'>"age"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"age_gt_50"</span>, <span class='st'>"age_gt_50"</span>, <span class='st'>"age_0_49"</span>, <span class='st'>"age_gt_50"</span>, <span class='st'>"age_0_49"</span>),
+  <span class='st'>"sex"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sex_m"</span>, <span class='st'>"sex_m"</span>, <span class='st'>"sex_m"</span>, <span class='st'>"sex_f"</span>, <span class='st'>"sex_f"</span>),
   <span class='st'>"income"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2868</span>, <span class='fl'>2474</span>, <span class='fl'>2231</span>, <span class='fl'>3152</span>, <span class='fl'>2473</span>),
   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 <span class='no'>vars</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"age"</span>, <span class='st'>"sex"</span>)
 
 <span class='no'>weights</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='weight.html'>weight</a></span>(<span class='kw'>cons</span> <span class='kw'>=</span> <span class='no'>cons</span>, <span class='kw'>inds</span> <span class='kw'>=</span> <span class='no'>inds</span>, <span class='kw'>vars</span> <span class='kw'>=</span> <span class='no'>vars</span>)
-<span class='no'>weights_int</span> <span class='kw'>&lt;-</span> <span class='fu'>integerise</span>(<span class='no'>weights</span>, <span class='kw'>inds</span> <span class='kw'>=</span> <span class='no'>inds</span>)
-<span class='fu'>print</span>(<span class='no'>weights_int</span>)</div><div class='output co'>#&gt;      id    age sex income zone
-#&gt; 1     A a_gt50   m   2868    a
-#&gt; 1.1   A a_gt50   m   2868    a
-#&gt; 2     B a_gt50   m   2474    a
-#&gt; 3     C  a0_49   m   2231    a
-#&gt; 3.1   C  a0_49   m   2231    a
-#&gt; 3.2   C  a0_49   m   2231    a
-#&gt; 3.3   C  a0_49   m   2231    a
-#&gt; 4     D a_gt50   f   3152    a
-#&gt; 4.1   D a_gt50   f   3152    a
-#&gt; 5     E  a0_49   f   2473    a
-#&gt; 5.1   E  a0_49   f   2473    a
-#&gt; 5.2   E  a0_49   f   2473    a
-#&gt; 5.3   E  a0_49   f   2473    a
-#&gt; 5.4   E  a0_49   f   2473    a
-#&gt; 1.2   A a_gt50   m   2868    b
-#&gt; 2.1   B a_gt50   m   2474    b
-#&gt; 2.2   B a_gt50   m   2474    b
-#&gt; 3.4   C  a0_49   m   2231    b
-#&gt; 4.2   D a_gt50   f   3152    b
-#&gt; 4.3   D a_gt50   f   3152    b
-#&gt; 4.4   D a_gt50   f   3152    b
-#&gt; 4.5   D a_gt50   f   3152    b
-#&gt; 5.5   E  a0_49   f   2473    b
-#&gt; 3.5   C  a0_49   m   2231    c
-#&gt; 3.6   C  a0_49   m   2231    c
-#&gt; 4.6   D a_gt50   f   3152    c
-#&gt; 4.7   D a_gt50   f   3152    c
-#&gt; 4.8   D a_gt50   f   3152    c
-#&gt; 5.6   E  a0_49   f   2473    c
-#&gt; 5.7   E  a0_49   f   2473    c
-#&gt; 5.8   E  a0_49   f   2473    c
-#&gt; 5.9   E  a0_49   f   2473    c
-#&gt; 5.10  E  a0_49   f   2473    c</div></pre>
+<span class='no'>weights_int</span> <span class='kw'>&lt;-</span> <span class='fu'>integerise</span>(<span class='no'>weights</span>, <span class='kw'>inds</span> <span class='kw'>=</span> <span class='no'>inds</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

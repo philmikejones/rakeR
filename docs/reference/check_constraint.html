@@ -116,11 +116,11 @@ will stop the function or script to be investigated.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cons</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
-<span class='st'>"zone"</span>  <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>],
-<span class='st'>"a0_49"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>, <span class='fl'>2</span>, <span class='fl'>7</span>),
-<span class='st'>"a_gt50"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>4</span>),
-<span class='st'>"f"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>8</span>),
-<span class='st'>"m"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>4</span>, <span class='fl'>3</span>)
+<span class='st'>"zone"</span>      <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>],
+<span class='st'>"age_0_49"</span>  <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>, <span class='fl'>2</span>, <span class='fl'>7</span>),
+<span class='st'>"age_gt_50"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>4</span>),
+<span class='st'>"sex_f"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>8</span>),
+<span class='st'>"sex_m"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>4</span>, <span class='fl'>3</span>)
 )
 <span class='fu'>check_constraint</span>(<span class='no'>cons</span>, <span class='fl'>3</span>)  <span class='co'># no errors</span></div></pre>
   </div>

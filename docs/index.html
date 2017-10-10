@@ -93,22 +93,22 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>In addition, supply a character vector with the names of the constraint variables in <code>inds</code> (<code>vars</code>). This is so that any dependent variables included in <code>inds</code> (for example <code>income</code> below) are only used as output, not as part of the constraint process.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cons &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
   <span class="st">"zone"</span>   =<span class="st"> </span>letters[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],
-  <span class="st">"a0_49"</span>  =<span class="st"> </span><span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">7</span>),
-  <span class="st">"a_gt50"</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">4</span>),
-  <span class="st">"f"</span>      =<span class="st"> </span><span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">8</span>),
-  <span class="st">"m"</span>      =<span class="st"> </span><span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">3</span>),
+  <span class="st">"age_0_49"</span>  =<span class="st"> </span><span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">7</span>),
+  <span class="st">"age_gt_50"</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">4</span>),
+  <span class="st">"sex_f"</span>      =<span class="st"> </span><span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">8</span>),
+  <span class="st">"sex_m"</span>      =<span class="st"> </span><span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">3</span>),
   <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>
 )
 
 inds &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
   <span class="st">"id"</span>     =<span class="st"> </span>LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>],
-  <span class="st">"age"</span>    =<span class="st"> </span><span class="kw">c</span>(<span class="st">"a_gt50"</span>, <span class="st">"a_gt50"</span>, <span class="st">"a0_49"</span>, <span class="st">"a_gt50"</span>, <span class="st">"a0_49"</span>),
-  <span class="st">"sex"</span>    =<span class="st"> </span><span class="kw">c</span>(<span class="st">"m"</span>, <span class="st">"m"</span>, <span class="st">"m"</span>, <span class="st">"f"</span>, <span class="st">"f"</span>),
+  <span class="st">"age"</span>    =<span class="st"> </span><span class="kw">c</span>(<span class="st">"age_gt_50"</span>, <span class="st">"age_gt_50"</span>, <span class="st">"age_0_49"</span>, <span class="st">"age_gt_50"</span>, <span class="st">"age_0_49"</span>),
+  <span class="st">"sex"</span>    =<span class="st"> </span><span class="kw">c</span>(<span class="st">"sex_m"</span>, <span class="st">"sex_m"</span>, <span class="st">"sex_m"</span>, <span class="st">"sex_f"</span>, <span class="st">"sex_f"</span>),
   <span class="st">"income"</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">2868</span>, <span class="dv">2474</span>, <span class="dv">2231</span>, <span class="dv">3152</span>, <span class="dv">2473</span>)
 )
 
 vars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"age"</span>, <span class="st">"sex"</span>)</code></pre></div>
-<p>It is <em>essential</em> that the unique levels in the constraint variables in the <code>inds</code> data set match the variables names in the <code>cons</code> data set. For example, <code>a0_49</code> and <code>a_gt50</code> are variable names in <code>cons</code>. The unique levels of the <code>age</code> variable in <code>inds</code> precisely match these:</p>
+<p>It is <em>essential</em> that the unique levels in the constraint variables in the <code>inds</code> data set match the variables names in the <code>cons</code> data set. For example, <code>age_0_49</code> and <code>age_gt_50</code> are variable names in <code>cons</code>. The unique levels of the <code>age</code> variable in <code>inds</code> precisely match these:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(
   <span class="kw">levels</span>(inds<span class="op">$</span>age), <span class="kw">colnames</span>(cons[, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])
 )
@@ -143,13 +143,13 @@ weights
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">int_weights &lt;-<span class="st"> </span><span class="kw"><a href="reference/integerise.html">integerise</a></span>(weights, <span class="dt">inds =</span> inds)
 int_weights[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, ]
-<span class="co">#&gt;     id    age sex income zone</span>
-<span class="co">#&gt; 1    A a_gt50   m   2868    a</span>
-<span class="co">#&gt; 1.1  A a_gt50   m   2868    a</span>
-<span class="co">#&gt; 2    B a_gt50   m   2474    a</span>
-<span class="co">#&gt; 3    C  a0_49   m   2231    a</span>
-<span class="co">#&gt; 3.1  C  a0_49   m   2231    a</span>
-<span class="co">#&gt; 3.2  C  a0_49   m   2231    a</span></code></pre></div>
+<span class="co">#&gt;     id       age   sex income zone</span>
+<span class="co">#&gt; 1    A age_gt_50 sex_m   2868    a</span>
+<span class="co">#&gt; 1.1  A age_gt_50 sex_m   2868    a</span>
+<span class="co">#&gt; 2    B age_gt_50 sex_m   2474    a</span>
+<span class="co">#&gt; 3    C  age_0_49 sex_m   2231    a</span>
+<span class="co">#&gt; 3.1  C  age_0_49 sex_m   2231    a</span>
+<span class="co">#&gt; 3.2  C  age_0_49 sex_m   2231    a</span></code></pre></div>
 <p><code><a href="reference/integerise.html">integerise()</a></code> returns one row per case, and the number of rows will match the known population (taken from <code>cons</code>).</p>
 </div>
 <div id="extract" class="section level2">
@@ -163,10 +163,10 @@ int_weights[<span class="dv">1</span><span class="op">:</span><span class="dv">6
 
 ext_weights &lt;-<span class="st"> </span><span class="kw"><a href="reference/extract.html">extract</a></span>(weights, <span class="dt">inds =</span> inds, <span class="dt">id =</span> <span class="st">"id"</span>)
 ext_weights
-<span class="co">#&gt;   code total a0_49 a_gt50 f m     high      low</span>
-<span class="co">#&gt; 1    a    12     8      4 6 6 2.772002 9.227998</span>
-<span class="co">#&gt; 2    b    10     2      8 6 4 6.274917 3.725083</span>
-<span class="co">#&gt; 3    c    11     7      4 8 3 3.274917 7.725083</span></code></pre></div>
+<span class="co">#&gt;   code total age_0_49 age_gt_50 sex_f sex_m     high      low</span>
+<span class="co">#&gt; 1    a    12        8         4     6     6 2.772002 9.227998</span>
+<span class="co">#&gt; 2    b    10        2         8     6     4 6.274917 3.725083</span>
+<span class="co">#&gt; 3    c    11        7         4     8     3 3.274917 7.725083</span></code></pre></div>
 <p><code><a href="reference/extract.html">extract()</a></code> returns one row per zone, and the total of each category (for example female and male, or high and low income) will match the known population.</p>
 </div>
 <div id="rake" class="section level2">
@@ -198,19 +198,19 @@ ext_weights
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rake_int &lt;-<span class="st"> </span><span class="kw"><a href="reference/rake.html">rake</a></span>(cons, inds, vars, <span class="dt">output =</span> <span class="st">"integer"</span>,
                  <span class="dt">method =</span> <span class="st">"trs"</span>, <span class="dt">seed =</span> <span class="dv">42</span>)
 rake_int[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, ]
-<span class="co">#&gt;     id    age sex income zone</span>
-<span class="co">#&gt; 1    A a_gt50   m   high    a</span>
-<span class="co">#&gt; 1.1  A a_gt50   m   high    a</span>
-<span class="co">#&gt; 2    B a_gt50   m    low    a</span>
-<span class="co">#&gt; 3    C  a0_49   m    low    a</span>
-<span class="co">#&gt; 3.1  C  a0_49   m    low    a</span>
-<span class="co">#&gt; 3.2  C  a0_49   m    low    a</span></code></pre></div>
+<span class="co">#&gt;     id       age   sex income zone</span>
+<span class="co">#&gt; 1    A age_gt_50 sex_m   high    a</span>
+<span class="co">#&gt; 1.1  A age_gt_50 sex_m   high    a</span>
+<span class="co">#&gt; 2    B age_gt_50 sex_m    low    a</span>
+<span class="co">#&gt; 3    C  age_0_49 sex_m    low    a</span>
+<span class="co">#&gt; 3.1  C  age_0_49 sex_m    low    a</span>
+<span class="co">#&gt; 3.2  C  age_0_49 sex_m    low    a</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rake_frac &lt;-<span class="st"> </span><span class="kw"><a href="reference/rake.html">rake</a></span>(cons, inds, vars, <span class="dt">output =</span> <span class="st">"fraction"</span>, <span class="dt">id =</span> <span class="st">"id"</span>)
 rake_frac
-<span class="co">#&gt;   code total a0_49 a_gt50 f m     high      low</span>
-<span class="co">#&gt; 1    a    12     8      4 6 6 2.772002 9.227998</span>
-<span class="co">#&gt; 2    b    10     2      8 6 4 6.274917 3.725083</span>
-<span class="co">#&gt; 3    c    11     7      4 8 3 3.274917 7.725083</span></code></pre></div>
+<span class="co">#&gt;   code total age_0_49 age_gt_50 sex_f sex_m     high      low</span>
+<span class="co">#&gt; 1    a    12        8         4     6     6 2.772002 9.227998</span>
+<span class="co">#&gt; 2    b    10        2         8     6     4 6.274917 3.725083</span>
+<span class="co">#&gt; 3    c    11        7         4     8     3 3.274917 7.725083</span></code></pre></div>
 </div>
 <div id="contributions" class="section level2">
 <h2 class="hasAnchor">
@@ -268,7 +268,8 @@ rake_frac
 <p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Phil Mike Jones <br><small class="roles"> Author, maintainer </small> </li>
+<li>Phil Mike Jones <br><small class="roles"> Author, maintainer </small> <br><small>(0000-0001-5173-3245)</small>
+</li>
 <li>Robin Lovelace <br><small class="roles"> Author </small> <br><small>(Many functions are based on code by Robin Lovelace and Morgane Dumont)</small>
 </li>
 <li>Morgane Dumont <br><small class="roles"> Author </small> <br><small>(Many functions are based on code by Robin Lovelace and Morgane Dumont)</small>

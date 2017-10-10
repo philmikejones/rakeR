@@ -136,8 +136,8 @@ should contain the individual unique identifier.</p>
     <p>No other columns should be present (the user can merge these back in later).</p>
 <p>It is essential that the levels in each <code>inds</code> constraint (i.e. column)
 match exactly with the column names in <code>cons</code>. In the example below see
-how the column names in cons (<code>'a0_49', 'f', ...</code>) match exactly the
-levels in <code>inds</code> variables.</p>
+how the column names in cons (<code>'age_0_49', 'sex_f', ...</code>) match exactly
+the levels in <code>inds</code> variables.</p>
 <p>The columns in <code>cons</code> must be in alphabetical order because these are
 created alphabetically when they are 'spread' in the individual--level data.</p>
     
@@ -145,17 +145,17 @@ created alphabetically when they are 'spread' in the individual--level data.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># SimpleWorld</span>
 <span class='no'>cons</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
-<span class='st'>"zone"</span>   <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>],
-<span class='st'>"a0_49"</span>  <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>, <span class='fl'>2</span>, <span class='fl'>7</span>),
-<span class='st'>"a_gt50"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>4</span>),
-<span class='st'>"f"</span>      <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>8</span>),
-<span class='st'>"m"</span>      <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>4</span>, <span class='fl'>3</span>),
+<span class='st'>"zone"</span>      <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>],
+<span class='st'>"age_0_49"</span>  <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>, <span class='fl'>2</span>, <span class='fl'>7</span>),
+<span class='st'>"age_gt_50"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>4</span>),
+<span class='st'>"sex_f"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>8</span>),
+<span class='st'>"sex_m"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>, <span class='fl'>4</span>, <span class='fl'>3</span>),
 <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 <span class='no'>inds</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
 <span class='st'>"id"</span>     <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>],
-<span class='st'>"age"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a_gt50"</span>, <span class='st'>"a_gt50"</span>, <span class='st'>"a0_49"</span>, <span class='st'>"a_gt50"</span>, <span class='st'>"a0_49"</span>),
-<span class='st'>"sex"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"m"</span>, <span class='st'>"m"</span>, <span class='st'>"m"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>),
+<span class='st'>"age"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"age_gt_50"</span>, <span class='st'>"age_gt_50"</span>, <span class='st'>"age_0_49"</span>, <span class='st'>"age_gt_50"</span>, <span class='st'>"age_0_49"</span>),
+<span class='st'>"sex"</span>    <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sex_m"</span>, <span class='st'>"sex_m"</span>, <span class='st'>"sex_m"</span>, <span class='st'>"sex_f"</span>, <span class='st'>"sex_f"</span>),
 <span class='st'>"income"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2868</span>, <span class='fl'>2474</span>, <span class='fl'>2231</span>, <span class='fl'>3152</span>, <span class='fl'>2473</span>),
 <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
