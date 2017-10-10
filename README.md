@@ -134,10 +134,10 @@ inds$income <- cut(inds$income, breaks = 2, include.lowest = TRUE,
 
 ext_weights <- extract(weights, inds = inds, id = "id")
 ext_weights
-#>   code total age_0_49 age_gt_50 f m     high      low
-#> 1    a    12     8      4 6 6 2.772002 9.227998
-#> 2    b    10     2      8 6 4 6.274917 3.725083
-#> 3    c    11     7      4 8 3 3.274917 7.725083
+#>   code total age_0_49 age_gt_50 sex_f sex_m     high      low
+#> 1    a    12        8         4     6     6 2.772002 9.227998
+#> 2    b    10        2         8     6     4 6.274917 3.725083
+#> 3    c    11        7         4     8     3 3.274917 7.725083
 ```
 
 `extract()` returns one row per zone, and the total of each category (for example female and male, or high and low income) will match the known population.
@@ -168,22 +168,22 @@ Details of these context-specific arguments can be found in the respective docum
 rake_int <- rake(cons, inds, vars, output = "integer",
                  method = "trs", seed = 42)
 rake_int[1:6, ]
-#>     id    age sex income zone
-#> 1    A age_gt_50   m   high    a
-#> 1.1  A age_gt_50   m   high    a
-#> 2    B age_gt_50   m    low    a
-#> 3    C  age_0_49   m    low    a
-#> 3.1  C  age_0_49   m    low    a
-#> 3.2  C  age_0_49   m    low    a
+#>     id       age   sex income zone
+#> 1    A age_gt_50 sex_m   high    a
+#> 1.1  A age_gt_50 sex_m   high    a
+#> 2    B age_gt_50 sex_m    low    a
+#> 3    C  age_0_49 sex_m    low    a
+#> 3.1  C  age_0_49 sex_m    low    a
+#> 3.2  C  age_0_49 sex_m    low    a
 ```
 
 ``` r
 rake_frac <- rake(cons, inds, vars, output = "fraction", id = "id")
 rake_frac
-#>   code total age_0_49 age_gt_50 f m     high      low
-#> 1    a    12     8      4 6 6 2.772002 9.227998
-#> 2    b    10     2      8 6 4 6.274917 3.725083
-#> 3    c    11     7      4 8 3 3.274917 7.725083
+#>   code total age_0_49 age_gt_50 sex_f sex_m     high      low
+#> 1    a    12        8         4     6     6 2.772002 9.227998
+#> 2    b    10        2         8     6     4 6.274917 3.725083
+#> 3    c    11        7         4     8     3 3.274917 7.725083
 ```
 
 Contributions
