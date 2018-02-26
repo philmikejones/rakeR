@@ -3,6 +3,12 @@
 #' Produces fractional weights using the iterative proportional fitting
 #' algorithm.
 #'
+#' weight() requires three arguments:
+#' \itemize{
+#'   \item A data frame of constraints (e.g. census tables)
+#'   \item A data frame of individual data (e.g. a survey)
+#'   \item A character vector of constraint variable names
+#' }
 #'
 #' The first column of each data frame should be an ID. The first column of
 #' \code{cons} should contain the zone codes. The first column of \code{inds}
@@ -21,10 +27,11 @@
 #' It is essential that the levels in each \code{inds} constraint (i.e. column)
 #' match exactly with the column names in \code{cons}. In the example below see
 #' how the column names in cons (\code{'age_0_49', 'sex_f', ...}) match exactly
-#' the levels in \code{inds} variables.
+#' the levels in the appropriate \code{inds} variables.
 #'
-#' The columns in \code{cons} must be in alphabetical order because these are
-#' created alphabetically when they are 'spread' in the individual--level data.
+#' The columns in \code{cons} must be arranged in alphabetical order because
+#' these are created alphabetically when they are 'spread' in the
+#' individual-level data.
 #'
 #' @param cons A data frame containing all the constraints. This
 #'   should be in the format of one row per zone, one column per constraint
@@ -124,9 +131,10 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
   # give ind_cat sequential column names to ensure they're entered into the
   # model in the correct order
-  colnames(ind_cat) <- paste0(seq_along(colnames(ind_cat)),
-                              "_",
-                              colnames(ind_cat))
+  colnames(ind_cat) <- paste0(
+    seq_along(colnames(ind_cat)),
+    "_",
+    colnames(ind_cat))
   colnames(cons) <- colnames(ind_cat)
 
   # check colnames match exactly at this point
@@ -144,8 +152,11 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
   weights <- apply(cons, 1, function(x) {
 
-    ipfp::ipfp(x, t(ind_cat), x0 = rep(1, nrow(ind_cat)),
-               maxit = iterations)
+    ipfp::ipfp(
+      x,
+      t(ind_cat),
+      x0 = rep(1, nrow(ind_cat)),
+      maxit = iterations)
 
   })
 
