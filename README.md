@@ -233,6 +233,8 @@ The [`wrswoR` package](http://krlmlr.github.io/wrswoR/) used for fast sampling w
 
 Thanks to [Tom Broomhead](http://mhs.group.shef.ac.uk/members/tom-broomhead/) for his feedback on error handling and suggestions on function naming, to [Andrew Smith](https://github.com/virgesmith) for bug fixes, and Derrick Atherton for suggestions, feedback, and testing.
 
+Data used in some of the examples and tests ('cakeMap') are anonymised data from the [Adult Dental Health Survey](https://data.gov.uk/dataset/adult_dental_health_survey), used under terms of the [Open Government Licence](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).
+
 Contact
 -------
 
