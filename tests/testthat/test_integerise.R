@@ -4,6 +4,10 @@ cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
 vars <- c("Car", "NSSEC8", "ageband4")
 
+# Check zeros are handled correctly by making one observation 0
+cons[19, "n_1_1"] <- 0  # lowest count (35)
+cons[19, "n_1_2"] <- 283  # add these so populations still match
+
 weights <- weight(cons = cons, inds = inds, vars = vars)
 
 test_that("Error if num of observations don't match", {
@@ -32,4 +36,8 @@ test_that(
 
 test_that("integerised weights should add up to cons population", {
   expect_equal(nrow(weights_int), (sum(cons[, -1] / length(vars))))
+})
+
+test_that("No missing values in integerised output", {
+  expect_false(any(is.na(weights_int)))
 })
