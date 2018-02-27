@@ -32,3 +32,10 @@ test_that("Populations match (i.e. sum weights == (sum cons / n vars))", {
 test_that("individual IDs stored in rownames of weights", {
   expect_equal(rownames(weights), inds[[1]])
 })
+
+test_that("Check for data frame errors correctly", {
+  cons_notdf <- unlist(cons)
+  inds_notdf <- unlist(inds)
+  expect_error(weight(cons_notdf, inds, vars), "cons is not a data frame")
+  expect_error(weight(cons, inds_notdf, vars), "inds is not a data frame")
+})
