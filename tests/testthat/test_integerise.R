@@ -5,6 +5,15 @@ inds <- readr::read_csv("../cakemap_inds.csv")
 vars <- c("Car", "NSSEC8", "ageband4")
 
 weights <- weight(cons = cons, inds = inds, vars = vars)
+
+test_that("Error if num of observations don't match", {
+  inds_10 <- inds[1:10, ]
+  expect_error(
+    integerise(weights, inds_10),
+    "Number of observations in weights does not match inds"
+  )
+})
+
 weights_int <- integerise(weights, inds)
 
 test_that("Sum of input weights should equal number of integerised cases", {
