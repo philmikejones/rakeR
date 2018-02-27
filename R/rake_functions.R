@@ -202,7 +202,8 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #'
 #' Extract cannot operate with numeric variables because it creates a new
 #' variable for each unique factor of each variable
-#' If you want numeric information, like income, use integerise() instead.
+#' If you want numeric information, like income, you need to cut() the
+#' numeric values, or use integerise() instead.
 #'
 #' @param weights A weight table, typically produced by rakeR::weight()
 #' @param inds The individual level data

@@ -27,7 +27,8 @@ by rakeR::weight()
 
 Extract cannot operate with numeric variables because it creates a new
 variable for each unique factor of each variable
-If you want numeric information, like income, use integerise() instead.
+If you want numeric information, like income, you need to cut() the
+numeric values, or use integerise() instead.
 }
 \examples{
 ## Not run
