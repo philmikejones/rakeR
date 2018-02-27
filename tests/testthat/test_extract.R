@@ -4,11 +4,16 @@ cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
 vars <- c("Car", "NSSEC8", "ageband4")
 
+# Check zeros are handled correctly by making one observation 0
+cons[19, "n_1_1"] <- 0  # lowest count (35)
+cons[19, "n_1_2"] <- 283  # add these so populations still match
+
 weights <- weight(cons = cons, inds = inds, vars = vars, iterations = 10)
 
-test_that("extract_weights() should return a deprecated warning", {
-  expect_warning(extract_weights(weights, inds, id = "code"))
-})
+stopifnot(
+  any(cons == 0),
+  any(weights == 0)
+)
 
 test_that("extract() errors with a numeric variable", {
   inds$income <- sample(2000:4000, size = nrow(inds), replace = TRUE)
