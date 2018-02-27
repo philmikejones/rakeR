@@ -9,13 +9,26 @@ weights <- weight(cons = cons, inds = inds, vars = vars)
 test_that("Ncols should equal number of zones in cons", {
   expect_equal(ncol(weights), nrow(cons))
 })
+
 test_that("Nrows should equal number of individuals in survey", {
   expect_equal(nrow(weights), nrow(inds))
 })
+
+test_that("weights matrix is numeric", {
+  lapply(weights, function(x) {
+    expect_is(x, "numeric")
+  })
+})
+
+test_that("No missing values", {
+  expect_false(any(is.na(weights)))
+})
+
 test_that("Populations match (i.e. sum weights == (sum cons / n vars))", {
   expect_equal(sum(weights), (sum(cons[, -1]) / length(vars)))
   # Drop first column because it contains zone numbers
 })
+
 test_that("individual IDs stored in rownames of weights", {
   expect_equal(rownames(weights), inds[[1]])
 })
