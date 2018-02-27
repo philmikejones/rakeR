@@ -32,6 +32,13 @@ Produces fractional weights using the iterative proportional fitting
 algorithm.
 }
 \details{
+weight() requires three arguments:
+\itemize{
+  \item A data frame of constraints (e.g. census tables)
+  \item A data frame of individual data (e.g. a survey)
+  \item A character vector of constraint variable names
+}
+
 The first column of each data frame should be an ID. The first column of
 \code{cons} should contain the zone codes. The first column of \code{inds}
 should contain the individual unique identifier.
@@ -49,27 +56,28 @@ No other columns should be present (the user can merge these back in later).
 It is essential that the levels in each \code{inds} constraint (i.e. column)
 match exactly with the column names in \code{cons}. In the example below see
 how the column names in cons (\code{'age_0_49', 'sex_f', ...}) match exactly
-the levels in \code{inds} variables.
+the levels in the appropriate \code{inds} variables.
 
-The columns in \code{cons} must be in alphabetical order because these are
-created alphabetically when they are 'spread' in the individual--level data.
+The columns in \code{cons} must be arranged in alphabetical order because
+these are created alphabetically when they are 'spread' in the
+individual-level data.
 }
 \examples{
 # SimpleWorld
 cons <- data.frame(
-"zone"      = letters[1:3],
-"age_0_49"  = c(8, 2, 7),
-"age_gt_50" = c(4, 8, 4),
-"sex_f"     = c(6, 6, 8),
-"sex_m"     = c(6, 4, 3),
-stringsAsFactors = FALSE
+  "zone"      = letters[1:3],
+  "age_0_49"  = c(8, 2, 7),
+  "age_gt_50" = c(4, 8, 4),
+  "sex_f"     = c(6, 6, 8),
+  "sex_m"     = c(6, 4, 3),
+  stringsAsFactors = FALSE
 )
 inds <- data.frame(
-"id"     = LETTERS[1:5],
-"age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
-"sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
-"income" = c(2868, 2474, 2231, 3152, 2473),
-stringsAsFactors = FALSE
+  "id"     = LETTERS[1:5],
+  "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
+  "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
+  "income" = c(2868, 2474, 2231, 3152, 2473),
+  stringsAsFactors = FALSE
 )
 # Set variables to constrain over
 vars <- c("age", "sex")

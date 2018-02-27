@@ -53,19 +53,19 @@
 #' @examples
 #' # SimpleWorld
 #' cons <- data.frame(
-#' "zone"      = letters[1:3],
-#' "age_0_49"  = c(8, 2, 7),
-#' "age_gt_50" = c(4, 8, 4),
-#' "sex_f"     = c(6, 6, 8),
-#' "sex_m"     = c(6, 4, 3),
-#' stringsAsFactors = FALSE
+#'   "zone"      = letters[1:3],
+#'   "age_0_49"  = c(8, 2, 7),
+#'   "age_gt_50" = c(4, 8, 4),
+#'   "sex_f"     = c(6, 6, 8),
+#'   "sex_m"     = c(6, 4, 3),
+#'   stringsAsFactors = FALSE
 #' )
 #' inds <- data.frame(
-#' "id"     = LETTERS[1:5],
-#' "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
-#' "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
-#' "income" = c(2868, 2474, 2231, 3152, 2473),
-#' stringsAsFactors = FALSE
+#'   "id"     = LETTERS[1:5],
+#'   "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
+#'   "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
+#'   "income" = c(2868, 2474, 2231, 3152, 2473),
+#'   stringsAsFactors = FALSE
 #' )
 #' # Set variables to constrain over
 #' vars <- c("age", "sex")
@@ -92,7 +92,7 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   # Save and drop first column of cons (zone codes)
   # unlist() is needed in case the data is provided as a tibble
   zones <- as.vector(unlist(cons[, 1]))
-  cons  <- cons[, -1]
+  cons <- cons[, -1]
   cons <- as.matrix(cons)
 
   # cons must be a numeric (i.e. double, not int) matrix
@@ -111,16 +111,12 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   # The '-1' drops the intercept, and puts the first variable back in
   # I hate it because it doesn't seem to be documented anywhere, but it works
   inds <- lapply(as.list(vars), function(x) {
-
     stats::model.matrix( ~ inds[[x]] - 1)
-
   })
 
   # Fix colnames
   for (i in seq_along(vars)) {  # for loop ok; typically only <= 12 columns
-
     colnames(inds[[i]]) <- gsub("inds\\[\\[x\\]\\]", "", colnames(inds[[i]]))
-
   }
   rm(i)
 
@@ -131,10 +127,12 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
   # give ind_cat sequential column names to ensure they're entered into the
   # model in the correct order
-  colnames(ind_cat) <- paste0(
-    seq_along(colnames(ind_cat)),
-    "_",
-    colnames(ind_cat))
+  colnames(ind_cat) <-
+    paste0(
+      seq_along(colnames(ind_cat)),
+      "_",
+      colnames(ind_cat)
+    )
   colnames(cons) <- colnames(ind_cat)
 
   # check colnames match exactly at this point
@@ -156,7 +154,8 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
       x,
       t(ind_cat),
       x0 = rep(1, nrow(ind_cat)),
-      maxit = iterations)
+      maxit = iterations
+    )
 
   })
 
