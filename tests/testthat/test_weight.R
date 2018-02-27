@@ -39,3 +39,16 @@ test_that("Check for data frame errors correctly", {
   expect_error(weight(cons_notdf, inds, vars), "cons is not a data frame")
   expect_error(weight(cons, inds_notdf, vars), "inds is not a data frame")
 })
+
+test_that("Ensure zeros are handled correctly by weights()", {
+  cons[19, "n_1_1"] <- 0  # lowest count (35)
+  cons[19, "n_1_2"] <- 283  # add these so populations still match
+  stopifnot(any(cons == 0))
+
+  weights <- weight(cons = cons, inds = inds, vars = vars)
+  expect_equal(sum(weights), (sum(cons[, -1]) / length(vars)))
+  lapply(weights, function(x) {
+    expect_is(x, "numeric")
+  })
+  expect_false(any(is.na(weights)))
+})
