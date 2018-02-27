@@ -20,9 +20,10 @@ test_that("Sum of input weights should equal number of integerised cases", {
   expect_equal(sum(weights), nrow(weights_int))
 })
 
-test_that("correct number of zones in integerised data", {
-  expect_equal(length(unique(weights_int[["zone"]])), nrow(cons))
-})
+test_that(
+  "Number of zones in integerised data set should match that in constraints", {
+    expect_equal(length(unique(weights_int[["zone"]])), nrow(cons))
+  })
 
 test_that("integerised weights should add up to cons population", {
   expect_equal(nrow(weights_int), (sum(cons[, -1] / length(vars))))
