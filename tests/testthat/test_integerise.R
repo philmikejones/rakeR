@@ -14,6 +14,11 @@ test_that("Error if num of observations don't match", {
   )
 })
 
+test_that("Error if inds isn't a data frame", {
+  inds <- unlist(inds)
+  expect_error(integerise(weights, inds), "inds is not a data frame")
+})
+
 weights_int <- integerise(weights, inds)
 
 test_that("Sum of input weights should equal number of integerised cases", {

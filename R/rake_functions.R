@@ -433,13 +433,13 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
   set.seed(seed)
 
   # Check structure of inputs
+  if (!is.data.frame(inds)) {
+    stop("inds is not a data frame")
+  }
+
   # Number of observations should be the same in weights and inds
   if (!isTRUE(all.equal(nrow(weights), nrow(inds)))) {
     stop("Number of observations in weights does not match inds")
-  }
-
-  if (!is.data.frame(inds)) {
-    stop("inds is not a data frame")
   }
 
   if (!method == "trs") {
