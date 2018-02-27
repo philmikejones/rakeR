@@ -86,6 +86,11 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
     stop("vars is not a vector")
   }
 
+  # Check for any missing values
+  if (any(is.na(cons)) | any(is.na(inds))) {
+    stop("Missing value(s) ('NA') in cons and/or inds")
+  }
+
 
   # Prepare constraints
 
