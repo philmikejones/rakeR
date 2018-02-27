@@ -434,7 +434,7 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 
   # Check structure of inputs
   # Number of observations should be the same in weights and inds
-  if (!all.equal(nrow(weights), nrow(inds))) {
+  if (!isTRUE(all.equal(nrow(weights), nrow(inds)))) {
     stop("Number of observations in weights does not match inds")
   }
 
