@@ -2,6 +2,7 @@ v 0.2.2
 =======
 
 * Update README.md
+* Add additional unit tests
 * Add appropriate acknowledgements for source of data set used for examples and testing.
 
 v 0.2.1
