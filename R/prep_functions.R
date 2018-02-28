@@ -1,6 +1,7 @@
 #' check_constraint
 #'
-#' Checks a constraint table for common errors.
+#' Deprecated: these checks are now done as part of the weight() and/or
+#' extract()/integerise() steps automatically
 #'
 #' Checks a constraint table for the following common errors:
 #' \itemize{
@@ -17,15 +18,13 @@
 #' @export
 #'
 #' @examples
-#' cons <- data.frame(
-#' "zone"      = letters[1:3],
-#' "age_0_49"  = c(8, 2, 7),
-#' "age_gt_50" = c(4, 8, 4),
-#' "sex_f"     = c(6, 6, 8),
-#' "sex_m"     = c(6, 4, 3)
-#' )
-#' check_constraint(cons, 3)  # no errors
+#' Not run
+#' ## check_constraint() is deprecated. These checks are automatically
+#' ## carried out as part of the weight() and/or extract()/integerise()
+#' ## functions
 check_constraint <- function(constraint_var, num_zones) {
+
+  .Deprecated("")
 
   stopifnot(
     all.equal(constraint_var[[1]], unique(constraint_var[[1]])),
