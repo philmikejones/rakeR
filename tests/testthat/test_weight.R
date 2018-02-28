@@ -44,3 +44,12 @@ test_that("Check for data frame errors correctly", {
   expect_error(weight(cons_notdf, inds, vars), "cons is not a data frame")
   expect_error(weight(cons, inds_notdf, vars), "inds is not a data frame")
 })
+
+test_that("Check duplicate cons or inds IDs are picked up", {
+  expect_false(any(duplicated(cons[, 1])))
+  if (nrow(cons > 1)) {
+    cons[1, 1] <- cons[2, 1]  # duplicate zone id
+    expect_true(any(duplicated(cons[, 1])))
+  }
+
+})
