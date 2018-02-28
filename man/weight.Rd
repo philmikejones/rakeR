@@ -12,7 +12,7 @@ should be in the format of one row per zone, one column per constraint
 category. The first column should be a zone code; all other columns must be
 numeric counts.}
 
-\item{inds}{A data frame containing individual--level (survey) data. This
+\item{inds}{A data frame containing individual-level (survey) data. This
 should be in the format of one row per individual, one column per
 constraint. The first column should be an individual ID.}
 
