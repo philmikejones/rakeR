@@ -18,7 +18,7 @@
 #' @export
 #'
 #' @examples
-#' Not run
+#' ## Not run
 #' ## check_constraint() is deprecated. These checks are automatically
 #' ## carried out as part of the weight() and/or extract()/integerise()
 #' ## functions
