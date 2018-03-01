@@ -92,11 +92,11 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   }
 
   # Ensure there aren't any duplicate zone or individual codes
-  if (!all.equal(length(cons[, 1]), length(unique(cons[, 1])))) {
+  if (!isTRUE(all.equal(nrow(cons[, 1]), nrow(unique(cons[, 1]))))) {
     stop("Not all zone codes are unique (check first column of cons)")
   }
 
-  if (!all.equal(length(inds[, 1]), length(unique(inds[, 1])))) {
+  if (!isTRUE(all.equal(nrow(inds[, 1]), nrow(unique(inds[, 1]))))) {
     stop("Not all individual IDs are unique (check first column of inds)")
   }
 
