@@ -41,3 +41,10 @@ test_that("integerised weights should add up to cons population", {
 test_that("No missing values in integerised output", {
   expect_false(any(is.na(weights_int)))
 })
+
+test_that("method other than 'trs' fails", {
+  expect_error(
+    integerise(weights, inds, method = "not_trs"),
+    "only supports the truncate, replicate"
+  )
+})
