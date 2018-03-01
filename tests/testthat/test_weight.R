@@ -72,3 +72,8 @@ test_that("Duplicated ID codes produces an error", {
   inds[2, 1] <- inds[1, 1]
   expect_error(weight(cons, inds, vars), "individual IDs")
 })
+
+test_that("Error if column names (ind/cons) don't match", {
+  inds$Car[inds$Car == "car_no"] <- "car_maybe"
+  expect_error(weight(cons, inds, vars), "Column names don't match")
+})

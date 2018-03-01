@@ -137,18 +137,6 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   # one ind table based on unique levels in inds is easier to check and use
   ind_cat <- do.call(cbind, inds)
 
-  stopifnot(all.equal(colnames(cons), colnames(ind_cat)))
-
-  # give ind_cat sequential column names to ensure they're entered into the
-  # model in the correct order
-  colnames(ind_cat) <-
-    paste0(
-      seq_along(colnames(ind_cat)),
-      "_",
-      colnames(ind_cat)
-    )
-  colnames(cons) <- colnames(ind_cat)
-
   # check colnames match exactly at this point
   # this is crucial to ensure the simulation doesn't provide incorrect results
   if (!isTRUE(all.equal(colnames(ind_cat), colnames(cons)))) {
@@ -161,6 +149,15 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
     )
   }
 
+  # give ind_cat sequential column names to ensure they're entered into the
+  # model in the correct order
+  colnames(ind_cat) <-
+    paste0(
+      seq_along(colnames(ind_cat)),
+      "_",
+      colnames(ind_cat)
+    )
+  colnames(cons) <- colnames(ind_cat)
 
   weights <- apply(cons, 1, function(x) {
 
