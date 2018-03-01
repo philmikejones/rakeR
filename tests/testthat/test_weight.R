@@ -57,8 +57,18 @@ test_that("Check duplicate cons or inds IDs are picked up", {
 test_that("Errors if NAs present", {
   # test inds first: if cons was first it would never get to inds
   inds[1, 2] <- NA
-  expect_error(weight(cons, inds, vars))
+  expect_error(weight(cons, inds, vars), "NA")
 
   cons[1, 2] <- NA
-  expect_error(weight(cons, inds, vars))
+  expect_error(weight(cons, inds, vars), "NA")
+})
+
+test_that("Duplicated zone codes produces an error", {
+  cons[2, 1] <- cons[1, 1]
+  expect_error(weight(cons, inds, vars), "zone codes")
+})
+
+test_that("Duplicated ID codes produces an error", {
+  inds[2, 1] <- inds[1, 1]
+  expect_error(weight(cons, inds, vars), "individual IDs")
 })
