@@ -14,7 +14,8 @@ If no errors are detected the function returns silently. Any errors
 will stop the function or script to be investigated.
 }
 \description{
-Checks an individual (survey) variable for common errors.
+Deprecated: these checks are now automatically carried out by
+weight() and/or extract()/integerise()
 }
 \details{
 Checks an individual (survey) variable for the following common errors:
@@ -24,5 +25,7 @@ Checks an individual (survey) variable for the following common errors:
 }
 }
 \examples{
-## check_ind(ind_var)
+## Not run
+## checks are now automatically carried out by weight() and/or
+## extract()/integerise()
 }

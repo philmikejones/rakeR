@@ -37,7 +37,8 @@ check_constraint <- function(constraint_var, num_zones) {
 
 #' check_ind
 #'
-#' Checks an individual (survey) variable for common errors.
+#' Deprecated: these checks are now automatically carried out by
+#' weight() and/or extract()/integerise()
 #'
 #' Checks an individual (survey) variable for the following common errors:
 #' \itemize{
@@ -52,8 +53,12 @@ check_constraint <- function(constraint_var, num_zones) {
 #' @export
 #'
 #' @examples
-#' ## check_ind(ind_var)
+#' ## Not run
+#' ## checks are now automatically carried out by weight() and/or
+#' ## extract()/integerise()
 check_ind <- function(ind_var) {
+
+  .Deprecated("")
 
   if (!(all(rowSums(ind_var) == 1))) {
     stop("Each row must sum to 1. Have you converted your individual data into
