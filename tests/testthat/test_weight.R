@@ -53,3 +53,12 @@ test_that("Check duplicate cons or inds IDs are picked up", {
   }
 
 })
+
+test_that("Errors if NAs present", {
+  # test inds first: if cons was first it would never get to inds
+  inds[1, 2] <- NA
+  expect_error(weight(cons, inds, vars))
+
+  cons[1, 2] <- NA
+  expect_error(weight(cons, inds, vars))
+})
