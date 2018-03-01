@@ -48,3 +48,8 @@ test_that("method other than 'trs' fails", {
     "only supports the truncate, replicate"
   )
 })
+
+test_that("Return integer weights unmodified", {
+  weights <- floor(weights)
+  expect_message(integerise(weights, inds), "weights already integers")
+})
