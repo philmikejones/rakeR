@@ -77,3 +77,8 @@ test_that("Error if column names (ind/cons) don't match", {
   inds$Car[inds$Car == "car_no"] <- "car_maybe"
   expect_error(weight(cons, inds, vars), "Column names don't match")
 })
+
+test_that("Error if any zone completely empty", {
+  cons[1, 2:ncol(cons)] <- 0
+  expect_error(weight(cons, inds, vars))
+})
