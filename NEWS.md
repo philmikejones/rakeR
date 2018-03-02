@@ -1,8 +1,9 @@
 v 0.2.2
 =======
 
-* Update README.md
-* Add additional unit tests
+* check_constraint() and check_ind() are now deprecated. These checks are carried out by the weight() and/or integerise()/extract() functions automatically.
+* Update README.md documentation
+* Add additional unit tests - thanks Derrick Atherton for feedback
 * Add appropriate acknowledgements for source of data set used for examples and testing.
 
 v 0.2.1
