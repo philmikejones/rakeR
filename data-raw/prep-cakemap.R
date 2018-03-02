@@ -1,4 +1,4 @@
-# Prep cons and inds for cakeMap
+# Prep and export cons and inds for tests
 
 # Cons
 cons <- readr::read_csv("inst/extdata/cakemap_cons.csv")

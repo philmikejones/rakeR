@@ -3,6 +3,12 @@
 #' Produces fractional weights using the iterative proportional fitting
 #' algorithm.
 #'
+#' weight() requires three arguments:
+#' \itemize{
+#'   \item A data frame of constraints (e.g. census tables)
+#'   \item A data frame of individual data (e.g. a survey)
+#'   \item A character vector of constraint variable names
+#' }
 #'
 #' The first column of each data frame should be an ID. The first column of
 #' \code{cons} should contain the zone codes. The first column of \code{inds}
@@ -21,16 +27,17 @@
 #' It is essential that the levels in each \code{inds} constraint (i.e. column)
 #' match exactly with the column names in \code{cons}. In the example below see
 #' how the column names in cons (\code{'age_0_49', 'sex_f', ...}) match exactly
-#' the levels in \code{inds} variables.
+#' the levels in the appropriate \code{inds} variables.
 #'
-#' The columns in \code{cons} must be in alphabetical order because these are
-#' created alphabetically when they are 'spread' in the individual--level data.
+#' The columns in \code{cons} must be arranged in alphabetical order because
+#' these are created alphabetically when they are 'spread' in the
+#' individual-level data.
 #'
 #' @param cons A data frame containing all the constraints. This
 #'   should be in the format of one row per zone, one column per constraint
 #'   category. The first column should be a zone code; all other columns must be
 #'   numeric counts.
-#' @param inds A data frame containing individual--level (survey) data. This
+#' @param inds A data frame containing individual-level (survey) data. This
 #'   should be in the format of one row per individual, one column per
 #'   constraint. The first column should be an individual ID.
 #' @param vars A character vector of variables that constrain the simulation
@@ -46,19 +53,19 @@
 #' @examples
 #' # SimpleWorld
 #' cons <- data.frame(
-#' "zone"      = letters[1:3],
-#' "age_0_49"  = c(8, 2, 7),
-#' "age_gt_50" = c(4, 8, 4),
-#' "sex_f"     = c(6, 6, 8),
-#' "sex_m"     = c(6, 4, 3),
-#' stringsAsFactors = FALSE
+#'   "zone"      = letters[1:3],
+#'   "age_0_49"  = c(8, 2, 7),
+#'   "age_gt_50" = c(4, 8, 4),
+#'   "sex_f"     = c(6, 6, 8),
+#'   "sex_m"     = c(6, 4, 3),
+#'   stringsAsFactors = FALSE
 #' )
 #' inds <- data.frame(
-#' "id"     = LETTERS[1:5],
-#' "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
-#' "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
-#' "income" = c(2868, 2474, 2231, 3152, 2473),
-#' stringsAsFactors = FALSE
+#'   "id"     = LETTERS[1:5],
+#'   "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
+#'   "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
+#'   "income" = c(2868, 2474, 2231, 3152, 2473),
+#'   stringsAsFactors = FALSE
 #' )
 #' # Set variables to constrain over
 #' vars <- c("age", "sex")
@@ -79,17 +86,38 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
     stop("vars is not a vector")
   }
 
+  # Check for any missing values
+  if (any(is.na(cons)) | any(is.na(inds))) {
+    stop("Missing value(s) ('NA') in cons and/or inds")
+  }
+
+  # Ensure there aren't any duplicate zone or individual codes
+  if (!isTRUE(all.equal(nrow(cons[, 1]), nrow(unique(cons[, 1]))))) {
+    stop("Not all zone codes are unique (check first column of cons)")
+  }
+
+  if (!isTRUE(all.equal(nrow(inds[, 1]), nrow(unique(inds[, 1]))))) {
+    stop("Not all individual IDs are unique (check first column of inds)")
+  }
+
 
   # Prepare constraints
 
   # Save and drop first column of cons (zone codes)
   # unlist() is needed in case the data is provided as a tibble
   zones <- as.vector(unlist(cons[, 1]))
-  cons  <- cons[, -1]
+  cons <- cons[, -1]
   cons <- as.matrix(cons)
 
   # cons must be a numeric (i.e. double, not int) matrix
   cons[] <- as.numeric(cons[])
+
+  # weight() will error if 1 or more zones are completely empty (i.e. the
+  # population is 0; rowSums == 0). See issue #64
+  if (any(rowSums(cons) == 0)) {
+    stop("One or more zones (in cons) have a 0 population.
+These must be removed before weight() can run")
+  }
 
 
   # Prepare individual-level data (survey)
@@ -104,30 +132,17 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   # The '-1' drops the intercept, and puts the first variable back in
   # I hate it because it doesn't seem to be documented anywhere, but it works
   inds <- lapply(as.list(vars), function(x) {
-
     stats::model.matrix( ~ inds[[x]] - 1)
-
   })
 
   # Fix colnames
   for (i in seq_along(vars)) {  # for loop ok; typically only <= 12 columns
-
     colnames(inds[[i]]) <- gsub("inds\\[\\[x\\]\\]", "", colnames(inds[[i]]))
-
   }
   rm(i)
 
   # one ind table based on unique levels in inds is easier to check and use
   ind_cat <- do.call(cbind, inds)
-
-  stopifnot(all.equal(colnames(cons), colnames(ind_cat)))
-
-  # give ind_cat sequential column names to ensure they're entered into the
-  # model in the correct order
-  colnames(ind_cat) <- paste0(seq_along(colnames(ind_cat)),
-                              "_",
-                              colnames(ind_cat))
-  colnames(cons) <- colnames(ind_cat)
 
   # check colnames match exactly at this point
   # this is crucial to ensure the simulation doesn't provide incorrect results
@@ -141,11 +156,24 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
     )
   }
 
+  # give ind_cat sequential column names to ensure they're entered into the
+  # model in the correct order
+  colnames(ind_cat) <-
+    paste0(
+      seq_along(colnames(ind_cat)),
+      "_",
+      colnames(ind_cat)
+    )
+  colnames(cons) <- colnames(ind_cat)
 
   weights <- apply(cons, 1, function(x) {
 
-    ipfp::ipfp(x, t(ind_cat), x0 = rep(1, nrow(ind_cat)),
-               maxit = iterations)
+    ipfp::ipfp(
+      x,
+      t(ind_cat),
+      x0 = rep(1, nrow(ind_cat)),
+      maxit = iterations
+    )
 
   })
 
@@ -187,7 +215,8 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
 #'
 #' Extract cannot operate with numeric variables because it creates a new
 #' variable for each unique factor of each variable
-#' If you want numeric information, like income, use integerise() instead.
+#' If you want numeric information, like income, you need to cut() the
+#' numeric values, or use integerise() instead.
 #'
 #' @param weights A weight table, typically produced by rakeR::weight()
 #' @param inds The individual level data
@@ -417,13 +446,13 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
   set.seed(seed)
 
   # Check structure of inputs
-  # Number of observations should be the same in weights and inds
-  if (!all.equal(nrow(weights), nrow(inds))) {
-    stop("Number of observations in weights does not match inds")
-  }
-
   if (!is.data.frame(inds)) {
     stop("inds is not a data frame")
+  }
+
+  # Number of observations should be the same in weights and inds
+  if (!isTRUE(all.equal(nrow(weights), nrow(inds)))) {
+    stop("Number of observations in weights does not match inds")
   }
 
   if (!method == "trs") {
