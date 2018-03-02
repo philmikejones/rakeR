@@ -112,6 +112,13 @@ weight <- function(cons, inds, vars = NULL, iterations = 10) {
   # cons must be a numeric (i.e. double, not int) matrix
   cons[] <- as.numeric(cons[])
 
+  # weight() will error if 1 or more zones are completely empty (i.e. the
+  # population is 0; rowSums == 0). See issue #64
+  if (any(rowSums(cons) == 0)) {
+    stop("One or more zones (in cons) have a 0 population.
+These must be removed before weight() can run")
+  }
+
 
   # Prepare individual-level data (survey)
 

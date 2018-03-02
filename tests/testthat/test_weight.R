@@ -80,5 +80,7 @@ test_that("Error if column names (ind/cons) don't match", {
 
 test_that("Error if any zone completely empty", {
   cons[1, 2:ncol(cons)] <- 0
-  expect_error(weight(cons, inds, vars))
+  expect_error(
+    weight(cons, inds, vars),
+    "0 population")
 })
