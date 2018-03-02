@@ -25,6 +25,10 @@ test_that("Error if inds isn't a data frame", {
 
 weights_int <- integerise(weights, inds)
 
+test_that("Num of cols in weights_int should be num cols of inds + 1", {
+  expect_equal(ncol(weights_int), (ncol(inds) + 1))
+})
+
 test_that("Sum of input weights should equal number of integerised cases", {
   expect_equal(sum(weights), nrow(weights_int))
 })
