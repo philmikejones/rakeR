@@ -386,12 +386,12 @@ These must be removed before weight() can run")
 }
 
 
-#' extract
+#' rk_extract
 #'
 #' Extract aggregate weights from individual weight table
 #'
 #' Extract aggregate weights from individual weight table, typically produced
-#' by rakeR::weight()
+#' by rakeR::rk_weight()
 #'
 #' Extract cannot operate with numeric variables because it creates a new
 #' variable for each unique factor of each variable
@@ -409,9 +409,96 @@ These must be removed before weight() can run")
 #'
 #' @examples
 #' ## Not run
-#' ## Use weights object from weights()
-#' ## ext_weights <- extract(weights = weights, inds = inds, id = "id")
+#' ## Use weights object from rk_weight()
+#' ## ext_weights <- rk_extract(weights = weights, inds = inds, id = "id")
+rk_extract <- function(weights, inds, id) {
+
+  # variables to loop over (dropping id/code)
+  variables <- colnames(inds)
+  variables <- variables[-grep(id, variables)]
+
+  # check if any columns are class numeric or integer
+  # have to use loop as class() returns class of the overall d.f.
+  # have to use class() because typeof() for factor returns integer (as
+  # it uses integers with attributes under the hood)
+  # same for is()
+  lapply(inds[, variables], function(x) {
+    if (class(x) == "numeric" | class(x) == "integer") {
+      stop("rakeR::extract() cannot work with numeric (i.e. integer or double)
+           variables because by design it creates a new variable for each
+           unique level in each variable\n
+           Consider cut()ing your numeric data, extract() without your
+           numeric data, or integerise() instead.")
+    }
+  })
+
+  levels <- lapply(as.list(variables), function(x) {
+    sort(unique(as.character(inds[[x]])))
+  })
+
+  result <- lapply(variables, function(y) {
+
+    lapply(as.list(sort(unique(as.character(inds[[y]])))), function(x) {
+
+      match_id <- inds[[id]][inds[[y]] == x]
+
+      matched_weights <- weights[row.names(weights) %in% match_id, ]
+      matched_weights <- colSums(matched_weights)
+
+      matched_weights
+
+    })
+
+  })
+
+  result           <- as.data.frame(result)
+  colnames(result) <- unlist(levels)
+
+  df <- data.frame(
+    code  = colnames(weights),
+    total = colSums(weights),
+    row.names = NULL, stringsAsFactors = FALSE
+  )
+
+  stopifnot(
+    all.equal(df[["code"]], row.names(result))
+  )
+
+  df            <- cbind(df, result)
+  row.names(df) <- NULL
+
+  stopifnot(
+    all.equal(
+      sum(df[["total"]]),
+      (sum(df[, 3:ncol(df)]) / length(variables)))
+  )
+
+  df
+
+}
+
+
+#' extract
+#'
+#' Deprecated. Use rk_extract() instead.
+#'
+#' @param weights A weight table, typically produced by rakeR::weight()
+#' @param inds The individual level data
+#' @param id The unique id variable in the individual level data (inds),
+#' usually the first column
+#'
+#' @return A data frame with zones and aggregated simulated values for each
+#' variable
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' Use weights object from rk_weight()
+#' ext_weights <- rk_extract(weights = weights, inds = inds, id = "id")
+#' }
 extract <- function(weights, inds, id) {
+
+  .Deprecated("rk_extract")
 
   # variables to loop over (dropping id/code)
   variables <- colnames(inds)
