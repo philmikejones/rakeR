@@ -584,7 +584,7 @@ extract <- function(weights, inds, id) {
 #' }
 extract_weights <- function(weights, inds, id) {
 
-  stop("extract_weights() is depricated. Use rk_extract()")
+  stop("extract_weights() is deprecated. Use rk_extract()")
 
 }
 
