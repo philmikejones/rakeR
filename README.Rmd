@@ -10,21 +10,21 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+# rakeR
+
 [![Build Status](https://travis-ci.org/philmikejones/rakeR.svg?branch=master)](https://travis-ci.org/philmikejones/rakeR)
 [![codecov](https://codecov.io/gh/philmikejones/rakeR/branch/master/graph/badge.svg)](https://codecov.io/gh/philmikejones/rakeR)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rakeR)](https://cran.r-project.org/package=rakeR)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.821506.svg)](https://doi.org/10.5281/zenodo.821506)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-
-rakeR
-=====
 
 Create a spatial microsimulated data set in R using iterative proportional 
 fitting ('raking').
 
 
-Install
--------
+## Install
 
 Install the latest stable version from CRAN:
 
@@ -49,8 +49,7 @@ library("rakeR")
 ```
 
 
-Overview
---------
+## Overview
 
 `rakeR` has three main functions.
 The first stage is always to use `weight()` to produce a matrix of fractional weights.
@@ -63,8 +62,7 @@ for further modeling.
 To create fractional weights use `weight()` then `extract()`, and to produce integerised weights use `weight()` then `integerise()`.
 
 
-Inputs
-------
+## Inputs
 
 To perform the weighting you should supply two data frames.
 One data frame should contain the constraint information (`cons`) with counts per category for each zone (e.g. census counts).
@@ -109,8 +107,7 @@ Without this, the functions do not know how to match the `inds` and `cons` data
 and will fail so as not to return spurious results.
 
 
-`weight()`
-----------
+## `weight()`
 
 (Re-)weighting is done with `weight()` which returns a data frame of raw weights.
 
@@ -126,8 +123,7 @@ model, so it can be necessary to save these separately.
 They aren't very useful for analysis however, so we can `extract()` or `integerise()` them into a useable form.
 
 
-`extract()`
------------
+## `extract()`
 
 `extract()` produces aggregated totals of the simulated data for each category in each zone.
 `extract()`ed data is generally more accurate than `integerise()`d data, although the user should be careful this isn't spurious precision based on context and knowledge of the domain.
@@ -146,8 +142,7 @@ example female and male, or high and low income) will match the known
 population.
 
 
-`integerise()`
---------------
+## `integerise()`
 
 The `integerise()` function produces a simulated data frame populated with simulated individuals.
 This is typically useful when:
@@ -167,8 +162,7 @@ int_weights[1:6, ]
 the known population (taken from `cons`).
 
 
-`rake()`
---------
+## `rake()`
 
 `rake()` is a wrapper for `weight() %>% extract()` or 
 `weight() %>% integerise()`.
@@ -208,34 +202,20 @@ rake_frac
 ```
 
 
-Contributing
-------------
-
-## Code of conduct
+## Contributing
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md).
 By participating in this project you agree to abide by its terms.
 
-## Pull requests
 
-**Do not** push to `origin/master`!
-`origin/master` is a protected branch and expects CI tests to have been
-successfully completed before it will merge code.
-
-Develop in a new branch, check your changes with `devtools::check()`, and 
-submit a pull request which will be checked by Travis CI.
-
-
-Issues and feedback
--------------------
+## Issues and feedback
 
 Feedback on the API,
 [bug reports/issues](https://github.com/philmikejones/rakeR/issues),
 and pull requests are very welcome.
 
 
-Acknowledgements
-----------------
+## Acknowledgements
 
 Many of the functions in this package are based on code written by 
 [Robin Lovelace](https://github.com/Robinlovelace) and 
@@ -283,14 +263,12 @@ for his feedback on error handling and suggestions on function naming, to [Andre
 Data used in some of the examples and tests ('cakeMap') are anonymised data from the [Adult Dental Health Survey](https://data.gov.uk/dataset/adult_dental_health_survey), used under terms of the [Open Government Licence](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).
 
 
-Contact
--------
+## Contact
 
 philmikejones at gmail dot com
 
 
-License
--------
+## License
 
 Copyright 2016-18 Phil Mike Jones.
 
