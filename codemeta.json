@@ -1,5 +1,8 @@
 {
-  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    "http://schema.org"
+  ],
   "@type": "SoftwareSourceCode",
   "identifier": "rakeR",
   "description": "Functions for performing spatial microsimulation ('raking')\n    in R.",
@@ -116,8 +119,11 @@
   ],
   "releaseNotes": "https://github.com/philmikejones/rakeR/blob/master/NEWS.md",
   "readme": "https://github.com/philmikejones/rakeR/blob/master/README.md",
-  "fileSize": "28.418KB",
-  "contIntegration": ["https://travis-ci.org/philmikejones/rakeR", "https://codecov.io/gh/philmikejones/rakeR"],
+  "fileSize": "29.318KB",
+  "contIntegration": [
+    "https://travis-ci.org/philmikejones/rakeR",
+    "https://codecov.io/gh/philmikejones/rakeR"
+  ],
   "developmentStatus": "https://www.repostatus.org/#active",
   "relatedLink": "https://CRAN.R-project.org/package=rakeR"
 }
