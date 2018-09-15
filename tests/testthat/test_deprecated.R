@@ -243,5 +243,5 @@ test_that("Error if any zone completely empty", {
 
 context("extract_weights()")
 test_that("extract_weights() errors", {
-  expect_error(extract_weights(), "extract_weights() is deprecated.")
+  expect_error(extract_weights())
 })
