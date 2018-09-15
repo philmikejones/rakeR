@@ -1,9 +1,9 @@
-#' weight
+#' rk_weight
 #'
 #' Produces fractional weights using the iterative proportional fitting
 #' algorithm.
 #'
-#' weight() requires three arguments:
+#' rk_weight() requires three arguments:
 #' \itemize{
 #'   \item A data frame of constraints (e.g. census tables)
 #'   \item A data frame of individual data (e.g. a survey)
@@ -69,9 +69,189 @@
 #' )
 #' # Set variables to constrain over
 #' vars <- c("age", "sex")
+#' weights <- rk_weight(cons = cons, inds = inds, vars = vars)
+#' print(weights)
+rk_weight <- function(cons, inds, vars = NULL, iterations = 10) {
+
+  # Check arguments are the correct class
+  if (!is.data.frame(cons)) {
+    stop("cons is not a data frame")
+  }
+
+  if (!is.data.frame(inds)) {
+    stop("inds is not a data frame")
+  }
+
+  if (!(is.atomic(vars) || is.list(vars))) {
+    stop("vars is not a vector")
+  }
+
+  # Check for any missing values
+  if (any(is.na(cons)) | any(is.na(inds))) {
+    stop("Missing value(s) ('NA') in cons and/or inds")
+  }
+
+  # Ensure there aren't any duplicate zone or individual codes
+  if (!isTRUE(all.equal(nrow(cons[, 1]), nrow(unique(cons[, 1]))))) {
+    stop("Not all zone codes are unique (check first column of cons)")
+  }
+
+  if (!isTRUE(all.equal(nrow(inds[, 1]), nrow(unique(inds[, 1]))))) {
+    stop("Not all individual IDs are unique (check first column of inds)")
+  }
+
+
+  # Prepare constraints
+
+  # Save and drop first column of cons (zone codes)
+  # unlist() is needed in case the data is provided as a tibble
+  zones <- as.vector(unlist(cons[, 1]))
+  cons <- cons[, -1]
+  cons <- as.matrix(cons)
+
+  # cons must be a numeric (i.e. double, not int) matrix
+  cons[] <- as.numeric(cons[])
+
+  # weight() will error if 1 or more zones are completely empty (i.e. the
+  # population is 0; rowSums == 0). See issue #64
+  if (any(rowSums(cons) == 0)) {
+    stop("One or more zones (in cons) have a 0 population.
+These must be removed before rk_weight() can run")
+  }
+
+
+  # Prepare individual-level data (survey)
+
+  # Save IDs from inds
+  # unlist() is needed in case the data is provided as a tibble
+  ids  <- as.vector(unlist(inds[, 1]))
+  inds <- inds[, 2:ncol(inds)]  # issue 33
+
+  # Create a list of survey based matrices to match cons matrices
+  # Easiest way is to create 'dummy variables' (i.e. 0, 1) using model.matrix.
+  # The '-1' drops the intercept, and puts the first variable back in
+  # I hate it because it doesn't seem to be documented anywhere, but it works
+  inds <- lapply(as.list(vars), function(x) {
+    stats::model.matrix( ~ inds[[x]] - 1)
+  })
+
+  # Fix colnames
+  for (i in seq_along(vars)) {  # for loop ok; typically only <= 12 columns
+    colnames(inds[[i]]) <- gsub("inds\\[\\[x\\]\\]", "", colnames(inds[[i]]))
+  }
+  rm(i)
+
+  # one ind table based on unique levels in inds is easier to check and use
+  ind_cat <- do.call(cbind, inds)
+
+  # check colnames match exactly at this point
+  # this is crucial to ensure the simulation doesn't provide incorrect results
+  if (!isTRUE(all.equal(colnames(ind_cat), colnames(cons)))) {
+    stop("Column names don't match.\n
+         Are the first columns in cons and inds a zone code/unique ID?
+         Check the unique levels in inds and colnames in cons match EXACTLY.
+         Unique levels identified by weight():\n\n",
+         vapply(seq_along(colnames(ind_cat)), function(x)
+           paste0(colnames(ind_cat)[x], " "), "")
+    )
+  }
+
+  # give ind_cat sequential column names to ensure they're entered into the
+  # model in the correct order
+  colnames(ind_cat) <-
+    paste0(
+      seq_along(colnames(ind_cat)),
+      "_",
+      colnames(ind_cat)
+    )
+  colnames(cons) <- colnames(ind_cat)
+
+  weights <- apply(cons, 1, function(x) {
+
+    ipfp::ipfp(
+      x,
+      t(ind_cat),
+      x0 = rep(1, nrow(ind_cat)),
+      maxit = iterations
+    )
+
+  })
+
+
+  # The sum of weights will form the simulated population so this must match
+  # the population from cons
+  if (!isTRUE(all.equal(sum(weights), (sum(cons) / length(vars))))) {
+    stop("Weight populations don't match constraint populations.
+          Usually this means the populations for each of your constraints
+          are slightly different\n",
+         "Sum of simulated population:  ", sum(weights), "\n",
+         "Sum of constraint population: ", (sum(cons) / length(vars)))
+  }
+
+  # The colSums of weights will form the simulated population in each zone so
+  # these should match the actual populations in each zone from cons
+  if (!isTRUE(colSums(weights) - (rowSums(cons) / length(vars))) < 1L) {
+    stop("Simulated weights by zone differ from constraint weights by zone\n",
+         "Sum of the differences between zones (should be <1): ",
+         sum(colSums(weights) - (rowSums(cons) / length(vars)))
+    )
+  }
+
+  rownames(weights) <- ids
+  colnames(weights) <- zones
+  weights <- as.data.frame(weights)
+
+  weights
+
+}
+
+#' weight
+#'
+#' Deprecated. Use rk_weight()
+#'
+#' @param cons A data frame containing all the constraints. This
+#'   should be in the format of one row per zone, one column per constraint
+#'   category. The first column should be a zone code; all other columns must be
+#'   numeric counts.
+#' @param inds A data frame containing individual-level (survey) data. This
+#'   should be in the format of one row per individual, one column per
+#'   constraint. The first column should be an individual ID.
+#' @param vars A character vector of variables that constrain the simulation
+#'   (i.e. independent variables)
+#' @param iterations The number of iterations the algorithm should complete.
+#'   Defaults to 10
+#'
+#' @return A data frame of fractional weights for each individual in each zone
+#' with zone codes recorded in column names and individual id recorded in row
+#' names.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # SimpleWorld
+#' cons <- data.frame(
+#'   "zone"      = letters[1:3],
+#'   "age_0_49"  = c(8, 2, 7),
+#'   "age_gt_50" = c(4, 8, 4),
+#'   "sex_f"     = c(6, 6, 8),
+#'   "sex_m"     = c(6, 4, 3),
+#'   stringsAsFactors = FALSE
+#' )
+#' inds <- data.frame(
+#'   "id"     = LETTERS[1:5],
+#'   "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
+#'   "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
+#'   "income" = c(2868, 2474, 2231, 3152, 2473),
+#'   stringsAsFactors = FALSE
+#' )
+#' # Set variables to constrain over
+#' vars <- c("age", "sex")
 #' weights <- weight(cons = cons, inds = inds, vars = vars)
 #' print(weights)
+#' }
 weight <- function(cons, inds, vars = NULL, iterations = 10) {
+
+  .Deprecated("rk_weight")
 
   # Check arguments are the correct class
   if (!is.data.frame(cons)) {
