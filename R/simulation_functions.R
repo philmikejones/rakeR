@@ -579,74 +579,12 @@ extract <- function(weights, inds, id) {
 #' @export
 #'
 #' @examples
-#' ## Not run
-#' ## extract_weights() is deprecated, use extract() instead
+#' \dontrun{
+#' extract_weights() is deprecated, use rk_extract() instead
+#' }
 extract_weights <- function(weights, inds, id) {
 
-  .Deprecated("extract")
-
-  # variables to loop over (dropping id/code)
-  variables <- colnames(inds)
-  variables <- variables[-grep(id, variables)]
-
-  # check if any columns are class numeric or integer
-  # have to use loop as class() returns class of the overall d.f.
-  # have to use class() because typeof() for factor returns integer (as
-  # it uses integers with attributes under the hood)
-  # same for is()
-  lapply(inds[, variables], function(x) {
-    if (class(x) == "numeric" | class(x) == "integer") {
-      stop("rakeR::extract() cannot work with numeric (i.e. integer or double)
-           variables because by design it creates a new variable for each
-           unique level in each variable\n
-           Consider cut()ing your numeric data, extract() without your
-           numeric data, or integerise() instead.")
-    }
-  })
-
-  levels <- lapply(as.list(variables), function(x) {
-    sort(unique(as.character(inds[[x]])))
-  })
-
-  result <- lapply(variables, function(y) {
-
-    lapply(as.list(sort(unique(as.character(inds[[y]])))), function(x) {
-
-      match_id <- inds[[id]][inds[[y]] == x]
-
-      matched_weights <- weights[row.names(weights) %in% match_id, ]
-      matched_weights <- colSums(matched_weights)
-
-      matched_weights
-
-    })
-
-  })
-
-  result           <- as.data.frame(result)
-  colnames(result) <- unlist(levels)
-
-  df <- data.frame(
-    code  = colnames(weights),
-    total = colSums(weights),
-    row.names = NULL, stringsAsFactors = FALSE
-  )
-
-  stopifnot(
-    all.equal(df[["code"]], row.names(result))
-  )
-
-  df            <- cbind(df, result)
-  row.names(df) <- NULL
-
-  stopifnot(
-    all.equal(
-      sum(df[["total"]]),
-      (sum(df[, 3:ncol(df)]) / length(variables)))
-  )
-
-  message("extract_weights() is deprecated. Please use extract()")
-  df
+  stop("extract_weights() is depricated. Use rk_extract()")
 
 }
 
