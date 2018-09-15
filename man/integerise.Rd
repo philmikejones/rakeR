@@ -22,30 +22,10 @@ Defaults to \code{"trs"}; currently other methods are not implemented.}
 A data frame of integerised cases
 }
 \description{
-Generate integer cases from numeric weights matrix.
-}
-\details{
-Extracted weights (using rakeR::extract()) are more 'precise' than
-integerised weights (although the user should be careful this is not
-spurious precision based on context) as they return fractions.
-Nevertheless, integerised weights are useful in cases when:
-  \itemize{
-    \item{Numeric information (such as income) is required, as this needs
-    to be cut() to work with rakeR::extract()}
-    \item{Simulated 'individuals' are required for case studies of key
-    areas.}
-    \item{Input individual-level data for agent-based or dynamic models are
-    required}
-  }
-
-The default integerisation method uses the 'truncate, replicate, sample'
-method developed by Robin Lovelace and Dimitris Ballas
-\url{http://www.sciencedirect.com/science/article/pii/S0198971513000240}
-
-Other methods (for example proportional probabilities) may be implemented
-at a later date.
+Deprecated. Use rk_integerise()
 }
 \examples{
+\dontrun{
 cons <- data.frame(
   "zone"      = letters[1:3],
   "age_0_49"  = c(8, 2, 7),
@@ -64,6 +44,7 @@ inds <- data.frame(
 )
 vars <- c("age", "sex")
 
-weights     <- weight(cons = cons, inds = inds, vars = vars)
-weights_int <- integerise(weights, inds = inds)
+weights     <- rk_weight(cons = cons, inds = inds, vars = vars)
+weights_int <- rk_integerise(weights, inds = inds)
+}
 }

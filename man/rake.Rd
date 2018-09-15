@@ -14,14 +14,14 @@ rake(cons, inds, vars, output = "fraction", iterations = 10, ...)
 \item{vars}{A character string of variables to iterate over}
 
 \item{output}{A string specifying the desired output, either "fraction"
-(extract()) or "integer" (integerise())}
+(rk_extract()) or "integer" (rk_integerise())}
 
 \item{iterations}{The number of iterations to perform. Defaults to 10.}
 
 \item{...}{Additional arguments to pass to depending on desired output:
 \itemize{
-  \item{if "fraction" specify 'id' (see extract() documentation)}
-  \item{if "integer" specify 'method' and 'seed' (see integerise()
+  \item{if "fraction" specify 'id' (see rk_extract() documentation)}
+  \item{if "integer" specify 'method' and 'seed' (see rk_integerise()
 documentation)}
 }}
 }
@@ -30,14 +30,14 @@ A data frame with extracted weights (if output == "fraction", the
 default) or integerised cases (if output == "integer")
 }
 \description{
-A convenience function wrapping \code{weight()} and \code{extract()} or
-\code{weight()} and \code{integerise()}
+Deprecated. Use rk_rake()
 }
 \examples{
-## not run
-## frac_weights <- rake(cons, inds, vars, output = "fraction",
-##                      id = "id")
+\dontrun{
+frac_weights <- rake(cons, inds, vars, output = "fraction",
+                     id = "id")
 
-## int_weight <- rake(cons, inds, vars, output = "integer",
-##                    method = "trs", seed = "42")
+int_weight <- rake(cons, inds, vars, output = "integer",
+                   method = "trs", seed = "42")
+}
 }

@@ -19,19 +19,11 @@ A data frame with zones and aggregated simulated values for each
 variable
 }
 \description{
-Extract aggregate weights from individual weight table
-}
-\details{
-Extract aggregate weights from individual weight table, typically produced
-by rakeR::weight()
-
-Extract cannot operate with numeric variables because it creates a new
-variable for each unique factor of each variable
-If you want numeric information, like income, you need to cut() the
-numeric values, or use integerise() instead.
+Deprecated. Use rk_extract() instead.
 }
 \examples{
-## Not run
-## Use weights object from weights()
-## ext_weights <- extract(weights = weights, inds = inds, id = "id")
+\dontrun{
+Use weights object from rk_weight()
+ext_weights <- rk_extract(weights = weights, inds = inds, id = "id")
+}
 }
