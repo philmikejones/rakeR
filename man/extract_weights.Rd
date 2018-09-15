@@ -22,6 +22,7 @@ variable
 Deprecated: use rakeR::extract()
 }
 \examples{
-## Not run
-## extract_weights() is deprecated, use extract() instead
+\dontrun{
+extract_weights() is deprecated, use rk_extract() instead
+}
 }

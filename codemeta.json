@@ -1,0 +1,129 @@
+{
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    "http://schema.org"
+  ],
+  "@type": "SoftwareSourceCode",
+  "identifier": "rakeR",
+  "description": "Functions for performing spatial microsimulation ('raking')\n    in R.",
+  "name": "rakeR: Easy Spatial Microsimulation (Raking) in R",
+  "codeRepository": "https://philmikejones.github.io/rakeR/",
+  "issueTracker": "https://github.com/philmikejones/rakeR/issues",
+  "license": "https://spdx.org/licenses/GPL-3.0",
+  "version": "0.2.1.9000",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "version": "3.5.1",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 3.5.1 (2018-07-02)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Phil Mike",
+      "familyName": "Jones",
+      "email": "philmikejones@gmail.com",
+      "@id": "https://orcid.org/0000-0001-5173-3245"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Robin",
+      "familyName": "Lovelace"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Morgane",
+      "familyName": "Dumont"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Andrew",
+      "familyName": "Smith"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Phil Mike",
+      "familyName": "Jones",
+      "email": "philmikejones@gmail.com",
+      "@id": "https://orcid.org/0000-0001-5173-3245"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "readr",
+      "name": "readr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=readr"
+    }
+  ],
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 3.4.0"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ipfp",
+      "name": "ipfp",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ipfp"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "wrswoR",
+      "name": "wrswoR",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=wrswoR"
+    }
+  ],
+  "releaseNotes": "https://github.com/philmikejones/rakeR/blob/master/NEWS.md",
+  "readme": "https://github.com/philmikejones/rakeR/blob/master/README.md",
+  "fileSize": "29.318KB",
+  "contIntegration": [
+    "https://travis-ci.org/philmikejones/rakeR",
+    "https://codecov.io/gh/philmikejones/rakeR"
+  ],
+  "developmentStatus": "https://www.repostatus.org/#active",
+  "relatedLink": "https://CRAN.R-project.org/package=rakeR"
+}

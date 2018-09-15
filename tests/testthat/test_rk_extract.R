@@ -1,4 +1,4 @@
-context("Check extract() function")
+context("Check rk_extract() function")
 
 cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
@@ -8,31 +8,31 @@ vars <- c("Car", "NSSEC8", "ageband4")
 cons[19, "n_1_1"] <- 0  # lowest count (35)
 cons[19, "n_1_2"] <- 283  # add these so populations still match
 
-weights <- weight(cons = cons, inds = inds, vars = vars, iterations = 10)
+weights <- rk_weight(cons = cons, inds = inds, vars = vars, iterations = 10)
 
 stopifnot(
   any(cons == 0),
   any(weights == 0)
 )
 
-test_that("extract() errors with a numeric variable", {
+test_that("rk_extract() errors with a numeric variable", {
   inds$income <- sample(2000:4000, size = nrow(inds), replace = TRUE)
   expect_error(
-    extract(weights = weights, inds = inds, id = "code"),
+    rk_extract(weights = weights, inds = inds, id = "code"),
                regexp = "cannot work with numeric")
 })
 
-test_that("extract() should work when income is binned", {
+test_that("rk_extract() should work when income is binned", {
   inds$income <- sample(2000:4000, size = nrow(inds), replace = TRUE)
   inds[["income"]] <- cut(inds[["income"]],
                           breaks = 2,
                           labels = c("low", "high"),
                           include.lowest = TRUE)
   # expect_error as NA is effectively pass with no error
-  expect_error(extract(weights = weights, inds = inds, id = "code"), NA)
+  expect_error(rk_extract(weights = weights, inds = inds, id = "code"), NA)
 })
 
-extd_weights <- extract(weights = weights, inds = inds, id = "code")
+extd_weights <- rk_extract(weights = weights, inds = inds, id = "code")
 test_that("Number of zones is correct", {
   expect_equal(length(extd_weights$code), length(cons$code))
 })

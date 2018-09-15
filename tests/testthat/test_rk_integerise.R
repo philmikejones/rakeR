@@ -8,22 +8,22 @@ vars <- c("Car", "NSSEC8", "ageband4")
 cons[19, "n_1_1"] <- 0  # lowest count (35)
 cons[19, "n_1_2"] <- 283  # add these so populations still match
 
-weights <- weight(cons = cons, inds = inds, vars = vars)
+weights <- rk_weight(cons = cons, inds = inds, vars = vars)
 
 test_that("Error if num of observations don't match", {
   inds_10 <- inds[1:10, ]
   expect_error(
-    integerise(weights, inds_10),
+    rk_integerise(weights, inds_10),
     "Number of observations in weights does not match inds"
   )
 })
 
 test_that("Error if inds isn't a data frame", {
   inds <- unlist(inds)
-  expect_error(integerise(weights, inds), "inds is not a data frame")
+  expect_error(rk_integerise(weights, inds), "inds is not a data frame")
 })
 
-weights_int <- integerise(weights, inds)
+weights_int <- rk_integerise(weights, inds)
 
 test_that("Num of cols in weights_int should be num cols of inds + 1", {
   expect_equal(ncol(weights_int), (ncol(inds) + 1))
@@ -52,12 +52,12 @@ test_that("No missing values in integerised output", {
 
 test_that("method other than 'trs' fails", {
   expect_error(
-    integerise(weights, inds, method = "not_trs"),
+    rk_integerise(weights, inds, method = "not_trs"),
     "only supports the truncate, replicate"
   )
 })
 
 test_that("Return integer weights unmodified", {
   weights <- floor(weights)
-  expect_message(integerise(weights, inds), "weights already integers")
+  expect_message(rk_integerise(weights, inds), "weights already integers")
 })
