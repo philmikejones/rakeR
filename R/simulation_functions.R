@@ -589,17 +589,17 @@ extract_weights <- function(weights, inds, id) {
 }
 
 
-#' integerise
+#' rk_integerise
 #'
 #' Generate integer cases from numeric weights matrix.
 #'
-#' Extracted weights (using rakeR::extract()) are more 'precise' than
+#' Extracted weights (using rakeR::rk_extract()) are more 'precise' than
 #' integerised weights (although the user should be careful this is not
 #' spurious precision based on context) as they return fractions.
 #' Nevertheless, integerised weights are useful in cases when:
 #'   \itemize{
 #'     \item{Numeric information (such as income) is required, as this needs
-#'     to be cut() to work with rakeR::extract()}
+#'     to be cut() to work with rakeR::rk_extract()}
 #'     \item{Simulated 'individuals' are required for case studies of key
 #'     areas.}
 #'     \item{Input individual-level data for agent-based or dynamic models are
@@ -614,14 +614,14 @@ extract_weights <- function(weights, inds, id) {
 #' at a later date.
 #'
 #' @param weights A matrix or data frame of fractional weights, typically
-#' provided by \code{rakeR::weight()}
+#' provided by \code{rakeR::rk_weight()}
 #' @param inds The individual--level data (i.e. one row per individual)
 #' @param method The integerisation method specified as a character string.
 #' Defaults to \code{"trs"}; currently other methods are not implemented.
 #' @param seed The seed to use, defaults to 42.
 #'
 #' @return A data frame of integerised cases
-#' @aliases integerize
+#' @aliases rk_integerize
 #' @export
 #'
 #' @examples
@@ -643,9 +643,9 @@ extract_weights <- function(weights, inds, id) {
 #' )
 #' vars <- c("age", "sex")
 #'
-#' weights     <- weight(cons = cons, inds = inds, vars = vars)
-#' weights_int <- integerise(weights, inds = inds)
-integerise <- function(weights, inds, method = "trs", seed = 42) {
+#' weights     <- rk_weight(cons = cons, inds = inds, vars = vars)
+#' weights_int <- rk_integerise(weights, inds = inds)
+rk_integerise <- function(weights, inds, method = "trs", seed = 42) {
 
   # Ensures the output of the function is reproducible (uses sample())
   set.seed(seed)
@@ -723,21 +723,139 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 }
 
 
-#' rake
+#' integerise
 #'
-#' A convenience function wrapping \code{weight()} and \code{extract()} or
-#' \code{weight()} and \code{integerise()}
+#' Deprecated. Use rk_integerise()
+#'
+#' @param weights A matrix or data frame of fractional weights, typically
+#' provided by \code{rakeR::weight()}
+#' @param inds The individual--level data (i.e. one row per individual)
+#' @param method The integerisation method specified as a character string.
+#' Defaults to \code{"trs"}; currently other methods are not implemented.
+#' @param seed The seed to use, defaults to 42.
+#'
+#' @return A data frame of integerised cases
+#' @aliases integerize
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' cons <- data.frame(
+#'   "zone"      = letters[1:3],
+#'   "age_0_49"  = c(8, 2, 7),
+#'   "age_gt_50" = c(4, 8, 4),
+#'   "sex_f"     = c(6, 6, 8),
+#'   "sex_m"     = c(6, 4, 3),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' inds <- data.frame(
+#'   "id"     = LETTERS[1:5],
+#'   "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
+#'   "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
+#'   "income" = c(2868, 2474, 2231, 3152, 2473),
+#'   stringsAsFactors = FALSE
+#' )
+#' vars <- c("age", "sex")
+#'
+#' weights     <- rk_weight(cons = cons, inds = inds, vars = vars)
+#' weights_int <- rk_integerise(weights, inds = inds)
+#' }
+integerise <- function(weights, inds, method = "trs", seed = 42) {
+
+  .Deprecated("rk_integerise")
+
+  # Ensures the output of the function is reproducible (uses sample())
+  set.seed(seed)
+
+  # Check structure of inputs
+  if (!is.data.frame(inds)) {
+    stop("inds is not a data frame")
+  }
+
+  # Number of observations should be the same in weights and inds
+  if (!isTRUE(all.equal(nrow(weights), nrow(inds)))) {
+    stop("Number of observations in weights does not match inds")
+  }
+
+  if (!method == "trs") {
+    stop("Currently this function only supports the truncate, replicate,
+         sample method.
+         Proportional probabilities may be added at a later date.
+         For now use the default method (trs).")
+  }
+
+  # Weights must be a numeric matrix to reduce to a vector
+  weights <- as.matrix(weights)
+
+  weights_vec <- as.vector(weights)
+
+  # Separate the integer and decimal part of the weight
+  weights_int <- floor(weights_vec)
+  weights_dec <- weights_vec - weights_int
+  deficit <- round(sum(weights_dec))
+
+  # if weights are already integers return them unchanged
+  if (!sum(weights_dec %% 1) > 0) {
+    message("weights already integers. Returning unmodified")
+    return(weights)
+  }
+
+  # the weights be 'topped up' (+ 1 applied)
+  topup <- wrswoR::sample_int_crank(n = length(weights),
+                                    size = deficit,
+                                    prob = weights_dec)
+
+  weights_int[topup] <- weights_int[topup] + 1
+
+
+  # Return as a data frame with correct dimnames
+  dim(weights_int)      <- dim(weights)
+  dimnames(weights_int) <- dimnames(weights)
+  weights_int           <- apply(weights_int, 2, as.integer)
+  weights_int           <- as.data.frame(weights_int)
+
+  weights_int <- as.matrix(weights_int)
+
+  # Create indices to subset/replicate against the survey
+  indices <- apply(weights_int, 2, function(x) {
+    rep.int(seq_along(x), x)
+  })
+
+  indices <- as.numeric(unlist(indices))
+
+  # Create zones
+  zone <- rep(colnames(weights), times = colSums(weights_int))
+
+  sim_df <- inds[indices, ]
+  sim_df$zone <- zone
+
+  # check sim_df before returning
+  # Sum of weights should match number of observations in sim_df
+  if (!all.equal(sum(weights), nrow(sim_df))) {
+    stop("Number of simulated observations does not match sum of weights.")
+  }
+
+  sim_df
+
+}
+
+
+#' rk_rake
+#'
+#' A convenience function wrapping \code{rk_weight()} and \code{rk_extract()} or
+#' \code{rk_weight()} and \code{rk_integerise()}
 #'
 #' @param cons A data frame of constraint variables
 #' @param inds A data frame of individual--level (survey) data
 #' @param vars A character string of variables to iterate over
 #' @param output A string specifying the desired output, either "fraction"
-#' (extract()) or "integer" (integerise())
+#' (rk_extract()) or "integer" (rk_integerise())
 #' @param iterations The number of iterations to perform. Defaults to 10.
 #' @param ... Additional arguments to pass to depending on desired output:
 #'   \itemize{
-#'     \item{if "fraction" specify 'id' (see extract() documentation)}
-#'     \item{if "integer" specify 'method' and 'seed' (see integerise()
+#'     \item{if "fraction" specify 'id' (see rk_extract() documentation)}
+#'     \item{if "integer" specify 'method' and 'seed' (see rk_integerise()
 #'   documentation)}
 #'   }
 #'
@@ -746,27 +864,83 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 #' @export
 #'
 #' @examples
-#' ## not run
-#' ## frac_weights <- rake(cons, inds, vars, output = "fraction",
-#' ##                      id = "id")
+#' \dontrun{
+#' frac_weights <- rake(cons, inds, vars, output = "fraction",
+#'                      id = "id")
 #'
-#' ## int_weight <- rake(cons, inds, vars, output = "integer",
-#' ##                    method = "trs", seed = "42")
+#' int_weight <- rake(cons, inds, vars, output = "integer",
+#'                    method = "trs", seed = "42")
+#' }
+rk_rake <- function(cons, inds, vars,
+                    output = "fraction",
+                    iterations = 10, ...) {
+
+  arguments <- list(...)
+
+  out <- rk_weight(cons, inds, vars, iterations)
+
+  if (output == "fraction") {
+    frac_out <- rk_extract(weights = out, inds = inds,
+                           id = arguments[["id"]])
+
+    return(frac_out)
+  } else if (output == "integer") {
+    int_out <- rk_integerise(out, inds,
+                             method = arguments[["method"]],
+                             seed   = arguments[["seed"]])
+
+    return(int_out)
+  }
+
+}
+
+
+#' rake
+#'
+#' Deprecated. Use rk_rake()
+#'
+#' @param cons A data frame of constraint variables
+#' @param inds A data frame of individual--level (survey) data
+#' @param vars A character string of variables to iterate over
+#' @param output A string specifying the desired output, either "fraction"
+#' (rk_extract()) or "integer" (rk_integerise())
+#' @param iterations The number of iterations to perform. Defaults to 10.
+#' @param ... Additional arguments to pass to depending on desired output:
+#'   \itemize{
+#'     \item{if "fraction" specify 'id' (see rk_extract() documentation)}
+#'     \item{if "integer" specify 'method' and 'seed' (see rk_integerise()
+#'   documentation)}
+#'   }
+#'
+#' @return A data frame with extracted weights (if output == "fraction", the
+#' default) or integerised cases (if output == "integer")
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' frac_weights <- rake(cons, inds, vars, output = "fraction",
+#'                      id = "id")
+#'
+#' int_weight <- rake(cons, inds, vars, output = "integer",
+#'                    method = "trs", seed = "42")
+#' }
 rake <- function(cons, inds, vars,
                  output = "fraction",
                  iterations = 10, ...) {
 
+  .Deprecated("rk_rake")
+
   arguments <- list(...)
 
-  out <- weight(cons, inds, vars, iterations)
+  out <- rk_weight(cons, inds, vars, iterations)
 
   if (output == "fraction") {
-    frac_out <- extract(weights = out, inds = inds,
+    frac_out <- rk_extract(weights = out, inds = inds,
                         id = arguments[["id"]])
 
     return(frac_out)
   } else if (output == "integer") {
-    int_out <- integerise(out, inds,
+    int_out <- rk_integerise(out, inds,
                           method = arguments[["method"]],
                           seed   = arguments[["seed"]])
 
