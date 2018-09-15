@@ -948,20 +948,3 @@ rake <- function(cons, inds, vars,
   }
 
 }
-
-
-#' simulate
-#'
-#' Deprecated: integerise() \%>\% simulate() has been replaced by simply
-#' integerise() to be consistent with extract().
-#'
-#' @param ... arguments previously passed to simulate()
-#'
-#' @return Returns an error if used. Just use integerise()
-#' @export
-simulate <- function(...) {
-
-  .Deprecated(msg = "rakeR::simulate() is deprecated. Just use
-              weight() %>% integerise() (or rake(output = \"integer\"))")
-
-}
