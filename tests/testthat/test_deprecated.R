@@ -239,3 +239,9 @@ test_that("Error if any zone completely empty", {
     weight(cons, inds, vars),
     "0 population")
 })
+
+
+context("extract_weights()")
+test_that("extract_weights() errors", {
+  expect_error(extract_weights(), "extract_weights() is deprecated.")
+})
