@@ -1,11 +1,11 @@
-context("Test rake() function produces correct output for extract")
+context("Test rk_rake() function produces correct output for extract")
 
 cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
 vars <- c("Car", "NSSEC8", "ageband4")
 
 test_that("Check fraction", {
-  frac_weights <- rake(cons = cons, inds = inds, vars = vars,
+  frac_weights <- rk_rake(cons = cons, inds = inds, vars = vars,
                        output = "fraction", id = "code")
 
   lapply(frac_weights[, 3:ncol(frac_weights)], function(x) {
@@ -14,10 +14,10 @@ test_that("Check fraction", {
 })
 
 
-context("Test rake() function produces correct output for integer")
+context("Test rk_rake() function produces correct output for integer")
 
 test_that("Check integer", {
-  int_weights <- rake(cons = cons, inds = inds, vars = vars,
+  int_weights <- rk_rake(cons = cons, inds = inds, vars = vars,
                       output = "integer",
                       seed = 42, method = "trs")
 

@@ -1,4 +1,4 @@
-context("Test weight() function produces correct output")
+context("Test rk_weight() function produces correct output")
 
 cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
@@ -9,7 +9,7 @@ cons[19, "n_1_1"] <- 0  # lowest count (35)
 cons[19, "n_1_2"] <- 283  # add these so populations still match
 stopifnot(any(cons == 0))
 
-weights <- weight(cons = cons, inds = inds, vars = vars)
+weights <- rk_weight(cons = cons, inds = inds, vars = vars)
 
 test_that("Ncols should equal number of zones in cons", {
   expect_equal(ncol(weights), nrow(cons))
@@ -41,8 +41,8 @@ test_that("individual IDs stored in rownames of weights", {
 test_that("Check for data frame errors correctly", {
   cons_notdf <- unlist(cons)
   inds_notdf <- unlist(inds)
-  expect_error(weight(cons_notdf, inds, vars), "cons is not a data frame")
-  expect_error(weight(cons, inds_notdf, vars), "inds is not a data frame")
+  expect_error(rk_weight(cons_notdf, inds, vars), "cons is not a data frame")
+  expect_error(rk_weight(cons, inds_notdf, vars), "inds is not a data frame")
 })
 
 test_that("Check duplicate cons or inds IDs are picked up", {
@@ -57,30 +57,30 @@ test_that("Check duplicate cons or inds IDs are picked up", {
 test_that("Errors if NAs present", {
   # test inds first: if cons was first it would never get to inds
   inds[1, 2] <- NA
-  expect_error(weight(cons, inds, vars), "NA")
+  expect_error(rk_weight(cons, inds, vars), "NA")
 
   cons[1, 2] <- NA
-  expect_error(weight(cons, inds, vars), "NA")
+  expect_error(rk_weight(cons, inds, vars), "NA")
 })
 
 test_that("Duplicated zone codes produces an error", {
   cons[2, 1] <- cons[1, 1]
-  expect_error(weight(cons, inds, vars), "zone codes")
+  expect_error(rk_weight(cons, inds, vars), "zone codes")
 })
 
 test_that("Duplicated ID codes produces an error", {
   inds[2, 1] <- inds[1, 1]
-  expect_error(weight(cons, inds, vars), "individual IDs")
+  expect_error(rk_weight(cons, inds, vars), "individual IDs")
 })
 
 test_that("Error if column names (ind/cons) don't match", {
   inds$Car[inds$Car == "car_no"] <- "car_maybe"
-  expect_error(weight(cons, inds, vars), "Column names don't match")
+  expect_error(rk_weight(cons, inds, vars), "Column names don't match")
 })
 
 test_that("Error if any zone completely empty", {
   cons[1, 2:ncol(cons)] <- 0
   expect_error(
-    weight(cons, inds, vars),
+    rk_weight(cons, inds, vars),
     "0 population")
 })
