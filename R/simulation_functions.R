@@ -609,11 +609,7 @@ rk_rake <- function(cons, inds, vars,
 #'
 #' @examples
 #' \dontrun{
-#' frac_weights <- rake(cons, inds, vars, output = "fraction",
-#'                      id = "id")
-#'
-#' int_weight <- rake(cons, inds, vars, output = "integer",
-#'                    method = "trs", seed = "42")
+#' Deprecated. Use rk_rake()
 #' }
 rake <- function(cons, inds, vars,
                  output = "fraction",
@@ -621,21 +617,6 @@ rake <- function(cons, inds, vars,
 
   .Deprecated("rk_rake")
 
-  arguments <- list(...)
-
-  out <- rk_weight(cons, inds, vars, iterations)
-
-  if (output == "fraction") {
-    frac_out <- rk_extract(weights = out, inds = inds,
-                        id = arguments[["id"]])
-
-    return(frac_out)
-  } else if (output == "integer") {
-    int_out <- rk_integerise(out, inds,
-                          method = arguments[["method"]],
-                          seed   = arguments[["seed"]])
-
-    return(int_out)
-  }
+  rk_rake(cons, inds, vars)
 
 }

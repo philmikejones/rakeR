@@ -44,3 +44,7 @@ test_that("extract() returns deprecated", {
 test_that("integerise() returns deprecated", {
   expect_warning(integerise(weights, inds), regexp = "^'integerise")
 })
+
+test_that("rake() returns deprecated", {
+  expect_warning(rake(cons, inds, vars = vars, id = "id"), regexp = "^'rake")
+})
