@@ -357,16 +357,7 @@ extract <- function(weights, inds, id) {
 
 #' extract_weights
 #'
-#' Deprecated: use rakeR::extract()
-#'
-#' @param weights A weight table, typically produced by rakeR::weight()
-#' @param inds The individual level data
-#' @param id The unique id variable in the individual level data (inds),
-#' usually the first column
-#'
-#' @return A data frame with zones and aggregated simulated values for each
-#' variable
-#' @export
+#' Deprecated: use rakeR::rk_extract()
 #'
 #' @examples
 #' \dontrun{

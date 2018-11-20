@@ -1,5 +1,9 @@
 context("Check deprecated functions")
 
+test_that("extract_weights() errors", {
+  expect_error(extract_weights(), regexp = "extract_weights()")
+})
+
 
 # SimpleWorld: input for weight()
 cons <- data.frame(
