@@ -39,3 +39,8 @@ inds$income <- cut(
 test_that("extract() returns deprecated", {
   expect_warning(extract(weights, inds, id = "id"), regexp = "rk_extract")
 })
+
+
+test_that("integerise() returns deprecated", {
+  expect_warning(integerise(weights, inds), regexp = "^'integerise")
+})

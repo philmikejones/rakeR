@@ -521,103 +521,13 @@ rk_integerise <- function(weights, inds, method = "trs", seed = 42) {
 #'
 #' @examples
 #' \dontrun{
-#' cons <- data.frame(
-#'   "zone"      = letters[1:3],
-#'   "age_0_49"  = c(8, 2, 7),
-#'   "age_gt_50" = c(4, 8, 4),
-#'   "sex_f"     = c(6, 6, 8),
-#'   "sex_m"     = c(6, 4, 3),
-#'   stringsAsFactors = FALSE
-#' )
-#'
-#' inds <- data.frame(
-#'   "id"     = LETTERS[1:5],
-#'   "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
-#'   "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
-#'   "income" = c(2868, 2474, 2231, 3152, 2473),
-#'   stringsAsFactors = FALSE
-#' )
-#' vars <- c("age", "sex")
-#'
-#' weights     <- rk_weight(cons = cons, inds = inds, vars = vars)
-#' weights_int <- rk_integerise(weights, inds = inds)
+#' Deprecated. Use rk_integerise()
 #' }
 integerise <- function(weights, inds, method = "trs", seed = 42) {
 
   .Deprecated("rk_integerise")
 
-  # Ensures the output of the function is reproducible (uses sample())
-  set.seed(seed)
-
-  # Check structure of inputs
-  if (!is.data.frame(inds)) {
-    stop("inds is not a data frame")
-  }
-
-  # Number of observations should be the same in weights and inds
-  if (!isTRUE(all.equal(nrow(weights), nrow(inds)))) {
-    stop("Number of observations in weights does not match inds")
-  }
-
-  if (!method == "trs") {
-    stop("Currently this function only supports the truncate, replicate,
-         sample method.
-         Proportional probabilities may be added at a later date.
-         For now use the default method (trs).")
-  }
-
-  # Weights must be a numeric matrix to reduce to a vector
-  weights <- as.matrix(weights)
-
-  weights_vec <- as.vector(weights)
-
-  # Separate the integer and decimal part of the weight
-  weights_int <- floor(weights_vec)
-  weights_dec <- weights_vec - weights_int
-  deficit <- round(sum(weights_dec))
-
-  # if weights are already integers return them unchanged
-  if (!sum(weights_dec %% 1) > 0) {
-    message("weights already integers. Returning unmodified")
-    return(weights)
-  }
-
-  # the weights be 'topped up' (+ 1 applied)
-  topup <- wrswoR::sample_int_crank(n = length(weights),
-                                    size = deficit,
-                                    prob = weights_dec)
-
-  weights_int[topup] <- weights_int[topup] + 1
-
-
-  # Return as a data frame with correct dimnames
-  dim(weights_int)      <- dim(weights)
-  dimnames(weights_int) <- dimnames(weights)
-  weights_int           <- apply(weights_int, 2, as.integer)
-  weights_int           <- as.data.frame(weights_int)
-
-  weights_int <- as.matrix(weights_int)
-
-  # Create indices to subset/replicate against the survey
-  indices <- apply(weights_int, 2, function(x) {
-    rep.int(seq_along(x), x)
-  })
-
-  indices <- as.numeric(unlist(indices))
-
-  # Create zones
-  zone <- rep(colnames(weights), times = colSums(weights_int))
-
-  sim_df <- inds[indices, ]
-  sim_df$zone <- zone
-
-  # check sim_df before returning
-  # Sum of weights should match number of observations in sim_df
-  if (!all.equal(sum(weights), nrow(sim_df))) {
-    stop("Number of simulated observations does not match sum of weights.")
-  }
-
-  sim_df
+  rk_integerise(weights = weights, inds = inds, method = "trs", seed = 42)
 
 }
 
