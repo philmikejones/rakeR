@@ -1,6 +1,7 @@
 context("Check deprecated functions")
 
-# SimpleWorld
+
+# SimpleWorld: input for weight()
 cons <- data.frame(
  "zone"      = letters[1:3],
  "age_0_49"  = c(8, 2, 7),
@@ -24,7 +25,12 @@ test_that("weight() returns deprecated", {
   expect_warning(weight(cons, inds, vars), regexp = "rk_weight")
 })
 
-weights = rk_weight(cons, inds, vars)
+
+# Input for extract()
+weights <- rk_weight(cons, inds, vars)
+inds$income <- cut(
+  inds$income, breaks = 2, include.lowest = TRUE, labels = c("low", "high")
+)
 
 test_that("extract() returns deprecated", {
   expect_warning(extract(weights, inds, id = "id"), regexp = "rk_extract")

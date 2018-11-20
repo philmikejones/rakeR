@@ -344,8 +344,7 @@ rk_extract <- function(weights, inds, id) {
 #'
 #' @examples
 #' \dontrun{
-#' Use weights object from rk_weight()
-#' ext_weights <- rk_extract(weights = weights, inds = inds, id = "id")
+#' Deprecated. Use rk_extract()
 #' }
 extract <- function(weights, inds, id) {
 
