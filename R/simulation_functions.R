@@ -462,25 +462,34 @@ rk_integerise <- function(weights, inds, method = "trs", seed = 42) {
 #' int_weight <- rake(cons, inds, vars, output = "integer",
 #'                    method = "trs", seed = "42")
 #' }
-rk_rake <- function(cons, inds, vars,
-                    output = "fraction",
-                    iterations = 10, ...) {
+rk_rake <- function(
+  cons, inds, vars, output = "fraction", iterations = 10, ...
+) {
 
   arguments <- list(...)
 
-  out <- rk_weight(cons, inds, vars, iterations)
+  weights <- rk_weight(
+    cons = cons, inds = inds, vars = vars, iterations = iterations
+  )
 
   if (output == "fraction") {
-    frac_out <- rk_extract(weights = out, inds = inds,
-                           id = arguments[["id"]])
 
-    return(frac_out)
+    frac_out <- rk_extract(
+      weights = weights, inds = inds, id = arguments[["id"]]
+    )
+
+    frac_out
+
   } else if (output == "integer") {
-    int_out <- rk_integerise(out, inds,
-                             method = arguments[["method"]],
-                             seed   = arguments[["seed"]])
 
-    return(int_out)
+    int_out <- rk_integerise(
+      weights = weights, inds = inds,
+      method = arguments[["method"]],
+      seed = arguments[["seed"]]
+    )
+
+    int_out
+
   }
 
 }
