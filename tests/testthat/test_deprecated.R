@@ -45,6 +45,8 @@ test_that("integerise() returns deprecated", {
   expect_warning(integerise(weights, inds), regexp = "^'integerise")
 })
 
-test_that("rake() returns deprecated", {
-  expect_warning(rake(cons, inds, vars = vars, id = "id"), regexp = "^'rake")
+test_that("rake() errors", {
+  expect_error(
+    rake(cons, inds[, c("id", "age", "sex")], vars = vars, id = "id")
+  )
 })
