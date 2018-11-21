@@ -57,7 +57,9 @@ cons <- data.frame(
 
 inds <- data.frame(
   "id"     = LETTERS[1:5],
-  "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
+  "age"    = c(
+    "age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"
+  ),
   "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
   "income" = c(2868, 2474, 2231, 3152, 2473),
   stringsAsFactors = FALSE

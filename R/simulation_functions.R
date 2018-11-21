@@ -102,6 +102,13 @@ rk_weight <- function(cons, inds, vars = NULL, iterations = 10) {
     stop("Not all individual IDs are unique (check first column of inds)")
   }
 
+  # weight() will error if 1 or more zones are completely empty (i.e. the
+  # population is 0; rowSums == 0). See issue #64
+  if (any(rowSums(cons[, 2:ncol(cons)]) == 0)) {  # col 1 is ID
+    stop("One or more zones (in cons) have a 0 population.
+These must be removed before rk_weight() can run")
+  }
+
 
   # Prepare constraints
 
@@ -113,13 +120,6 @@ rk_weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
   # cons must be a numeric (i.e. double, not int) matrix
   cons[] <- as.numeric(cons[])
-
-  # weight() will error if 1 or more zones are completely empty (i.e. the
-  # population is 0; rowSums == 0). See issue #64
-  if (any(rowSums(cons) == 0)) {
-    stop("One or more zones (in cons) have a 0 population.
-These must be removed before rk_weight() can run")
-  }
 
 
   # Prepare individual-level data (survey)
@@ -168,14 +168,18 @@ These must be removed before rk_weight() can run")
     )
   colnames(cons) <- colnames(ind_cat)
 
+
+  # Calculate weights
   weights <- apply(cons, 1, function(x) {
 
-    ipfp::ipfp(
+    weights <- ipfp::ipfp(
       x,
       t(ind_cat),
       x0 = rep(1, nrow(ind_cat)),
       maxit = iterations
     )
+
+    weights
 
   })
 
