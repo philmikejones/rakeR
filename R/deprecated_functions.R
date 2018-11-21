@@ -93,7 +93,7 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 
   .Deprecated("rk_integerise")
 
-  rk_integerise(weights = weights, inds = inds, method = "trs", seed = 42)
+  rk_integerise(weights = weights, inds = inds, method = method, seed = seed)
 
 }
 
