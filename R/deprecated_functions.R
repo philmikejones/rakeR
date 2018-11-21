@@ -136,10 +136,12 @@ rake <- function(cons, inds, vars, output = "fraction", iterations = 10, ...) {
 
   .Deprecated("rk_rake")
 
+  arguments <- list(...)
+
   rk_rake(
     cons = cons, inds = inds, vars = vars,
     output = output, iterations = iterations,
-    id = id
+    id = arguments["id"]
   )
 
 }
