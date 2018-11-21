@@ -59,6 +59,15 @@ extract <- function(weights, inds, id) {
 #'
 #' Deprecated: use rakeR::rk_extract()
 #'
+#' @param weights A weight table, typically produced using rakeR::rk_weight()
+#' @param inds The individual level data
+#' @param id The unique id variable in the individual level data (inds),
+#' usually the first column
+#'
+#' @return A data frame with zones and aggregated simulated values for each
+#' variable
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' extract_weights() is deprecated, use rk_extract() instead
@@ -123,12 +132,14 @@ integerise <- function(weights, inds, method = "trs", seed = 42) {
 #' \dontrun{
 #' Deprecated. Use rk_rake()
 #' }
-rake <- function(cons, inds, vars,
-                 output = "fraction",
-                 iterations = 10, ...) {
+rake <- function(cons, inds, vars, output = "fraction", iterations = 10, ...) {
 
   .Deprecated("rk_rake")
 
-  rk_rake(cons, inds, vars)
+  rk_rake(
+    cons = cons, inds = inds, vars = vars,
+    output = output, iterations = iterations,
+    id = id
+  )
 
 }
