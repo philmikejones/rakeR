@@ -1,5 +1,3 @@
-library("testthat")
-devtools::load_all()
 context("Check deprecated functions")
 
 
