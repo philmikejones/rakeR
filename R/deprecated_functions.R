@@ -138,10 +138,12 @@ rake <- function(cons, inds, vars, output = "fraction", iterations = 10, ...) {
 
   arguments <- list(...)
 
-  rk_rake(
+  result <- rk_rake(
     cons = cons, inds = inds, vars = vars,
     output = output, iterations = iterations,
-    id = arguments["id"]
+    id = arguments[["id"]]
   )
+
+  result
 
 }
