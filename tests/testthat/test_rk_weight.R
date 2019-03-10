@@ -6,6 +6,11 @@ vars <- c("Car", "NSSEC8", "ageband4")
 
 weights <- rk_weight(cons = cons, inds = inds, vars = vars)
 
+test_that("Error if vars is not a vector", {
+  vars <- function(x) {}
+  expect_error(rk_weight(cons, inds, vars = vars), "vector")
+})
+
 test_that("Ncols should equal number of zones in cons", {
   expect_equal(ncol(weights), nrow(cons))
 })
