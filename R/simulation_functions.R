@@ -146,18 +146,6 @@ These must be removed before rk_weight() can run")
   # one ind table based on unique levels in inds is easier to check and use
   ind_cat <- do.call(cbind, inds)
 
-  # check colnames match exactly at this point
-  # this is crucial to ensure the simulation doesn't provide incorrect results
-  if (!isTRUE(all.equal(colnames(ind_cat), colnames(cons)))) {
-    stop("Column names don't match.\n
-         Are the first columns in cons and inds a zone code/unique ID?
-         Check the unique levels in inds and colnames in cons match EXACTLY.
-         Unique levels identified by weight():\n\n",
-         vapply(seq_along(colnames(ind_cat)), function(x)
-           paste0(colnames(ind_cat)[x], " "), "")
-    )
-  }
-
   # give ind_cat sequential column names to ensure they're entered into the
   # model in the correct order
   colnames(ind_cat) <-
@@ -182,26 +170,6 @@ These must be removed before rk_weight() can run")
     weights
 
   })
-
-
-  # The sum of weights will form the simulated population so this must match
-  # the population from cons
-  if (!isTRUE(all.equal(sum(weights), (sum(cons) / length(vars))))) {
-    stop("Weight populations don't match constraint populations.
-          Usually this means the populations for each of your constraints
-          are slightly different\n",
-         "Sum of simulated population:  ", sum(weights), "\n",
-         "Sum of constraint population: ", (sum(cons) / length(vars)))
-  }
-
-  # The colSums of weights will form the simulated population in each zone so
-  # these should match the actual populations in each zone from cons
-  if (!isTRUE(colSums(weights) - (rowSums(cons) / length(vars))) < 1L) {
-    stop("Simulated weights by zone differ from constraint weights by zone\n",
-         "Sum of the differences between zones (should be <1): ",
-         sum(colSums(weights) - (rowSums(cons) / length(vars)))
-    )
-  }
 
   rownames(weights) <- ids
   colnames(weights) <- zones
@@ -286,18 +254,8 @@ rk_extract <- function(weights, inds, id) {
     row.names = NULL, stringsAsFactors = FALSE
   )
 
-  stopifnot(
-    all.equal(df[["code"]], row.names(result))
-  )
-
-  df            <- cbind(df, result)
+  df <- cbind(df, result)
   row.names(df) <- NULL
-
-  stopifnot(
-    all.equal(
-      sum(df[["total"]]),
-      (sum(df[, 3:ncol(df)]) / length(variables)))
-  )
 
   df
 
@@ -428,12 +386,6 @@ rk_integerise <- function(weights, inds, method = "trs", seed = 42) {
 
   sim_df <- inds[indices, ]
   sim_df$zone <- zone
-
-  # check sim_df before returning
-  # Sum of weights should match number of observations in sim_df
-  if (!all.equal(sum(weights), nrow(sim_df))) {
-    stop("Number of simulated observations does not match sum of weights.")
-  }
 
   sim_df
 
