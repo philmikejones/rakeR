@@ -4,10 +4,6 @@ cons <- readr::read_csv("../cakemap_cons.csv")
 inds <- readr::read_csv("../cakemap_inds.csv")
 vars <- c("Car", "NSSEC8", "ageband4")
 
-head(cons)
-head(inds)
-vars
-
 weights <- rk_weight(cons = cons, inds = inds, vars = vars)
 
 test_that("Ncols should equal number of zones in cons", {
@@ -74,7 +70,7 @@ test_that("Duplicated ID codes produces an error", {
 
 test_that("Error if column names (ind/cons) don't match", {
   inds$Car[inds$Car == "car_no"] <- "car_maybe"
-  expect_error(rk_weight(cons, inds, vars), "Column names don't match")
+  expect_error(rk_weight(cons, inds, vars), "do not match")
 })
 
 test_that("Error if any zone completely empty", {

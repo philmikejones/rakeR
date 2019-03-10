@@ -109,6 +109,12 @@ rk_weight <- function(cons, inds, vars = NULL, iterations = 10) {
 These must be removed before rk_weight() can run")
   }
 
+  if (!all(unlist(lapply(
+    inds[, vars],
+    function(x) unique(x) %in% colnames(cons)
+  )))) {
+    stop("inds variable levels do not match cons colnames")
+  }
 
   # Prepare constraints
 
