@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 
-Create a spatial microsimulated data set in R using iterative proportional 
+Create a spatial microsimulated data set in R using iterative proportional
 fitting ('raking').
 
 
@@ -52,14 +52,14 @@ library("rakeR")
 ## Overview
 
 `rakeR` has three main functions.
-The first stage is always to use `weight()` to produce a matrix of fractional weights.
+The first stage is always to use `rk_weight()` to produce a matrix of fractional weights.
 This matrix stores weights for each individual in each zone.
 
-From this weight matrix, `rakeR` has functions to create fractional weights (`extract()`) or integerised cases (`integerise()`), depending on your needs and use cases.
-Fractional (`extract()`ed) weights are generally more accurate, while integer cases are probably the most intuitive to use and are useful as inputs
+From this weight matrix, `rakeR` has functions to create fractional weights (`rk_extract()`) or integerised cases (`rk_integerise()`), depending on your needs and use cases.
+Fractional (`rk_extract()`ed) weights are generally more accurate, while integer cases are probably the most intuitive to use and are useful as inputs
 for further modeling.
 
-To create fractional weights use `weight()` then `extract()`, and to produce integerised weights use `weight()` then `integerise()`.
+To create fractional weights use `rk_weight()` then `rk_extract()`, and to produce integerised weights use `rk_weight()` then `rk_integerise()`.
 
 
 ## Inputs
@@ -93,7 +93,7 @@ inds <- data.frame(
 vars <- c("age", "sex")
 ```
 
-It is _essential_ that the unique levels in the constraint variables in the 
+It is _essential_ that the unique levels in the constraint variables in the
 `inds` data set match the variables names in the `cons` data set.
 For example, `age_0_49` and `age_gt_50` are variable names in `cons` and the unique levels of the `age` variable in `inds` precisely match these:
 
@@ -107,44 +107,44 @@ Without this, the functions do not know how to match the `inds` and `cons` data
 and will fail so as not to return spurious results.
 
 
-## `weight()`
+## `rk_weight()`
 
-(Re-)weighting is done with `weight()` which returns a data frame of raw weights.
+(Re-)weighting is done with `rk_weight()` which returns a data frame of raw weights.
 
 ```{r weight}
-weights <- weight(cons = cons, inds = inds, vars = vars)
+weights <- rk_weight(cons = cons, inds = inds, vars = vars)
 weights
 ```
 
-The raw weights tell you how frequently each individual (`A`-`E`) should appear 
+The raw weights tell you how frequently each individual (`A`-`E`) should appear
 in each zone (`a`-`c`).
 The raw weights are useful when validating and checking performance of the
 model, so it can be necessary to save these separately.
-They aren't very useful for analysis however, so we can `extract()` or `integerise()` them into a useable form.
+They aren't very useful for analysis however, so we can `rk_extract()` or `rk_integerise()` them into a useable form.
 
 
-## `extract()`
+## `rk_extract()`
 
-`extract()` produces aggregated totals of the simulated data for each category in each zone.
-`extract()`ed data is generally more accurate than `integerise()`d data, although the user should be careful this isn't spurious precision based on context and knowledge of the domain.
-Because `extract()` creates a column for each level of each variable, numerical variables (e.g. income) must be removed or `cut()` (otherwise the result would include a new column for each unique numerical value):
+`rk_extract()` produces aggregated totals of the simulated data for each category in each zone.
+`rk_extract()`ed data is generally more accurate than `rk_integerise()`d data, although the user should be careful this isn't spurious precision based on context and knowledge of the domain.
+Because `rk_extract()` creates a column for each level of each variable, numerical variables (e.g. income) must be removed or `cut()` (otherwise the result would include a new column for each unique numerical value):
 
 ```{r extract}
 inds$income <- cut(inds$income, breaks = 2, include.lowest = TRUE,
                    labels = c("low", "high"))
 
-ext_weights <- extract(weights, inds = inds, id = "id")
+ext_weights <- rk_extract(weights, inds = inds, id = "id")
 ext_weights
 ```
 
-`extract()` returns one row per zone, and the total of each category (for
-example female and male, or high and low income) will match the known 
+`rk_extract()` returns one row per zone, and the total of each category (for
+example female and male, or high and low income) will match the known
 population.
 
 
-## `integerise()`
+## `rk_integerise()`
 
-The `integerise()` function produces a simulated data frame populated with simulated individuals.
+The `rk_integerise()` function produces a simulated data frame populated with simulated individuals.
 This is typically useful when:
 
 * You need to include numerical variables, such as income in the example.
@@ -154,20 +154,20 @@ area.
 * Individual-level data is more intuitive to work with.
 
 ```{r integerise}
-int_weights <- integerise(weights, inds = inds)
+int_weights <- rk_integerise(weights, inds = inds)
 int_weights[1:6, ]
 ```
 
-`integerise()` returns one row per case, and the number of rows will match
+`rk_integerise()` returns one row per case, and the number of rows will match
 the known population (taken from `cons`).
 
 
-## `rake()`
+## `rk_rake()`
 
-`rake()` is a wrapper for `weight() %>% extract()` or 
-`weight() %>% integerise()`.
-This is useful if the raw weights (from `weight()`) are not required.
-The desired output is specified with the `output` argument, which can be 
+`rk_rake()` is a wrapper for `rk_weight() %>% rk_extract()` or
+`rk_weight() %>% rk_integerise()`.
+This is useful if the raw weights (from `rk_weight()`) are not required.
+The desired output is specified with the `output` argument, which can be
 specified with `"fraction"` (the default) or `"integer"`.
 The function takes the following arguments in all cases:
 
@@ -188,16 +188,16 @@ For `output = "integer"`:
 * `seed` (default 42)
 
 Details of these context-specific arguments can be found in the
-respective documentation for `integerise()` or `extract()`.
+respective documentation for `rk_integerise()` or `rk_extract()`.
 
 ```{r rake-int-exaple}
-rake_int <- rake(cons, inds, vars, output = "integer",
+rake_int <- rk_rake(cons, inds, vars, output = "integer",
                  method = "trs", seed = 42)
 rake_int[1:6, ]
 ```
 
 ```{r rake-frac-example}
-rake_frac <- rake(cons, inds, vars, output = "fraction", id = "id")
+rake_frac <- rk_rake(cons, inds, vars, output = "fraction", id = "id")
 rake_frac
 ```
 
@@ -217,12 +217,12 @@ and pull requests are very welcome.
 
 ## Acknowledgements
 
-Many of the functions in this package are based on code written by 
-[Robin Lovelace](https://github.com/Robinlovelace) and 
-[Morgane Dumont](https://github.com/modumont) for their book 
+Many of the functions in this package are based on code written by
+[Robin Lovelace](https://github.com/Robinlovelace) and
+[Morgane Dumont](https://github.com/modumont) for their book
 [*Spatial Microsimulation with R* (2016), Chapman and Hall/CRC Press](https://www.crcpress.com/Spatial-Microsimulation-with-R/Lovelace-Dumont/p/book/9781498711548).
 
-Their book is an excellent resource for learning 
+Their book is an excellent resource for learning
 about spatial microsimulation and understanding what's going on under the hood
 of this package.
 
@@ -249,7 +249,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-The [rewighting (ipfp) algorithm](https://github.com/awblocker/ipfp) is 
+The [rewighting (ipfp) algorithm](https://github.com/awblocker/ipfp) is
 written by Andrew Blocker.
 
 The [`wrswoR` package](http://krlmlr.github.io/wrswoR/) used for fast sampling

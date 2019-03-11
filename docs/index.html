@@ -82,19 +82,14 @@
 <span class="co"># Install rakeR development version from GitHub</span>
 devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"philmikejones/rakeR"</span>)</code></pre></div>
 <p>Load the package with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"rakeR"</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'rakeR'</span>
-<span class="co">#&gt; The following object is masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     simulate</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"rakeR"</span>)</code></pre></div>
 </div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p><code>rakeR</code> has three main functions. The first stage is always to use <code><a href="reference/weight.html">weight()</a></code> to produce a matrix of fractional weights. This matrix stores weights for each individual in each zone.</p>
-<p>From this weight matrix, <code>rakeR</code> has functions to create fractional weights (<code><a href="reference/extract.html">extract()</a></code>) or integerised cases (<code><a href="reference/integerise.html">integerise()</a></code>), depending on your needs and use cases. Fractional (<code><a href="reference/extract.html">extract()</a></code>ed) weights are generally more accurate, while integer cases are probably the most intuitive to use and are useful as inputs for further modeling.</p>
-<p>To create fractional weights use <code><a href="reference/weight.html">weight()</a></code> then <code><a href="reference/extract.html">extract()</a></code>, and to produce integerised weights use <code><a href="reference/weight.html">weight()</a></code> then <code><a href="reference/integerise.html">integerise()</a></code>.</p>
+<p><code>rakeR</code> has three main functions. The first stage is always to use <code><a href="reference/rk_weight.html">rk_weight()</a></code> to produce a matrix of fractional weights. This matrix stores weights for each individual in each zone.</p>
+<p>From this weight matrix, <code>rakeR</code> has functions to create fractional weights (<code><a href="reference/rk_extract.html">rk_extract()</a></code>) or integerised cases (<code><a href="reference/rk_integerise.html">rk_integerise()</a></code>), depending on your needs and use cases. Fractional (<code><a href="reference/rk_extract.html">rk_extract()</a></code>ed) weights are generally more accurate, while integer cases are probably the most intuitive to use and are useful as inputs for further modeling.</p>
+<p>To create fractional weights use <code><a href="reference/rk_weight.html">rk_weight()</a></code> then <code><a href="reference/rk_extract.html">rk_extract()</a></code>, and to produce integerised weights use <code><a href="reference/rk_weight.html">rk_weight()</a></code> then <code><a href="reference/rk_integerise.html">rk_integerise()</a></code>.</p>
 </div>
 <div id="inputs" class="section level2">
 <h2 class="hasAnchor">
@@ -126,12 +121,12 @@ vars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocume
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
 <p>Without this, the functions do not know how to match the <code>inds</code> and <code>cons</code> data and will fail so as not to return spurious results.</p>
 </div>
-<div id="weight" class="section level2">
+<div id="rk_weight" class="section level2">
 <h2 class="hasAnchor">
-<a href="#weight" class="anchor"></a><code><a href="reference/weight.html">weight()</a></code>
+<a href="#rk_weight" class="anchor"></a><code><a href="reference/rk_weight.html">rk_weight()</a></code>
 </h2>
-<p>(Re-)weighting is done with <code><a href="reference/weight.html">weight()</a></code> which returns a data frame of raw weights.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">weights &lt;-<span class="st"> </span><span class="kw"><a href="reference/weight.html">weight</a></span>(<span class="dt">cons =</span> cons, <span class="dt">inds =</span> inds, <span class="dt">vars =</span> vars)
+<p>(Re-)weighting is done with <code><a href="reference/rk_weight.html">rk_weight()</a></code> which returns a data frame of raw weights.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">weights &lt;-<span class="st"> </span><span class="kw"><a href="reference/rk_weight.html">rk_weight</a></span>(<span class="dt">cons =</span> cons, <span class="dt">inds =</span> inds, <span class="dt">vars =</span> vars)
 weights
 <span class="co">#&gt;          a         b         c</span>
 <span class="co">#&gt; A 1.227998 1.7250828 0.7250828</span>
@@ -139,36 +134,36 @@ weights
 <span class="co">#&gt; C 3.544004 0.5498344 1.5498344</span>
 <span class="co">#&gt; D 1.544004 4.5498344 2.5498344</span>
 <span class="co">#&gt; E 4.455996 1.4501656 5.4501656</span></code></pre></div>
-<p>The raw weights tell you how frequently each individual (<code>A</code>-<code>E</code>) should appear in each zone (<code>a</code>-<code>c</code>). The raw weights are useful when validating and checking performance of the model, so it can be necessary to save these separately. They aren’t very useful for analysis however, so we can <code><a href="reference/extract.html">extract()</a></code> or <code><a href="reference/integerise.html">integerise()</a></code> them into a useable form.</p>
+<p>The raw weights tell you how frequently each individual (<code>A</code>-<code>E</code>) should appear in each zone (<code>a</code>-<code>c</code>). The raw weights are useful when validating and checking performance of the model, so it can be necessary to save these separately. They aren’t very useful for analysis however, so we can <code><a href="reference/rk_extract.html">rk_extract()</a></code> or <code><a href="reference/rk_integerise.html">rk_integerise()</a></code> them into a useable form.</p>
 </div>
-<div id="extract" class="section level2">
+<div id="rk_extract" class="section level2">
 <h2 class="hasAnchor">
-<a href="#extract" class="anchor"></a><code><a href="reference/extract.html">extract()</a></code>
+<a href="#rk_extract" class="anchor"></a><code><a href="reference/rk_extract.html">rk_extract()</a></code>
 </h2>
-<p><code><a href="reference/extract.html">extract()</a></code> produces aggregated totals of the simulated data for each category in each zone. <code><a href="reference/extract.html">extract()</a></code>ed data is generally more accurate than <code><a href="reference/integerise.html">integerise()</a></code>d data, although the user should be careful this isn’t spurious precision based on context and knowledge of the domain. Because <code><a href="reference/extract.html">extract()</a></code> creates a column for each level of each variable, numerical variables (e.g. income) must be removed or <code><a href="https://www.rdocumentation.org/packages/base/topics/cut">cut()</a></code> (otherwise the result would include a new column for each unique numerical value):</p>
+<p><code><a href="reference/rk_extract.html">rk_extract()</a></code> produces aggregated totals of the simulated data for each category in each zone. <code><a href="reference/rk_extract.html">rk_extract()</a></code>ed data is generally more accurate than <code><a href="reference/rk_integerise.html">rk_integerise()</a></code>d data, although the user should be careful this isn’t spurious precision based on context and knowledge of the domain. Because <code><a href="reference/rk_extract.html">rk_extract()</a></code> creates a column for each level of each variable, numerical variables (e.g. income) must be removed or <code><a href="https://www.rdocumentation.org/packages/base/topics/cut">cut()</a></code> (otherwise the result would include a new column for each unique numerical value):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inds<span class="op">$</span>income &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cut">cut</a></span>(inds<span class="op">$</span>income, <span class="dt">breaks =</span> <span class="dv">2</span>, <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>,
                    <span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"low"</span>, <span class="st">"high"</span>))
 
-ext_weights &lt;-<span class="st"> </span><span class="kw"><a href="reference/extract.html">extract</a></span>(weights, <span class="dt">inds =</span> inds, <span class="dt">id =</span> <span class="st">"id"</span>)
+ext_weights &lt;-<span class="st"> </span><span class="kw"><a href="reference/rk_extract.html">rk_extract</a></span>(weights, <span class="dt">inds =</span> inds, <span class="dt">id =</span> <span class="st">"id"</span>)
 ext_weights
 <span class="co">#&gt;   code total age_0_49 age_gt_50 sex_f sex_m     high      low</span>
 <span class="co">#&gt; 1    a    12        8         4     6     6 2.772002 9.227998</span>
 <span class="co">#&gt; 2    b    10        2         8     6     4 6.274917 3.725083</span>
 <span class="co">#&gt; 3    c    11        7         4     8     3 3.274917 7.725083</span></code></pre></div>
-<p><code><a href="reference/extract.html">extract()</a></code> returns one row per zone, and the total of each category (for example female and male, or high and low income) will match the known population.</p>
+<p><code><a href="reference/rk_extract.html">rk_extract()</a></code> returns one row per zone, and the total of each category (for example female and male, or high and low income) will match the known population.</p>
 </div>
-<div id="integerise" class="section level2">
+<div id="rk_integerise" class="section level2">
 <h2 class="hasAnchor">
-<a href="#integerise" class="anchor"></a><code><a href="reference/integerise.html">integerise()</a></code>
+<a href="#rk_integerise" class="anchor"></a><code><a href="reference/rk_integerise.html">rk_integerise()</a></code>
 </h2>
-<p>The <code><a href="reference/integerise.html">integerise()</a></code> function produces a simulated data frame populated with simulated individuals. This is typically useful when:</p>
+<p>The <code><a href="reference/rk_integerise.html">rk_integerise()</a></code> function produces a simulated data frame populated with simulated individuals. This is typically useful when:</p>
 <ul>
 <li>You need to include numerical variables, such as income in the example.</li>
 <li>You want individual cases to use as input to a dynamic or agent-based model.</li>
 <li>You want ‘case studies’ to illustrate characteristics of individuals in an area.</li>
 <li>Individual-level data is more intuitive to work with.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">int_weights &lt;-<span class="st"> </span><span class="kw"><a href="reference/integerise.html">integerise</a></span>(weights, <span class="dt">inds =</span> inds)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">int_weights &lt;-<span class="st"> </span><span class="kw"><a href="reference/rk_integerise.html">rk_integerise</a></span>(weights, <span class="dt">inds =</span> inds)
 int_weights[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, ]
 <span class="co">#&gt;     id       age   sex income zone</span>
 <span class="co">#&gt; 1    A age_gt_50 sex_m   high    a</span>
@@ -177,13 +172,13 @@ int_weights[<span class="dv">1</span><span class="op">:</span><span class="dv">6
 <span class="co">#&gt; 3    C  age_0_49 sex_m    low    a</span>
 <span class="co">#&gt; 3.1  C  age_0_49 sex_m    low    a</span>
 <span class="co">#&gt; 3.2  C  age_0_49 sex_m    low    a</span></code></pre></div>
-<p><code><a href="reference/integerise.html">integerise()</a></code> returns one row per case, and the number of rows will match the known population (taken from <code>cons</code>).</p>
+<p><code><a href="reference/rk_integerise.html">rk_integerise()</a></code> returns one row per case, and the number of rows will match the known population (taken from <code>cons</code>).</p>
 </div>
-<div id="rake" class="section level2">
+<div id="rk_rake" class="section level2">
 <h2 class="hasAnchor">
-<a href="#rake" class="anchor"></a><code><a href="reference/rake.html">rake()</a></code>
+<a href="#rk_rake" class="anchor"></a><code><a href="reference/rk_rake.html">rk_rake()</a></code>
 </h2>
-<p><code><a href="reference/rake.html">rake()</a></code> is a wrapper for <code>weight() %&gt;% extract()</code> or <code>weight() %&gt;% integerise()</code>. This is useful if the raw weights (from <code><a href="reference/weight.html">weight()</a></code>) are not required. The desired output is specified with the <code>output</code> argument, which can be specified with <code>"fraction"</code> (the default) or <code>"integer"</code>. The function takes the following arguments in all cases:</p>
+<p><code><a href="reference/rk_rake.html">rk_rake()</a></code> is a wrapper for <code>rk_weight() %&gt;% rk_extract()</code> or <code>rk_weight() %&gt;% rk_integerise()</code>. This is useful if the raw weights (from <code><a href="reference/rk_weight.html">rk_weight()</a></code>) are not required. The desired output is specified with the <code>output</code> argument, which can be specified with <code>"fraction"</code> (the default) or <code>"integer"</code>. The function takes the following arguments in all cases:</p>
 <ul>
 <li><code>cons</code></li>
 <li><code>inds</code></li>
@@ -204,8 +199,8 @@ int_weights[<span class="dv">1</span><span class="op">:</span><span class="dv">6
 <li>
 <code>seed</code> (default 42)</li>
 </ul>
-<p>Details of these context-specific arguments can be found in the respective documentation for <code><a href="reference/integerise.html">integerise()</a></code> or <code><a href="reference/extract.html">extract()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rake_int &lt;-<span class="st"> </span><span class="kw"><a href="reference/rake.html">rake</a></span>(cons, inds, vars, <span class="dt">output =</span> <span class="st">"integer"</span>,
+<p>Details of these context-specific arguments can be found in the respective documentation for <code><a href="reference/rk_integerise.html">rk_integerise()</a></code> or <code><a href="reference/rk_extract.html">rk_extract()</a></code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rake_int &lt;-<span class="st"> </span><span class="kw"><a href="reference/rk_rake.html">rk_rake</a></span>(cons, inds, vars, <span class="dt">output =</span> <span class="st">"integer"</span>,
                  <span class="dt">method =</span> <span class="st">"trs"</span>, <span class="dt">seed =</span> <span class="dv">42</span>)
 rake_int[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, ]
 <span class="co">#&gt;     id       age   sex income zone</span>
@@ -215,7 +210,7 @@ rake_int[<span class="dv">1</span><span class="op">:</span><span class="dv">6</s
 <span class="co">#&gt; 3    C  age_0_49 sex_m    low    a</span>
 <span class="co">#&gt; 3.1  C  age_0_49 sex_m    low    a</span>
 <span class="co">#&gt; 3.2  C  age_0_49 sex_m    low    a</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rake_frac &lt;-<span class="st"> </span><span class="kw"><a href="reference/rake.html">rake</a></span>(cons, inds, vars, <span class="dt">output =</span> <span class="st">"fraction"</span>, <span class="dt">id =</span> <span class="st">"id"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rake_frac &lt;-<span class="st"> </span><span class="kw"><a href="reference/rk_rake.html">rk_rake</a></span>(cons, inds, vars, <span class="dt">output =</span> <span class="st">"fraction"</span>, <span class="dt">id =</span> <span class="st">"id"</span>)
 rake_frac
 <span class="co">#&gt;   code total age_0_49 age_gt_50 sex_f sex_m     high      low</span>
 <span class="co">#&gt; 1    a    12        8         4     6     6 2.772002 9.227998</span>
