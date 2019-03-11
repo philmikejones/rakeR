@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • rakeR</title>
+<title>rk_rake — rk_rake • rakeR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="rk_rake — rk_rake" />
+
+<meta property="og:description" content="A convenience function wrapping rk_weight() and rk_extract() or
+rk_weight() and rk_integerise()" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +51,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -92,102 +96,81 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>rk_rake</h1>
+    
+    <div class="hidden name"><code>rk_rake.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>A convenience function wrapping <code><a href='rk_weight.html'>rk_weight()</a></code> and <code><a href='rk_extract.html'>rk_extract()</a></code> or
+<code><a href='rk_weight.html'>rk_weight()</a></code> and <code><a href='rk_integerise.html'>rk_integerise()</a></code></p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="check_constraint.html">check_constraint()</a></code> </p>
-        </td>
-        <td><p>check_constraint</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="check_ind.html">check_ind()</a></code> </p>
-        </td>
-        <td><p>check_ind</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract.html">extract()</a></code> </p>
-        </td>
-        <td><p>extract</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract_weights.html">extract_weights()</a></code> </p>
-        </td>
-        <td><p>extract_weights</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="integerise.html">integerise()</a></code> </p>
-        </td>
-        <td><p>integerise</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rake.html">rake()</a></code> </p>
-        </td>
-        <td><p>rake</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rk_extract.html">rk_extract()</a></code> </p>
-        </td>
-        <td><p>rk_extract</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rk_integerise.html">rk_integerise()</a></code> </p>
-        </td>
-        <td><p>rk_integerise</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rk_rake.html">rk_rake()</a></code> </p>
-        </td>
-        <td><p>rk_rake</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rk_weight.html">rk_weight()</a></code> </p>
-        </td>
-        <td><p>rk_weight</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="weight.html">weight()</a></code> </p>
-        </td>
-        <td><p>weight</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>rk_rake</span>(<span class='no'>cons</span>, <span class='no'>inds</span>, <span class='no'>vars</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"fraction"</span>, <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>cons</th>
+      <td><p>A data frame of constraint variables</p></td>
+    </tr>
+    <tr>
+      <th>inds</th>
+      <td><p>A data frame of individual--level (survey) data</p></td>
+    </tr>
+    <tr>
+      <th>vars</th>
+      <td><p>A character string of variables to iterate over</p></td>
+    </tr>
+    <tr>
+      <th>output</th>
+      <td><p>A string specifying the desired output, either "fraction"
+(rk_extract()) or "integer" (rk_integerise())</p></td>
+    </tr>
+    <tr>
+      <th>iterations</th>
+      <td><p>The number of iterations to perform. Defaults to 10.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments to pass to depending on desired output:</p><ul>
+<li><p>if "fraction" specify 'id' (see rk_extract() documentation)</p></li>
+<li><p>if "integer" specify 'method' and 'seed' (see rk_integerise()
+documentation)</p></li>
+</ul></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A data frame with extracted weights (if output == "fraction", the
+default) or integerised cases (if output == "integer")</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>frac_weights</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rake.html'>rake</a></span>(<span class='no'>cons</span>, <span class='no'>inds</span>, <span class='no'>vars</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"fraction"</span>,
+                     <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"id"</span>)
+
+<span class='no'>int_weight</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rake.html'>rake</a></span>(<span class='no'>cons</span>, <span class='no'>inds</span>, <span class='no'>vars</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"integer"</span>,
+                   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"trs"</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='st'>"42"</span>)
+<span class='co'># }</span></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

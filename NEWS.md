@@ -1,6 +1,8 @@
 v 0.2.2
 =======
 
+* Functions have been renamed to include a `rk_` prefix. Function names without prefixes have been deprecated but will continue to work for now so as not to affect existing code.
+* Increased code coverage.
 * check_constraint() and check_ind() are now deprecated. These checks are carried out by the weight() and/or integerise()/extract() functions automatically.
 * Update README.md documentation
 * Add additional unit tests - thanks Derrick Atherton for feedback
@@ -25,14 +27,14 @@ between the two.
 See https://stackoverflow.com/questions/15113650/faster-weighted-sampling-without-replacement or https://cran.r-project.org/package=wrswoR for details of the
 implementation.
 * simulate() is deprecated. Instead of weight() %>% integerise() %>% simulate(),
-just use weight() %>% integerise(). This is to improve consistency with the 
+just use weight() %>% integerise(). This is to improve consistency with the
 steps to produce fractional weights (weight() %>% extract()).
 * extract_weights() has been deprecated. Use extract() instead.
 * extract() (previously extract_weights()) now stops if it encounters a numeric
 variable. See https://github.com/philmikejones/rakeR/issues/49
 * integerise() now returns weights unmodified with a note if they are
 already integers. See https://github.com/philmikejones/rakeR/issues/42 and https://github.com/philmikejones/rakeR/issues/46
-* set.seed() is no longer hard-coded in the integerise() function and can be 
+* set.seed() is no longer hard-coded in the integerise() function and can be
 specified as a function argument. See:
 https://github.com/philmikejones/rakeR/issues/41
 
