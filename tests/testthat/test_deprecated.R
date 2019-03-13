@@ -20,10 +20,7 @@ inds <- data.frame(
 
 vars <- c("age", "sex")
 
-# extract_weights() is hard deprecated
-test_that("extract_weights() errors", {
-  expect_error(extract_weights(), regexp = "deprecated")
-})
+weights <- rk_weight(cons, inds, vars)
 
 
 test_that("weight() returns deprecated", {
@@ -31,41 +28,24 @@ test_that("weight() returns deprecated", {
 })
 
 test_that("extract() returns deprecated", {
-  weights <- rk_weight(cons, inds, vars)
   inds$income <- cut(
     inds$income, breaks = 2, include.lowest = TRUE, labels = c("low", "high")
   )
-
   expect_warning(extract(weights, inds, id = "id"), regexp = "rk_extract")
 })
 
+test_that("extract_weights() errors", {
+  # extract_weights() is hard deprecated
+  expect_error(extract_weights(), regexp = "rk_extract")
+})
+
 test_that("integerise() returns deprecated", {
-  weights <- rk_weight(cons, inds, vars)
-  expect_warning(integerise(weights, inds), regexp = "^'integerise")
+  expect_warning(integerise(weights, inds), regexp = "rk_integerise")
 })
 
 test_that("rake() returns deprecated", {
   expect_warning(
     rake(cons, inds[, c("id", "age", "sex")], vars = vars, id = "id"),
-    regexp = "deprecated"
-  )
-})
-
-context("Test check_*() return deprecated")
-
-test_that("check_constraint() reports it is deprecated", {
-  expect_error(  # expect an error AND a warning
-    expect_warning(
-      check_constraint(), "is deprecated"
-    )
-  )
-
-})
-
-test_that("check_ind() reports it is deprecated", {
-  expect_error(  # expect error AND warning
-    expect_warning(
-      check_ind(), "is deprecated"
-    )
+    regexp = "rk_rake"
   )
 })
