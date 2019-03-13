@@ -95,9 +95,8 @@ rk_weight <- function(cons, inds, vars = NULL, iterations = 10) {
     stop("Missing value(s) (`NA`) in inds")
   }
 
-
   # Ensure there aren't any duplicate zone or individual codes
-  if (!isTRUE(all.equal(nrow(cons[, 1]), nrow(unique(cons[, 1]))))) {
+  if (any(duplicated(cons[, 1]))) {
     stop("Not all zone codes are unique (check first column of cons)")
   }
 
