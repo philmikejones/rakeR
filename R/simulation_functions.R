@@ -77,38 +77,35 @@ rk_weight <- function(cons, inds, vars = NULL, iterations = 10) {
 
   # Check arguments are the correct class
   if (!is.data.frame(cons)) {
-    stop("cons is not a data frame")
+    stop("Error in cons: cons is not a data frame")
   }
 
   if (!is.data.frame(inds)) {
-    stop("inds is not a data frame")
+    stop("Error in inds: inds is not a data frame")
   }
 
   if (!(is.atomic(vars) || is.list(vars))) {
-    stop("vars is not a vector")
+    stop("Error in vars: vars is not a vector")
   }
 
   # Check for any missing values
   if (any(is.na(cons))) {
-    stop("Missing value(s) (`NA`) in cons")
+    stop("Error in cons: Missing value(s) (`NA`) in cons")
   } else if (any(is.na(inds))) {
-    stop("Missing value(s) (`NA`) in inds")
+    stop("Error in inds: Missing value(s) (`NA`) in inds")
   }
 
   # Ensure there aren't any duplicate zone or individual codes
   if (any(duplicated(cons[, 1]))) {
-    stop("Not all zone codes are unique (check first column of cons)")
-  }
-
-  if (!isTRUE(all.equal(nrow(inds[, 1]), nrow(unique(inds[, 1]))))) {
-    stop("Not all individual IDs are unique (check first column of inds)")
+    stop("Error in cons: duplicate zone codes present (first column treated as code)")
+  } else if (any(duplicated(inds[, 1]))) {
+    stop("Error in inds: duplicate ids present (first column treated as ID)")
   }
 
   # weight() will error if 1 or more zones are completely empty (i.e. the
   # population is 0; rowSums == 0). See issue #64
   if (any(rowSums(cons[, 2:ncol(cons)]) == 0)) {  # col 1 is ID
-    stop("One or more zones (in cons) have a 0 population.
-These must be removed before rk_weight() can run")
+    stop("Error in cons: one or more zones only contain 0")
   }
 
   if (!all(unlist(lapply(
@@ -118,19 +115,15 @@ These must be removed before rk_weight() can run")
     stop("inds variable levels do not match cons colnames")
   }
 
-  # Prepare constraints
-
+  
   # Save and drop first column of cons (zone codes)
   # unlist() is needed in case the data is provided as a tibble
   zones <- as.vector(unlist(cons[, 1]))
   cons <- cons[, -1]
   cons <- as.matrix(cons)
-
   # cons must be a numeric (i.e. double, not int) matrix
   cons[] <- as.numeric(cons[])
 
-
-  # Prepare individual-level data (survey)
 
   # Save IDs from inds
   # unlist() is needed in case the data is provided as a tibble
