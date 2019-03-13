@@ -1,10 +1,31 @@
 context("Test rk_weight() function produces correct output")
 
-cons <- readr::read_csv("../cakemap_cons.csv")
-inds <- readr::read_csv("../cakemap_inds.csv")
-vars <- c("Car", "NSSEC8", "ageband4")
 
-weights <- rk_weight(cons = cons, inds = inds, vars = vars)
+cons <- data.frame(
+ "zone"      = letters[1:3],
+ "age_0_49"  = c(8, 2, 7),
+ "age_gt_50" = c(4, 8, 4),
+ "sex_f"     = c(6, 6, 8),
+ "sex_m"     = c(6, 4, 3),
+ stringsAsFactors = FALSE
+)
+inds <- data.frame(
+ "id"     = LETTERS[1:5],
+ "age"    = c("age_gt_50", "age_gt_50", "age_0_49", "age_gt_50", "age_0_49"),
+ "sex"    = c("sex_m", "sex_m", "sex_m", "sex_f", "sex_f"),
+ "income" = c(2868, 2474, 2231, 3152, 2473),
+ stringsAsFactors = FALSE
+)
+vars <- c("age", "sex")
+weights <- rk_weight(cons, inds, vars)
+
+
+test_that("Check cons and inds are data frames", {
+  cons_notdf <- unlist(cons)
+  inds_notdf <- unlist(inds)
+  expect_error(rk_weight(cons_notdf, inds, vars), "cons is not a data frame")
+  expect_error(rk_weight(cons, inds_notdf, vars), "inds is not a data frame")
+})
 
 test_that("Error if vars is not a vector", {
   vars <- function(x) {}
