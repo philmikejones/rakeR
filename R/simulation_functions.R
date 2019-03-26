@@ -112,10 +112,10 @@ rk_weight <- function(cons, inds, vars = NULL, iterations = 10) {
     inds[, vars],
     function(x) unique(x) %in% colnames(cons)
   )))) {
-    stop("inds variable levels do not match cons colnames")
+    stop("Error in inds: inds variable levels do not match cons colnames")
   }
 
-  
+
   # Save and drop first column of cons (zone codes)
   # unlist() is needed in case the data is provided as a tibble
   zones <- as.vector(unlist(cons[, 1]))
@@ -222,7 +222,7 @@ rk_extract <- function(weights, inds, id) {
       stop("rakeR::extract() cannot work with numeric (i.e. integer or double)
            variables because by design it creates a new variable for each
            unique level in each variable\n
-           Consider cut()ing your numeric data, extract() without your
+           Consider cut()ing your numeric data, removing your
            numeric data, or integerise() instead.")
     }
   })
